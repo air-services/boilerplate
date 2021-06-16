@@ -1,9 +1,13 @@
 import React, { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import accountApi from '../services/account';
-import { validateEmail } from '../services/validators';
-import i18n from '../services/translate';
 import classNames from 'classnames';
+import { useForm } from 'react-hook-form';
+
+import { validateEmail } from '../services/validators';
+import { setAccessToken } from '../services/auth';
+import accountApi from '../services/account';
+import i18n from '../services/translate';
+
+import { useAppContext } from '../providers/AppContextProvider';
 
 const validateSignUpEmail = (email: string) => {
   if (!validateEmail(email)) {
@@ -21,11 +25,18 @@ const SignUpPage = () => {
     },
   });
 
+  const { account, updateAccount } = useAppContext();
+
   const onFormSubmit = useCallback((values) => {
     accountApi
       .signUp(values)
-      .then((response) => {
-        console.log('success', response);
+      .then(({ data }) => {
+        updateAccount({
+          id: data.id,
+          email: data.email,
+        });
+
+        setAccessToken(data.token);
       })
       .catch((error) => {
         const formErrors = error.response.data.detail;
@@ -33,6 +44,9 @@ const SignUpPage = () => {
         Object.keys(formErrors).forEach((field: any) => {
           setError(field, { message: formErrors[field] });
         });
+      })
+      .then(() => {
+        accountApi.load().then((response) => {});
       });
   }, []);
 
@@ -89,11 +103,11 @@ const SignUpPage = () => {
               )}
 
             {formState.errors.password &&
-            formState.errors.password.type === 'minLength' && (
-              <p className="text-red-500 text-xs italic">
-                {i18n.t('signUp.PASSWORD_SMALLER_8_SYMBOLS')}
-              </p>
-            )}
+              formState.errors.password.type === 'minLength' && (
+                <p className="text-red-500 text-xs italic">
+                  {i18n.t('signUp.PASSWORD_SMALLER_8_SYMBOLS')}
+                </p>
+              )}
           </fieldset>
 
           <div className="flex items-center justify-between">

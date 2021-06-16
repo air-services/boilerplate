@@ -7,10 +7,12 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/js-cookie": "^2.2.6",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
     "i18next": "^20.3.1",
+    "js-cookie": "^2.2.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-hook-form": "^7.6.8",

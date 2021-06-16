@@ -1,4 +1,5 @@
-import axios from 'axios';
+import apiClient from './client';
+import Cookie from 'js-cookie';
 
 export interface AccountSignUpData {
   email: string;
@@ -7,7 +8,11 @@ export interface AccountSignUpData {
 
 const accountApi = {
   signUp: (account: AccountSignUpData) => {
-    return axios.post('/api/v1/account/signup', account);
+    return apiClient.post('/api/v1/account/signup', account);
+  },
+
+  load: () => {
+    return apiClient.get('/api/v1/account/load');
   },
 };
 
