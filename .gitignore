@@ -2,4 +2,5 @@
 **/.pytest_cache
 **/__pycache__
 /backend/alembic.ini
+/backend/.env
 /frontend/node_modules
