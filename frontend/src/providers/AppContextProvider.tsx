@@ -16,7 +16,6 @@ export const defaultAccountState = () => {
 const AppContextProvider = ({ children }: { children: any }) => {
   const [account, setAccount] = useState(defaultAccountState());
 
-
   // update account
   const updateAccount = useCallback((accountData) => {
     setAccount((prevState) => {
@@ -35,7 +34,7 @@ const AppContextProvider = ({ children }: { children: any }) => {
     });
   }, []);
 
-  useEffect(loadAccount, [])
+  useEffect(loadAccount, []);
 
   return (
     <AppContext.Provider

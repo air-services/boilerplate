@@ -2,12 +2,16 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 
-import { validateEmail } from '../services/validators';
-import { setAccessToken } from '../services/auth';
-import accountApi from '../services/account';
-import i18n from '../services/translate';
+import { useHistory } from 'react-router-dom';
 
-import { useAppContext } from '../providers/AppContextProvider';
+import { validateEmail } from 'services/validators';
+import { setAccessToken } from 'services/auth';
+import accountApi from 'services/account';
+import i18n from 'services/translate';
+
+import { useAppContext } from 'providers/AppContextProvider';
+import { useNotificationsContext } from 'providers/NotificationsContextProvider';
+import ProcessingSpinner from 'components/ProcessingSpinner';
 
 const validateSignUpEmail = (email: string) => {
   if (!validateEmail(email)) {
@@ -17,7 +21,21 @@ const validateSignUpEmail = (email: string) => {
   return true;
 };
 
+const SignUpLocales = {
+  EMAIL_ALREADY_EXIST: 'signUp.EMAIL_ALREADY_EXIST',
+  EMAIL_WRONG_FORMAT: 'signUp.EMAIL_WRONG_FORMAT',
+  PASSWORD_REQUIRED: 'signUp.PASSWORD_REQUIRED',
+  PASSWORD_SMALLER_8_SYMBOLS: 'signUp.PASSWORD_SMALLER_8_SYMBOLS',
+  SUBMIT_BUTTON: 'signUp.SUBMIT_BUTTON',
+  PASSWORD_FIELD_LABEL: 'signUp.PASSWORD_FIELD_LABEL',
+  EMAIL_FIELD_LABEL: 'signUp.EMAIL_FIELD_LABEL',
+  SIGNUP_SUCCESS_CONTENT: 'signUp.SIGNUP_SUCCESS_CONTENT',
+  SIGNUP_SUCCESS_TITLE: 'signUp.SIGNUP_SUCCESS_TITLE',
+  SIGNUP_FORM_LABEL: 'signUp.SIGNUP_FORM_LABEL',
+};
+
 const SignUpPage = () => {
+  const { showNotification } = useNotificationsContext();
   const { handleSubmit, register, formState, setError } = useForm({
     defaultValues: {
       email: '',
@@ -25,17 +43,13 @@ const SignUpPage = () => {
     },
   });
 
-  const { account, updateAccount } = useAppContext();
+  const history = useHistory();
+  const { updateAccount } = useAppContext();
 
   const onFormSubmit = useCallback((values) => {
-    accountApi
+    return accountApi
       .signUp(values)
       .then(({ data }) => {
-        updateAccount({
-          id: data.id,
-          email: data.email,
-        });
-
         setAccessToken(data.token);
       })
       .catch((error) => {
@@ -46,7 +60,18 @@ const SignUpPage = () => {
         });
       })
       .then(() => {
-        accountApi.load().then((response) => {});
+        return accountApi.load().then((response) => {
+          updateAccount(response.data.account);
+          showNotification(
+            {
+              title: i18n.t(SignUpLocales.SIGNUP_SUCCESS_TITLE),
+              content: i18n.t(SignUpLocales.SIGNUP_SUCCESS_CONTENT),
+            },
+            () => {
+              history.push('/');
+            }
+          );
+        });
       });
   }, []);
 
@@ -56,13 +81,15 @@ const SignUpPage = () => {
         <form
           className="form bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleSubmit(onFormSubmit)}>
-          <h1 className="text-center pb-10 text-2xl">SignUp</h1>
+          <h1 className="text-center pb-10 text-2xl">
+            {i18n.t(SignUpLocales.SIGNUP_FORM_LABEL)}
+          </h1>
           <fieldset>
             <div className="mb-8">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="password">
-                Email
+                {i18n.t(SignUpLocales.EMAIL_FIELD_LABEL)}
               </label>
               <input
                 {...register('email', { validate: validateSignUpEmail })}
@@ -73,7 +100,7 @@ const SignUpPage = () => {
                   }
                 )}
                 type="email"
-                placeholder="Email"
+                placeholder={i18n.t(SignUpLocales.EMAIL_FIELD_LABEL)}
               />
               {formState.errors.email && (
                 <p className="text-red-500 text-xs italic absolute">
@@ -112,9 +139,28 @@ const SignUpPage = () => {
 
           <div className="flex items-center justify-between">
             <button
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className={classNames(
+                `
+                w-full
+                bg-blue-500
+                text-white
+                font-bold
+                py-2
+                px-4
+                rounded
+                focus:outline-none
+                focus:shadow-outline
+                disabled:opacity-50
+                disabled:cursor-auto
+              `,
+                { ['hover:bg-blue-700']: !formState.isSubmitting }
+              )}
+              disabled={formState.isSubmitting}
               type="submit">
-              Sign In
+              <div className="flex justify-center">
+                {formState.isSubmitting && <ProcessingSpinner />}
+                <span>{i18n.t('signUp.SUBMIT_BUTTON')}</span>
+              </div>
             </button>
           </div>
         </form>

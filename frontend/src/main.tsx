@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 import AppContextProvider from './providers/AppContextProvider';
+import NotificationsContextProvider from 'providers/NotificationsContextProvider';
+
 import NavBar from './components/NavBar';
 import SignUpPage from './pages/SignUp';
 import LogInPage from './pages/LogIn';
@@ -15,13 +17,15 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AppContextProvider>
-        <NavBar />
-        <Switch>
-          <Route path="/signup" component={SignUpPage} />
-          <Route path="/login" component={LogInPage} />
-          <Route path="/users" component={UsersPage} />
-          <Route path="/" component={StartPage} />
-        </Switch>
+        <NotificationsContextProvider>
+          <NavBar />
+          <Switch>
+            <Route path="/signup" component={SignUpPage} />
+            <Route path="/login" component={LogInPage} />
+            <Route path="/users" component={UsersPage} />
+            <Route path="/" component={StartPage} />
+          </Switch>
+        </NotificationsContextProvider>
       </AppContextProvider>
     </BrowserRouter>
   </React.StrictMode>,

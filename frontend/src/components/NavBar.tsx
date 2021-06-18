@@ -11,10 +11,8 @@ const NavItem = ({ title, url }: { title: string; url: string }) => (
 );
 
 const NavBar = () => {
-  const { account } = useAppContext();
   return (
     <nav className="shadow-md py-5 px-8 py-5 px-8">
-      {account.id && <div>{account.id}</div>}
       <div className="space-x-10 ">
         <NavItem title="Start" url="/" />
         <NavItem title="Users" url="/users" />
