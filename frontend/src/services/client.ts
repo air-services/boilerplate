@@ -1,6 +1,10 @@
 import apiClient from 'axios';
 
-export const setClientDefaultHeaders = (headers: { 'Access-Token': string }) => {
+interface HeadersModel {
+  'Access-Token'?: string;
+}
+
+export const setClientDefaultHeaders = (headers: HeadersModel) => {
   apiClient.defaults.headers.common = headers;
 };
 

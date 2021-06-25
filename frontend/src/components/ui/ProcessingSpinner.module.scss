@@ -1,0 +1,13 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.main {
+  animation: spin 1s linear infinite;
+  @apply -ml-1 mr-3 h-5 w-5 text-white;
+}

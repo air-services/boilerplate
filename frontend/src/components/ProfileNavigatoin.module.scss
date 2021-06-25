@@ -1,0 +1,33 @@
+.profileNavigation {
+  @apply px-4
+  flex
+  ml-auto
+  space-x-10
+  group;
+}
+
+.accountMenu {
+  @apply absolute
+  top-20
+  right-0
+  shadow-md
+  px-20
+  pr-28
+  pl-3
+  py-3
+  pb-0
+  flex
+  flex-col
+  -mt-5;
+}
+
+.toggleAccountMenu {
+  @apply flex
+  items-center
+  hover:opacity-100
+  opacity-80
+  transition-opacity
+  duration-300
+  cursor-pointer
+  select-none;
+}

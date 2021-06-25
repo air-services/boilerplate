@@ -1,24 +1,19 @@
 import React from 'react';
-import { useAppContext } from '../providers/AppContextProvider';
+import NavBarLink from './NavBarLink'
+import ProfileNavigation from './ProfileNavigation';
 
-import { Link } from 'react-router-dom';
-const NavItem = ({ title, url }: { title: string; url: string }) => (
-  <Link
-    to={url}
-    className="text-sm font-medium transition-colors duration-100 transform hover:text-yellow-600">
-    {title}
-  </Link>
-);
+import './NavBarStyle.scss';
+
 
 const NavBar = () => {
   return (
-    <nav className="shadow-md py-5 px-8 py-5 px-8">
+    <nav className="shadow-md py-5 px-8 flex items-center">
       <div className="space-x-10 ">
-        <NavItem title="Start" url="/" />
-        <NavItem title="Users" url="/users" />
-        <NavItem title="SignUp" url="/signup" />
-        <NavItem title="LogIn" url="/login" />
+        <NavBarLink title="Start" url="/" />
+        <NavBarLink title="Users" url="/users" />
+        <NavBarLink title="Roles" url="/roles" />
       </div>
+      <ProfileNavigation />
     </nav>
   );
 };

@@ -6,12 +6,12 @@ import { useHistory } from 'react-router-dom';
 
 import { validateEmail } from 'services/validators';
 import { setAccessToken } from 'services/auth';
-import accountApi from 'services/account';
+import accountApi from 'services/api/account';
 import i18n from 'services/translate';
 
 import { useAppContext } from 'providers/AppContextProvider';
 import { useNotificationsContext } from 'providers/NotificationsContextProvider';
-import ProcessingSpinner from 'components/ProcessingSpinner';
+import ProcessingSpinner from 'components/ui/ProcessingSpinner';
 
 const validateSignUpEmail = (email: string) => {
   if (!validateEmail(email)) {
@@ -44,24 +44,14 @@ const SignUpPage = () => {
   });
 
   const history = useHistory();
-  const { updateAccount } = useAppContext();
+  const { loadAccount } = useAppContext();
 
   const onFormSubmit = useCallback((values) => {
     return accountApi
       .signUp(values)
       .then(({ data }) => {
         setAccessToken(data.token);
-      })
-      .catch((error) => {
-        const formErrors = error.response.data.detail;
-
-        Object.keys(formErrors).forEach((field: any) => {
-          setError(field, { message: formErrors[field] });
-        });
-      })
-      .then(() => {
-        return accountApi.load().then((response) => {
-          updateAccount(response.data.account);
+        loadAccount(() => {
           showNotification(
             {
               title: i18n.t(SignUpLocales.SIGNUP_SUCCESS_TITLE),
@@ -71,6 +61,13 @@ const SignUpPage = () => {
               history.push('/');
             }
           );
+        });
+      })
+      .catch((error) => {
+        const formErrors = error.response.data.detail;
+
+        Object.keys(formErrors).forEach((field: any) => {
+          setError(field, { message: formErrors[field] });
         });
       });
   }, []);
@@ -113,11 +110,23 @@ const SignUpPage = () => {
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="password">
-              Password
+              {i18n.t(SignUpLocales.PASSWORD_FIELD_LABEL)}
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow
+              appearance-none
+              border
+              rounded
+              w-full
+              py-2
+              px-3
+              text-gray-700
+              mb-3
+              leading-tight
+              focus:outline-none
+              focus:shadow-outline"
               id="password"
+              autoComplete="on"
               type="password"
               placeholder="******************"
               {...register('password', { required: true, minLength: 8 })}

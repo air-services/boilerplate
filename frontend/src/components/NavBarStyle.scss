@@ -1,0 +1,7 @@
+.nav-bar-item {
+  @apply font-medium
+    transition-colors
+    duration-100
+    transform
+    hover:text-yellow-600;
+}

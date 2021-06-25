@@ -53,19 +53,19 @@ const NotificationsContextProvider = ({ children }: { children: any }) => {
   const defaultNotifications: NotificationInfo[] = [];
   const [notifications, setNotifications] = useState(defaultNotifications);
   const showNotification = useCallback(
-    (notification: NotificationInfo, callback = null) => {
+    (notification: NotificationInfo, callback?: () => void | null) => {
       setNotifications((notifications) => {
         return [...notifications, notification];
       });
+
+      if (callback) {
+        callback();
+      }
 
       setTimeout(() => {
         setNotifications((notifications) => {
           return notifications.slice(0, notifications.length - 1);
         });
-
-        if (callback) {
-          callback();
-        }
       }, 1000);
     },
     [notifications]

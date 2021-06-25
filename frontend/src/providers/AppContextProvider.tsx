@@ -1,15 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { createContext, useContext } from 'react';
-import { setClientDefaultHeaders } from '../services/client';
-import accountApi from '../services/account';
-import { getAccessToken } from '../services/auth';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+} from 'react';
 
-export const defaultAccountState = () => {
+import { setClientDefaultHeaders } from 'services/client';
+import { getAccessToken, clearAccessToken } from 'services/auth';
+import accountApi from 'services/api/account';
+import { serializeToCamel } from '../services/api/serializers';
+
+export interface AccountModel {
+  data: {
+    id: number | null;
+    email: string;
+    firstName: string;
+    lastName: string;
+    patronymic: string;
+  };
+  isLoaded: boolean;
+}
+
+export const defaultAccountState = (): AccountModel => {
   return {
+    data: {
+      id: null,
+      email: '',
+      firstName: '',
+      lastName: '',
+      patronymic: '',
+    },
     isLoaded: false,
-    id: null,
-    email: '',
-    phone: '',
   };
 };
 
@@ -27,11 +49,26 @@ const AppContextProvider = ({ children }: { children: any }) => {
   }, []);
 
   // load account info
-  const loadAccount = useCallback(() => {
+  const loadAccount = useCallback((onSuccess = null) => {
     setClientDefaultHeaders({ 'Access-Token': getAccessToken() });
-    accountApi.load().then((response) => {
-      updateAccount(response.data.account);
-    });
+    accountApi
+      .load()
+      .then((response) => {
+        const accountData = serializeToCamel(response.data);
+        updateAccount({ data: accountData, isLoaded: true });
+        if (typeof onSuccess === 'function') {
+          onSuccess(accountData);
+        }
+      })
+      .catch(() => {
+        updateAccount({ ...defaultAccountState(), isLoaded: true });
+      });
+  }, []);
+
+  const logout = useCallback(() => {
+    clearAccessToken();
+    setClientDefaultHeaders({});
+    loadAccount();
   }, []);
 
   useEffect(loadAccount, []);
@@ -41,6 +78,8 @@ const AppContextProvider = ({ children }: { children: any }) => {
       value={{
         account,
         updateAccount,
+        loadAccount,
+        logout,
       }}>
       {children}
     </AppContext.Provider>
@@ -50,6 +89,8 @@ const AppContextProvider = ({ children }: { children: any }) => {
 const AppContext = createContext({
   account: defaultAccountState(),
   updateAccount: (data: any) => {},
+  loadAccount: (callback: any) => {},
+  logout: () => {},
 });
 
 export const useAppContext = () => {

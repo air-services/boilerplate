@@ -1,5 +1,6 @@
 import pytest
 from starlette.config import Config
+import asyncio
 
 from app.core.database import db
 from app.users.models import User
@@ -27,3 +28,10 @@ async def mock_user():
     )
 
     return user
+
+@pytest.fixture
+def event_loop():
+    yield asyncio.get_event_loop()
+
+def pytest_sessionfinish(session, exitstatus):
+    asyncio.get_event_loop().close()

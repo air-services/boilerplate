@@ -1,18 +1,21 @@
-from app.core.database import db
-from app.users.models import User
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from typing import List
 
+from fastapi import APIRouter
 
-class UserBase(BaseModel):
-    email: str
-    hashed_password: str
-    is_active: bool
-
-
-class UserCreate(UserBase):
-    pass
-
+from .views import (
+    GetRolesResponseModel,
+    GetUsersResponseModel,
+    create_role,
+    create_user,
+    get_role,
+    get_roles,
+    get_user,
+    get_users,
+    remove_role,
+    remove_user,
+    update_role,
+    update_user,
+)
 
 users_router = APIRouter(
     prefix="/api/v1/users",
@@ -20,33 +23,24 @@ users_router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+roles_router = APIRouter(
+    prefix="/api/v1/roles",
+    tags=["roles"],
+    responses={404: {"description": "Not found"}},
+)
 
-@users_router.get("/")
-async def get_users():
-    users = await db.all(User.query)
-    return [user.to_dict() for user in users]
+users_router.add_api_route(
+    "/", get_users, response_model=List[GetUsersResponseModel]
+)
+users_router.add_api_route("/", create_user, methods=["POST"])
+users_router.add_api_route("/{user_id:int}", get_user)
+users_router.add_api_route("/{user_id:int}", remove_user, methods=["DELETE"])
+users_router.add_api_route("/{user_id:int}", update_user, methods=["PUT"])
 
-
-@users_router.get("/{id:int}")
-async def get_user(id):
-    user = await User.get(id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user.to_dict()
-
-
-@users_router.post("/")
-async def create_user(user: UserCreate):
-    user = await User.create(
-        email=user.email, hashed_password=user.hashed_password
-    )
-    return user.to_dict()
-
-
-@users_router.delete("/{id:int}")
-async def remove_user(id):
-    user = await User.get(id)
-    if not user:
-        raise HTTPException(status_code=400, detail="User not found")
-    await user.delete()
-    return {"message": "deleted"}
+roles_router.add_api_route(
+    "/", get_roles, response_model=List[GetRolesResponseModel]
+)
+roles_router.add_api_route("/", create_role, methods=["POST"])
+roles_router.add_api_route("/{role_id:int}", get_role)
+roles_router.add_api_route("/{role_id:int}", remove_role, methods=["DELETE"])
+roles_router.add_api_route("/{role_id:int}", update_role, methods=["PUT"])

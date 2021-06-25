@@ -14,7 +14,7 @@ def check_access_token(access_token):
     try:
         account = jwt.decode(access_token, secret, algorithms=["HS256"])
         return account
-    except jwt.ExpiredSignature:
+    except jwt.ExpiredSignatureError:
         return False
 
 
