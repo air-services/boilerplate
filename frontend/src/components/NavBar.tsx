@@ -12,6 +12,7 @@ const NavBar = () => {
         <NavBarLink title="Start" url="/" />
         <NavBarLink title="Users" url="/users" />
         <NavBarLink title="Roles" url="/roles" />
+        <NavBarLink title="Projects" url="/projects" />
       </div>
       <ProfileNavigation />
     </nav>

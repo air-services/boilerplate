@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import usersApi from 'services/api/users';
+import restApi from 'services/api/rest';
 import { UserEditModel, UserEditDataModel } from 'modules/users/usersModels';
 
 import TextInput from 'components/form/TextInput/TextInput';
@@ -13,7 +13,7 @@ import {
 } from 'services/api/serializers';
 import { useNotificationsContext } from '../../../providers/NotificationsContextProvider';
 
-type FormID =
+type FormIDs =
   | 'id'
   | 'email'
   | 'firstName'
@@ -29,7 +29,7 @@ const FieldRenderMap = {
 };
 
 interface FormConfigField {
-  id: FormID;
+  id: FormIDs;
   label: string;
   placeholder: string;
   render: FormRender;
@@ -94,7 +94,7 @@ const UserEditForm = ({ user }: { user: UserEditDataModel }) => {
     formState: { isSubmitting },
   } = useForm({ defaultValues: user });
   const onFormSubmit = useCallback((data) => {
-    return usersApi
+    return restApi.api.users
       .patchItem(data.id, formConfig.serialize(data))
       .then((response) => {
         // useNotificationsContext()
@@ -135,7 +135,7 @@ const UserEdit = ({ id }: { id: string }) => {
   const [user, setUser] = useState(formConfig.defaultState());
 
   useEffect(() => {
-    usersApi.getItem(id).then((response) => {
+    restApi.api.users.getItem(id).then((response) => {
       setUser({ isLoaded: true, data: serializeToCamel(response.data) });
     });
   }, [id]);

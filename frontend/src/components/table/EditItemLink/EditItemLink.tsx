@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 
-const EditItem = ({ id, baseUrl }: { id: string, baseUrl: string }) => {
+const EditItemLink = (editUrl: string) => ({ id }: { id: string }) => {
   return (
     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
       <Link
-        to={`/${baseUrl}/${id}`}
+        to={`/${editUrl}/${id}`}
         className="text-indigo-600 hover:text-indigo-900">
         Редактировать
       </Link>
@@ -13,4 +13,4 @@ const EditItem = ({ id, baseUrl }: { id: string, baseUrl: string }) => {
   );
 };
 
-export default EditItem;
+export default EditItemLink;

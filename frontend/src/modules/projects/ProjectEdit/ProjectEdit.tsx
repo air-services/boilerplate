@@ -8,7 +8,7 @@ import EditItem, {
 import restApi from 'services/api/rest';
 
 class FormConfig implements EditItemFormConfig {
-  title = 'Редактирование роли';
+  title = 'Редактирование проекта';
   submitLabel = 'Обновить';
   fields: FormConfigField[] = [
     {
@@ -31,13 +31,13 @@ class FormConfig implements EditItemFormConfig {
     return serializeToSnake(excludeKeys('id')(data));
   };
 
-  api = restApi.api.roles;
+  api = restApi.api.projects;
 }
 
-const EditRole = ({ id }: { id: string }) => {
+const EditProject = ({ id }: { id: string }) => {
   const formConfig = new FormConfig();
 
   return <EditItem id={id} formConfig={formConfig} />;
 };
 
-export default EditRole;
+export default EditProject;

@@ -1,18 +1,20 @@
 import React from 'react';
-import rolesApi from 'services/api/roles';
+import restApi from 'services/api/rest';
 
 import Table from 'components/table/Table';
-import EditItem from 'components/table/EditItem/EditItem';
+import EditItemLink from 'components/table/EditItemLink/EditItemLink';
 
 class RolesTableConfig {
   fields = [
     { id: 'id', label: 'ID' },
     { id: 'name', label: 'Название' },
-    { id: 'edit', label: '', component: EditItem },
+    { id: 'edit', label: '', component: EditItemLink('roles') },
   ];
-  api = rolesApi;
+  api = restApi.api.roles;
 }
 
-const RoleList = () => <Table config={RolesTableConfig} />;
+const tableConfig = new RolesTableConfig();
+
+const RoleList = () => <Table tableConfig={tableConfig} />;
 
 export default RoleList;

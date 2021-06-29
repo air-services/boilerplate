@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from 'react';
+
 import { serializeToCamel } from 'services/api/serializers';
+import { RestModelApi } from 'services/api/rest';
+
 
 import TableElement, { TableField } from './TableElement/TableElement';
 import tableStyles from './Table.module.scss';
 
-const Table = ({ config }: any) => {
+class TableConfig {
+  constructor(fields: [any], api: RestModelApi) {
+    this.fields = fields;
+    this.api = api;
+  }
+  fields: any[];
+  api: RestModelApi;
+}
+
+const Table = ({ tableConfig }: { tableConfig: TableConfig }) => {
   const [items, setItems] = useState([]);
-  const tableConfig = new config();
 
   useEffect(() => {
     tableConfig.api.getList().then((response: any) => {
