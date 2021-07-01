@@ -21,6 +21,7 @@ const TableElement = ({
   fields: TableField[];
   element: any;
 }) => {
+  console.log(element)
   return (
     <tr key={element.id}>
       {fields.map((field: TableField) => {

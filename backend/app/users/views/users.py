@@ -1,85 +1,104 @@
-from typing import Optional
-
+from app.core.crud import CrudView
+from app.projects.models import Project, ProjectsUsers
 from app.users.models import Role, User, UsersRoles
 from fastapi import HTTPException
-from pydantic import BaseModel
 
 
-class UserBase(BaseModel):
-    email: str
-    is_active: bool
+class UsersView(CrudView):
+    model = User
 
+    async def update_user_roles(self, user_id, next_roles, prev_roles):
+        item = await self.model.get(user_id)
+        next_roles_ids = set([role.id for role in next_roles])
+        prev_roles_ids = set([role.id for role in prev_roles])
 
-class UserCreate(UserBase):
-    pass
+        to_remove = prev_roles_ids - next_roles_ids
+        to_add = next_roles_ids - prev_roles_ids
+        await UsersRoles.delete.where(
+            UsersRoles.user_id == user_id and UsersRoles.role_id.in_(to_remove)
+        ).gino.status()
 
+        insert_values = [
+            dict(user_id=user_id, role_id=role_id) for role_id in to_add
+        ]
 
-class GetUsersResponseModel(BaseModel):
-    id: int
-    email: str
-    first_name: Optional[str]
-    last_name: Optional[str]
-    patronymic: Optional[str]
-    is_active: Optional[bool]
+        await UsersRoles.insert().gino.all(insert_values)
 
+        return True
 
-class UserUpdateRequestModel(BaseModel):
-    email: str
-    first_name: Optional[str]
-    last_name: Optional[str]
-    patronymic: Optional[str]
-    is_active: Optional[bool]
+    def get_update_view(self):
+        update_model = self.serializer.update_item_request_model
 
+        async def update_view(item_id: int, data: update_model):
 
-async def mock_users_and_roles():
-    await User.create(email="user@mail.com", hashed_password="password")
-    await Role.create(name="superuser")
-    await UsersRoles.create(user_id=1, role_id=1)
+            item = await self.model.get(item_id)
+            await item.update(
+                first_name=data.first_name,
+                last_name=data.last_name,
+                patronymic=data.patronymic,
+                email=data.email,
+                is_active=data.is_active,
+            ).apply()
 
+            users_roles = await UsersRoles.query.where(
+                UsersRoles.user_id == item_id
+            ).gino.all()
+            roles_ids = [item.role_id for item in users_roles]
+            roles = await Role.query.where(Role.id.in_(roles_ids)).gino.all()
 
-async def get_users():
-    query = User.outerjoin(UsersRoles).outerjoin(Role).select()
-    users = (
-        await query.order_by(User.id)
-        .gino.load(
-            User.distinct(User.id).load(add_role=Role.distinct(Role.id))
-        )
-        .all()
-    )
+            await self.update_user_roles(item_id, data.roles, roles)
 
-    return [user.to_dict() for user in users]
+            return {
+                **item.to_dict(),
+                "roles": data.roles,
+            }
 
+        return update_view
 
-async def get_user(user_id: int):
-    user = await User.get(user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user.to_dict()
+    def get_item_view(self):
+        async def item_view(item_id: int):
+            item = await self.model.get(item_id)
+            users_roles = await UsersRoles.query.where(
+                UsersRoles.user_id == item_id
+            ).gino.all()
+            roles_ids = [item.role_id for item in users_roles]
+            roles = await Role.query.where(Role.id.in_(roles_ids)).gino.all()
 
+            if not item:
+                raise HTTPException(status_code=404, detail="Not found")
+            return {
+                **item.to_dict(),
+                "roles": [role.to_dict() for role in roles],
+            }
 
-async def create_user(user: UserCreate):
-    user = await User.create(
-        email=user.email, hashed_password=user.hashed_password
-    )
-    return user.to_dict()
+        return item_view
 
+    def get_list_view(self):
+        async def list_view():
+            print("get list view")
+            query = (
+                User.outerjoin(UsersRoles)
+                .outerjoin(Role)
+                .outerjoin(ProjectsUsers)
+                .outerjoin(Project)
+                .select()
+            )
 
-async def remove_user(user_id: int):
-    user = await User.get(user_id)
-    if not user:
-        raise HTTPException(status_code=400, detail="User not found")
-    await user.delete()
-    return {"message": "deleted"}
+            users = await query.gino.load(
+                User.distinct(User.id)
+                .load(add_role=Role.distinct(Role.id))
+                .load(add_project=Project.distinct(Project.id))
+            ).all()
 
+            return [
+                {
+                    **user.to_dict(),
+                    "roles": [role.to_dict() for role in user.roles],
+                    "projects": [
+                        project.to_dict() for project in user.projects
+                    ],
+                }
+                for user in users
+            ]
 
-async def update_user(user_id: int, user_data: UserUpdateRequestModel):
-    user = await User.get(user_id)
-    await user.update(
-        email=user_data.email,
-        first_name=user_data.first_name,
-        last_name=user_data.last_name,
-        patronymic=user_data.patronymic,
-        is_active=user_data.is_active,
-    ).apply()
-
-    return user.to_dict()
+        return list_view

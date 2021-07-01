@@ -1,68 +1,73 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
+
+import { excludeKeys, serializeToSnake } from 'services/api/serializers';
+import EditItem, {
+  FormConfigField,
+  EditItemFormConfig,
+} from 'components/edit/EditItem';
 import restApi from 'services/api/rest';
-import { UserEditModel, UserEditDataModel } from 'modules/users/usersModels';
-
-import TextInput from 'components/form/TextInput/TextInput';
 import CheckBoxInput from 'components/form/CheckboxInput/CheckBoxInput';
-import Button from 'components/ui/Button';
-import {
-  excludeKeys,
-  serializeToCamel,
-  serializeToSnake,
-} from 'services/api/serializers';
-import { useNotificationsContext } from '../../../providers/NotificationsContextProvider';
 
-type FormIDs =
-  | 'id'
-  | 'email'
-  | 'firstName'
-  | 'lastName'
-  | 'patronymic'
-  | 'isActive';
-
-type FormRender = 'TextInput' | 'CheckBoxInput';
-
-const FieldRenderMap = {
-  TextInput: TextInput,
-  CheckBoxInput: CheckBoxInput,
-};
-
-interface FormConfigField {
-  id: FormIDs;
-  label: string;
-  placeholder: string;
-  render: FormRender;
-}
-
-class FormConfig {
-  title = 'Редактирование профиля';
+class FormConfig implements EditItemFormConfig {
+  title = 'Редактирование пользователя';
   submitLabel = 'Обновить';
   fields: FormConfigField[] = [
+    // {
+    //   id: 'email',
+    //   label: 'Электронная почта',
+    //   placeholder: 'Электронная почта',
+    //   render: 'TextInput',
+    // },
     {
-      id: 'email',
-      label: 'Электронная почта',
-      placeholder: 'Электронная почта',
+      id: 'firstName',
+      label: 'Имя',
+      placeholder: 'Имя',
       render: 'TextInput',
     },
-    { id: 'firstName', label: 'Имя', placeholder: 'Имя', render: 'TextInput' },
+    // {
+    //   id: 'lastName',
+    //   label: 'Фамилия',
+    //   placeholder: 'Фамилия',
+    //   render: 'TextInput',
+    // },
+    // {
+    //   id: 'patronymic',
+    //   label: 'Отчество',
+    //   placeholder: 'Отчество',
+    //   render: 'TextInput',
+    // },
+    // {
+    //   id: 'isActive',
+    //   label: 'Активный',
+    //   placeholder: 'Активный',
+    //   render: 'CheckBoxInput',
+    // },
     {
-      id: 'lastName',
-      label: 'Фамилия',
-      placeholder: 'Фамилия',
-      render: 'TextInput',
-    },
-    {
-      id: 'patronymic',
-      label: 'Отчество',
-      placeholder: 'Отчество',
-      render: 'TextInput',
-    },
-    {
-      id: 'isActive',
-      label: 'Активный',
-      placeholder: 'Активный',
-      render: 'CheckBoxInput',
+      id: 'roles',
+      label: 'Роли',
+      placeholder: 'Роли',
+      render: 'MultiSelectInput',
+      selectConfig: {
+        getOptionLabel: (option: any) => {
+          return option.name;
+        },
+        getOptionValue: (option: any) => {
+          return option.id;
+        },
+        loadOptions: (inputValue: string) => {
+          return new Promise((resolve) => {
+            restApi.api.roles
+              .getList({
+                search: {
+                  name: inputValue,
+                },
+              })
+              .then((response) => {
+                resolve(response.data);
+              });
+          });
+        },
+      },
     },
   ];
 
@@ -70,77 +75,22 @@ class FormConfig {
     isLoaded: false,
     data: {
       id: null,
-      email: '',
-      firstName: '',
-      lastName: '',
-      patronymic: '',
-      isActive: false,
+      name: '',
     },
   });
 
   serialize = (data: any) => {
-    return serializeToSnake(excludeKeys('id')(data));
+    const result =  serializeToSnake(excludeKeys('id')(data));
+    return result;
   };
+
+  api = restApi.api.users;
 }
 
-const formConfig = new FormConfig();
+const EditUser = ({ id }: { id: string }) => {
+  const formConfig = new FormConfig();
 
-const UserEditForm = ({ user }: { user: UserEditDataModel }) => {
-  const { showNotification } = useNotificationsContext();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm({ defaultValues: user });
-  const onFormSubmit = useCallback((data) => {
-    return restApi.api.users
-      .patchItem(data.id, formConfig.serialize(data))
-      .then((response) => {
-        // useNotificationsContext()
-        showNotification(
-          { title: 'Успех', content: 'Обновление прошло успешно' },
-          null
-        );
-      });
-  }, []);
-  return (
-    <div className="p-20">
-      <h1 className="pb-10 text-2xl">{formConfig.title}</h1>
-      <form className="grid grid-cols-6" onSubmit={handleSubmit(onFormSubmit)}>
-        <div className="col-span-4">
-          {formConfig.fields.map((field: FormConfigField) => {
-            const FieldRenderComponent = FieldRenderMap[field.render];
-            return (
-              <FieldRenderComponent
-                field={field}
-                register={register}
-                key={field.id}
-              />
-            );
-          })}
-          <div className="form-buttons">
-            <Button
-              isSubmitting={isSubmitting}
-              title={formConfig.submitLabel}
-            />
-          </div>
-        </div>
-      </form>
-    </div>
-  );
+  return <EditItem id={id} formConfig={formConfig} />;
 };
 
-const UserEdit = ({ id }: { id: string }) => {
-  const [user, setUser] = useState(formConfig.defaultState());
-
-  useEffect(() => {
-    restApi.api.users.getItem(id).then((response) => {
-      setUser({ isLoaded: true, data: serializeToCamel(response.data) });
-    });
-  }, [id]);
-
-  return user.isLoaded ? <UserEditForm user={user.data} /> : null;
-};
-
-export default UserEdit;
+export default EditUser;

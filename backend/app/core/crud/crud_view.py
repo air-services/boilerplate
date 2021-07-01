@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 
-from .crud_serializers import CrudSerializers
+from .crud_serializer import CrudSerializer
 
 
-class CrudViews:
-    def __init__(self, model, serializers: CrudSerializers):
+class CrudView:
+    def __init__(self, model, serializer: CrudSerializer):
         self.model = model
-        self.serializers = serializers
+        self.serializer = serializer
 
     def get_list_view(self):
         async def list_view():
@@ -25,7 +25,7 @@ class CrudViews:
         return item_view
 
     def get_create_view(self):
-        create_model = self.serializers.create_item_request_model
+        create_model = self.serializer.create_item_request_model
 
         async def create_view(data: create_model):
             item = await self.model.create(**dict(data))
@@ -44,7 +44,7 @@ class CrudViews:
         return remove_view
 
     def get_update_view(self):
-        update_model = self.serializers.update_item_request_model
+        update_model = self.serializer.update_item_request_model
 
         async def update_view(item_id: int, data: update_model):
             item = await self.model.get(item_id)

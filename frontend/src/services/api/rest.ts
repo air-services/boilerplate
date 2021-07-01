@@ -2,14 +2,17 @@ import apiClient from 'services/client';
 import { AxiosPromise } from 'axios';
 
 export interface RestModelApi {
-  getList: () => AxiosPromise;
+  getList: (config?: { search?: any; sorting?: any }) => AxiosPromise;
   getItem: (id: string) => AxiosPromise;
   patchItem: (id: string, data: any) => AxiosPromise;
 }
 
 export const getModelCrud = (url: string): RestModelApi => ({
-  getList: () => {
-    return apiClient.get(`${url}/`);
+  getList: ({ search = {} } = {}) => {
+    const searchString = search ? JSON.stringify(search) : '';
+    const urlParams = new URLSearchParams({ search: searchString }).toString();
+
+    return apiClient.get(`${url}/?${urlParams}`);
   },
   getItem: (id: string) => {
     return apiClient.get(`${url}/${id}`);

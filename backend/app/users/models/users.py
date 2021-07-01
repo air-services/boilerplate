@@ -7,6 +7,7 @@ class User(db.Model):
     def __init__(self, **kw):
         super().__init__(**kw)
         self._roles = set()
+        self._projects = set()
 
     id = db.Column(db.Integer, primary_key=True, index=True)
     email = db.Column(db.String, unique=True, index=True)
@@ -23,3 +24,10 @@ class User(db.Model):
 
     def add_role(self, role):
         self._roles.add(role)
+
+    @property
+    def projects(self):
+        return self._projects
+
+    def add_project(self, project):
+        self._projects.add(project)
