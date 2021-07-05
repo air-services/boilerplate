@@ -12,12 +12,12 @@ class FormConfig implements EditItemFormConfig {
   title = 'Редактирование пользователя';
   submitLabel = 'Обновить';
   fields: FormConfigField[] = [
-    // {
-    //   id: 'email',
-    //   label: 'Электронная почта',
-    //   placeholder: 'Электронная почта',
-    //   render: 'TextInput',
-    // },
+    {
+      id: 'email',
+      label: 'Электронная почта',
+      placeholder: 'Электронная почта',
+      render: 'TextInput',
+    },
     {
       id: 'firstName',
       label: 'Имя',
@@ -57,6 +57,34 @@ class FormConfig implements EditItemFormConfig {
         loadOptions: (inputValue: string) => {
           return new Promise((resolve) => {
             restApi.api.roles
+              .getList({
+                search: {
+                  name: inputValue,
+                },
+              })
+              .then((response) => {
+                resolve(response.data);
+              });
+          });
+        },
+      },
+    },
+
+    {
+      id: 'projects',
+      label: 'Проекты',
+      placeholder: 'Проекты',
+      render: 'MultiSelectInput',
+      selectConfig: {
+        getOptionLabel: (option: any) => {
+          return option.name;
+        },
+        getOptionValue: (option: any) => {
+          return option.id;
+        },
+        loadOptions: (inputValue: string) => {
+          return new Promise((resolve) => {
+            restApi.api.projects
               .getList({
                 search: {
                   name: inputValue,

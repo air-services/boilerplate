@@ -25,6 +25,7 @@ class UserBaseFields(BaseModel):
 class UserItemGetModel(UserBaseFields):
     id: int
     roles: List[UserRole]
+    projects: List[UserProject]
 
 
 class UserListGetModel(UserBaseFields):

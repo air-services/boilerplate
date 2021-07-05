@@ -6,7 +6,7 @@ from app.core.crud import CrudView
 class RoleView(CrudView):
     def get_list_view(self):
         async def list_view(search: str = ""):
-            query = self.model.query
+            query = self.model.query.order_by(self.model.id)
             if search:
                 name = json.loads(search).get("name")
                 if name:

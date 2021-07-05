@@ -1,16 +1,29 @@
 import apiClient from 'services/client';
 import { AxiosPromise } from 'axios';
 
+export interface RestModelApiPagination {
+  page: number;
+  limit: number;
+}
+
 export interface RestModelApi {
-  getList: (config?: { search?: any; sorting?: any }) => AxiosPromise;
+  getList: (config?: {
+    search?: any;
+    sorting?: any;
+    pagination?: RestModelApiPagination;
+  }) => AxiosPromise;
   getItem: (id: string) => AxiosPromise;
   patchItem: (id: string, data: any) => AxiosPromise;
 }
 
 export const getModelCrud = (url: string): RestModelApi => ({
-  getList: ({ search = {} } = {}) => {
+  getList: ({ search = {}, pagination = {} } = {}) => {
     const searchString = search ? JSON.stringify(search) : '';
-    const urlParams = new URLSearchParams({ search: searchString }).toString();
+    const paginationString = pagination ? JSON.stringify(pagination) : '';
+    const urlParams = new URLSearchParams({
+      search: searchString,
+      pagination: paginationString,
+    }).toString();
 
     return apiClient.get(`${url}/?${urlParams}`);
   },

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { serializeToCamel } from 'services/api/serializers';
 import { RestModelApi } from 'services/api/rest';
 
-
 import TableElement, { TableField } from './TableElement/TableElement';
 import tableStyles from './Table.module.scss';
 
@@ -20,9 +19,11 @@ const Table = ({ tableConfig }: { tableConfig: TableConfig }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    tableConfig.api.getList().then((response: any) => {
-      setItems(serializeToCamel(response.data));
-    });
+    tableConfig.api
+      .getList({ pagination :{ page: 3, limit: 10 } })
+      .then((response: any) => {
+        setItems(serializeToCamel(response.data));
+      });
   }, []);
 
   return (

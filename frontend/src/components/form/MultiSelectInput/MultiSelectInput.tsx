@@ -16,7 +16,7 @@ const MultiSelectInput = ({
   return (
     <Controller
       control={control}
-      name="roles"
+      name={field.id}
       render={({
         field: { onChange, onBlur, value, name, ref },
         fieldState: { invalid, isTouched, isDirty, error },
