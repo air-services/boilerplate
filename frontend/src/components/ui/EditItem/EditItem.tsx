@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import TextInput from 'components/form/TextInput/TextInput';
-import CheckBoxInput from 'components/form/CheckboxInput/CheckBoxInput';
-import MultiSelectInput from 'components/form/MultiSelectInput/MultiSelectInput';
+import TextInput from 'components/ui/form/TextInput/TextInput';
+import CheckBoxInput from 'components/ui/form/CheckboxInput/CheckBoxInput';
+import MultiSelectInput from 'components/ui/form/MultiSelectInput/MultiSelectInput';
 
-import Button from 'components/ui/Button';
+import Button from 'components/ui/Button/Button';
 import { serializeToCamel } from 'services/api/serializers';
 import { useNotificationsContext } from 'providers/NotificationsContextProvider';
 import { RestModelApi } from 'services/api/rest';

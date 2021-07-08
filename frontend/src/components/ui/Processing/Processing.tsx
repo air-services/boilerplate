@@ -1,10 +1,15 @@
 import React from 'react';
-import processingSpinnerStyle from './ProcessingSpinner.module.scss'
+import processingStyle from './Processing.module.scss'
+import classNames from 'classnames';
 
-const ProcessingSpinner = () => {
+type ProcessingSize = 'medium' | 'small' | 'large';
+
+const Processing = ({size = 'medium'}: {size?: ProcessingSize}) => {
   return (
     <svg
-      className={processingSpinnerStyle.main}
+      className={classNames(processingStyle.main, {
+        [processingStyle.large]: size === 'large'
+      })}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24">
@@ -23,4 +28,4 @@ const ProcessingSpinner = () => {
   );
 };
 
-export default ProcessingSpinner;
+export default Processing;

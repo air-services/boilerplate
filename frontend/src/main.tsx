@@ -7,7 +7,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AppContextProvider from './providers/AppContextProvider';
 import NotificationsContextProvider from 'providers/NotificationsContextProvider';
 
-import NavBar from 'components/NavBar';
+import NavBar from 'components/common/NavBar/NavBar';
 import SignUpPage from 'pages/SignUp';
 import LogInPage from 'pages/LogIn';
 import StartPage from 'pages/Start';

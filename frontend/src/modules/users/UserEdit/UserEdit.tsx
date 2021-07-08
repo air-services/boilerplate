@@ -4,9 +4,8 @@ import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import EditItem, {
   FormConfigField,
   EditItemFormConfig,
-} from 'components/edit/EditItem';
+} from 'components/ui/EditItem/EditItem';
 import restApi from 'services/api/rest';
-import CheckBoxInput from 'components/form/CheckboxInput/CheckBoxInput';
 
 class FormConfig implements EditItemFormConfig {
   title = 'Редактирование пользователя';

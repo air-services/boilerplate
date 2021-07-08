@@ -1,14 +1,16 @@
 import React from 'react';
 import restApi from 'services/api/rest';
 
-import Table from 'components/table/Table';
-import EditItemLink from 'components/table/EditItemLink/EditItemLink';
+import Table from 'components/ui/table/Table';
+import ItemActions from 'components/ui/table/ItemActions/ItemActions';
+
 
 class RolesTableConfig {
+  editUrl = 'roles'
   fields = [
     { id: 'id', label: 'ID' },
     { id: 'name', label: 'Название' },
-    { id: 'edit', label: '', component: EditItemLink('roles') },
+    { id: 'EditItem', label: '', component: ItemActions },
   ];
   api = restApi.api.roles;
 }

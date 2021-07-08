@@ -1,7 +1,7 @@
 import React from 'react';
 import Async from 'react-select/async';
-import { FormConfigField } from 'components/edit/EditItem';
-import multiSelectStyle from './MultiSelectInput.module.scss';
+import { FormConfigField } from 'components/ui/EditItem/EditItem';
+import multiSelectStyle from 'components/ui/form/MultiSelectInput/MultiSelectInput.module.scss';
 import { useFormContext, Controller } from 'react-hook-form';
 
 const MultiSelectInput = ({

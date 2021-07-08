@@ -1,8 +1,8 @@
 import React from 'react';
-import NavBarLink from './NavBarLink'
-import ProfileNavigation from './ProfileNavigation';
+import NavBarLink from 'components/common/NavBar/NavBarLink'
+import ProfileNavigation from 'components/common/ProfileNavigation/ProfileNavigation';
 
-import './NavBarStyle.scss';
+import 'components/common/NavBar/NavBarStyle.scss';
 
 
 const NavBar = () => {

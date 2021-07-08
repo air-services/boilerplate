@@ -14,6 +14,7 @@ export interface RestModelApi {
   }) => AxiosPromise;
   getItem: (id: string) => AxiosPromise;
   patchItem: (id: string, data: any) => AxiosPromise;
+  removeItem: (id: string) => AxiosPromise;
 }
 
 export const getModelCrud = (url: string): RestModelApi => ({
@@ -33,6 +34,9 @@ export const getModelCrud = (url: string): RestModelApi => ({
   patchItem: (id: string, data: any) => {
     return apiClient.put(`${url}/${id}`, data);
   },
+  removeItem: (id: string) => {
+    return apiClient.delete(`${url}/${id}`);
+  }
 });
 
 class RestApi {

@@ -1,5 +1,5 @@
 import React from 'react';
-import textInputStyle from './TextInput.module.scss';
+import textInputStyle from 'components/ui/form/TextInput/TextInput.module.scss';
 
 const TextInput = ({field, register}: any) => {
   return (

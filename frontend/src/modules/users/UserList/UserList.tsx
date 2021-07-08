@@ -1,8 +1,8 @@
 import React from 'react';
-import Table from 'components/table/Table';
+import Table from 'components/ui/table/Table';
 import restApi from 'services/api/rest';
-import EditItemLink from 'components/table/EditItemLink/EditItemLink';
 import classNames from 'classnames';
+import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 
 const IsActive = ({ value }: { value: any }) => {
   return (
@@ -19,6 +19,7 @@ const IsActive = ({ value }: { value: any }) => {
 
 
 class UsersTableConfig {
+  editUrl = 'users';
   fields = [
     { id: 'id', label: 'ID' },
     { id: 'email', label: 'Электронная почта' },
@@ -26,7 +27,7 @@ class UsersTableConfig {
     { id: 'lastName', label: 'Фамилия' },
     { id: 'patronymic', label: 'Отчество' },
     { id: 'isActive', label: 'Активный', component: IsActive},
-    { id: 'edit', label: '', component: EditItemLink('users') }
+    { id: 'EditItem', label: '', component: ItemActions }
   ];
   api = restApi.api.users;
 }

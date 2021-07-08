@@ -1,0 +1,24 @@
+.control {
+  @apply relative
+  inline-flex
+  items-center
+  px-2
+  py-2
+  border
+  border-gray-300
+  bg-white
+  text-sm
+  font-medium
+  text-gray-500
+  hover:bg-gray-50
+  select-none;
+  cursor: pointer;
+}
+
+.controlNext {
+  @apply control rounded-r-md;
+}
+
+.controlPrev {
+  @apply control rounded-l-md;
+}

@@ -1,7 +1,10 @@
 import json
 
+from app.core.database import db
 from fastapi import HTTPException
+from gino.loader import ColumnLoader
 from sqlalchemy.sql.expression import and_
+from sqlalchemy.sql.functions import count
 
 from .crud_serializer import CrudSerializer
 
@@ -14,15 +17,28 @@ class CrudView:
 
     def get_list_view(self):
         async def list_view(search: str = "", pagination: str = ""):
+            # TODO: configure filters
+            filters = None
             query = self.model.query.order_by(self.model.id)
-
             if search:
-                name = json.loads(search).get("name")
+                name = json.loads(search).get("name", "")
+                filters = self.model.name.like(f"{name}%")
                 if name:
-                    query = query.where(self.model.name.like(f"{name}%"))
+                    query = query.where(filters)
+
+            count_query = db.select([db.func.count(self.model.id)])
+            if filters is not None:
+                count_query = count_query.where(
+                    self.model.name.like(f"{name}%")
+                )
+            items_count = await count_query.gino.scalar()
             query = self._apply_pagination(query, pagination)
             items = await query.gino.all()
-            return [item.to_dict() for item in items]
+
+            return {
+                "items": [item.to_dict() for item in items],
+                "count": items_count,
+            }
 
         return list_view
 
@@ -48,7 +64,7 @@ class CrudView:
         async def remove_view(item_id: int):
             item = await self.model.get(item_id)
             if not item:
-                raise HTTPException(status_code=400, detail="Role not found")
+                raise HTTPException(status_code=400, detail="Item not found")
             await item.delete()
             return {"message": "success", "id": item_id}
 

@@ -10,7 +10,7 @@ import {
   serializeToCamel,
   serializeToSnake,
 } from 'services/api/serializers';
-import Button from 'components/ui/Button';
+import Button from 'components/ui/Button/Button';
 
 const AccountSettingsLocales = {
   FORM_TITLE: 'accountSettings.FORM_TITLE',

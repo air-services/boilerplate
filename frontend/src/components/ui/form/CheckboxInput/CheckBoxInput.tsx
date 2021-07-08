@@ -1,5 +1,5 @@
 import React from 'react';
-import checkBoxStyle from './CheckBoxInput.module.scss';
+import checkBoxStyle from 'components/ui/form/CheckboxInput/CheckBoxInput.module.scss';
 
 const CheckBoxInput = ({field, register, value}: any) => {
   return (
