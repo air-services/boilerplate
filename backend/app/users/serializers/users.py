@@ -28,10 +28,9 @@ class UserItemGetModel(UserBaseFields):
     projects: List[UserProject]
 
 
-class UserListGetModel(UserBaseFields):
-    id: int
-    roles: List[UserRole]
-    projects: List[UserProject]
+class UserListGetModel(BaseModel):
+    items: List[UserItemGetModel]
+    count: int
 
 
 class UserCreateModel(UserBaseFields):
@@ -40,6 +39,7 @@ class UserCreateModel(UserBaseFields):
 
 class UserUpdateModel(UserBaseFields):
     roles: List[UserRole]
+    projects: List[UserProject]
 
 
 class UserRemoveModel(BaseModel):

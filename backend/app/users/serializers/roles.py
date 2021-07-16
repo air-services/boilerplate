@@ -1,5 +1,6 @@
 from app.core.crud import CrudSerializer
 from pydantic import BaseModel
+from typing import List
 
 
 class RoleBaseFields(BaseModel):
@@ -8,6 +9,11 @@ class RoleBaseFields(BaseModel):
 
 class RoleGetModel(RoleBaseFields):
     id: int
+
+
+class RoleGetListModel(BaseModel):
+    items: List[RoleGetModel]
+    count: int
 
 
 class RoleCreateUpdateModel(RoleBaseFields):
@@ -19,7 +25,7 @@ class RoleRemoveModel(BaseModel):
 
 
 class RoleSerializer(CrudSerializer):
-    get_list_response_model = RoleGetModel
+    get_list_response_model = RoleGetListModel
     get_item_response_model = RoleGetModel
     update_item_request_model = RoleBaseFields
     update_item_response_model = RoleGetModel

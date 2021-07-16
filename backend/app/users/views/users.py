@@ -2,6 +2,7 @@ from app.core.crud import CrudView
 from app.projects.models import Project, ProjectsUsers
 from app.users.models import Role, User, UsersRoles
 from fastapi import HTTPException
+from app.core.database import db
 
 
 class UsersView(CrudView):
@@ -20,7 +21,7 @@ class UsersView(CrudView):
                 is_active=data.is_active,
             ).apply()
 
-            await self._update_relations(
+            await self._update_many_to_many_relations(
                 item_id,
                 data=data,
                 data_key="roles",
@@ -29,7 +30,7 @@ class UsersView(CrudView):
                 base_key="user_id",
             )
 
-            await self._update_relations(
+            await self._update_many_to_many_relations(
                 item_id,
                 data=data,
                 data_key="projects",
@@ -41,6 +42,7 @@ class UsersView(CrudView):
             return {
                 **item.to_dict(),
                 "roles": data.roles,
+                "projects": data.projects,
             }
 
         return update_view
@@ -103,7 +105,6 @@ class UsersView(CrudView):
 
     def get_list_view(self):
         async def list_view():
-            print("get list view")
             query = (
                 User.outerjoin(UsersRoles)
                 .outerjoin(Role)
@@ -118,15 +119,21 @@ class UsersView(CrudView):
                 .load(add_project=Project.distinct(Project.id))
             ).all()
 
-            return [
-                {
-                    **user.to_dict(),
-                    "roles": [role.to_dict() for role in user.roles],
-                    "projects": [
-                        project.to_dict() for project in user.projects
-                    ],
-                }
-                for user in users
-            ]
+            count_query = db.select([db.func.count(self.model.id)])
+            items_count = await count_query.gino.scalar()
+
+            return {
+                "count": items_count,
+                "items": [
+                    {
+                        **user.to_dict(),
+                        "roles": [role.to_dict() for role in user.roles],
+                        "projects": [
+                            project.to_dict() for project in user.projects
+                        ],
+                    }
+                    for user in users
+                ],
+            }
 
         return list_view

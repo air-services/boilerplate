@@ -41,7 +41,7 @@ class CrudRouter:
             "/{item_id:int}",
             self.view.get_update_view(),
             methods=["PUT"],
-            # response_model=self.serializers.update_item_response_model,
+            response_model=self.serializers.update_item_response_model,
         )
 
         self.router.add_api_route(
