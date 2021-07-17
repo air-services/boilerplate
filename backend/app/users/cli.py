@@ -3,8 +3,10 @@ import os
 import click
 import yaml
 from app.core.cli import coro, init_gino
+from app.core.database import db
+from app.projects.models import ProjectsUsers
 
-from .models import User, Role, UsersRoles
+from .models import Role, User, UsersRoles
 
 
 @click.group()
@@ -16,7 +18,10 @@ def users():
 @coro
 async def generate_users():
     await init_gino()
+    await ProjectsUsers.delete.gino.status()
+    await UsersRoles.delete.gino.status()
     await User.delete.gino.status()
+    await db.status("alter sequence users_id_seq restart with 1")
 
     with open(
         f"{os.path.abspath('.')}/app/users/fixtures/users.yaml", "r"
@@ -24,7 +29,12 @@ async def generate_users():
         users = yaml.safe_load(yaml_file)
 
     for user in users:
-        await User.create(**user)
+        await User.create(
+            email=user.get("email"),
+            first_name=user.get("first_name"),
+            last_name=user.get("last_name"),
+            patronymic=user.get("patronymic"),
+        )
     click.echo("Reload users")
 
 

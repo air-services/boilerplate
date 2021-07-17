@@ -19,7 +19,7 @@ const Pagination = () => {
     pages,
   });
 
-  return (
+  return pages > 1 ? (
     <div className={paginationStyle.wrapper}>
       <PaginationSmallControls />
       <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
@@ -28,7 +28,11 @@ const Pagination = () => {
           <nav
             className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
             aria-label="Pagination">
-            <PaginationPrevious page={page} pages={pages} setPage={table.setPage} />
+            <PaginationPrevious
+              page={page}
+              pages={pages}
+              setPage={table.setPage}
+            />
             {pagination.map((page: number) => {
               return (
                 <PaginationPage
@@ -44,7 +48,7 @@ const Pagination = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Pagination;

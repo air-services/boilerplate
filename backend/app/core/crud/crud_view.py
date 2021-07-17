@@ -83,6 +83,7 @@ class CrudView:
     def _apply_pagination(self, query, pagination):
         page = 1
         limit = self.limit
+
         if pagination:
             pagination_data = json.loads(pagination)
             page = pagination_data.get("page", page)

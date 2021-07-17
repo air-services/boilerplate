@@ -29,9 +29,9 @@ const Button = ({
       disabled={isSubmitting}
       type="submit"
       {...(onClickHandler ? { onClick: onClickHandler } : {})}>
-      <div className="flex justify-center">
+      <div className="flex justify-center" style={{ width: '100px' }}>
         {isSubmitting && <Processing />}
-        <span>{title}</span>
+        <span className={buttonStyles.title}>{title}</span>
       </div>
     </button>
   );

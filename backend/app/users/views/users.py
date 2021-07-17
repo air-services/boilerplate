@@ -1,14 +1,19 @@
+import json
+
 from app.core.crud import CrudView
+from app.core.database import db
 from app.projects.models import Project, ProjectsUsers
 from app.users.models import Role, User, UsersRoles
 from fastapi import HTTPException
-from app.core.database import db
+from sqlalchemy import asc, desc
+from sqlalchemy.sql.sqltypes import Boolean
 
 
 class UsersView(CrudView):
     model = User
 
     def get_update_view(self):
+
         update_model = self.serializer.update_item_request_model
 
         async def update_view(item_id: int, data: update_model):
@@ -104,9 +109,31 @@ class UsersView(CrudView):
         return item_view
 
     def get_list_view(self):
-        async def list_view():
+        async def list_view(
+            search: str = "", pagination: str = "", sorting: str = ""
+        ):
+            page = 1
+            limit = self.limit
+
+            if pagination:
+                pagination_data = json.loads(pagination)
+                page = pagination_data.get("page", page)
+                limit = pagination_data.get("limit", limit)
+
+            LimitedUserModel = User.alias("limited_users")
+
+            query_order = self._get_query_order(sorting)
+
+            limited_users = (
+                User.query.order_by(query_order)
+                .limit(limit)
+                .offset((page - 1) * limit)
+                .alias("limited_users")
+            )
+
             query = (
                 User.outerjoin(UsersRoles)
+                .join(limited_users, User.id == LimitedUserModel.id)
                 .outerjoin(Role)
                 .outerjoin(ProjectsUsers)
                 .outerjoin(Project)
@@ -137,3 +164,20 @@ class UsersView(CrudView):
             }
 
         return list_view
+
+    def _get_query_order(self, sorting):
+        key = self.model.id
+        if sorting:
+            field = json.loads(sorting).get("field")
+            order = json.loads(sorting).get("order")
+
+            if type(getattr(self.model, field).type) == Boolean:
+                print("cool!!")
+
+            if order == "ASC":
+                key = asc(getattr(self.model, field))
+
+            if order == "DESC":
+                key = desc(getattr(self.model, field))
+
+        return key

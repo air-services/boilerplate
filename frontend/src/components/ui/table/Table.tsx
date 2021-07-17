@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
-import { serializeToCamel } from 'services/api/serializers';
-import { RestModelApi } from 'services/api/rest';
-
+import React from 'react';
 import TableElement, {
   TableField,
 } from 'components/ui/table/TableElement/TableElement';
@@ -13,6 +9,7 @@ import TableProvider, {
   TableConfig,
 } from 'components/ui/table/TableProvider';
 import Pagination from 'components/ui/Pagination/Pagination';
+import TableHead from 'components/ui/table/TableHead';
 
 const TableView = () => {
   const table = useTableContext();
@@ -26,20 +23,7 @@ const TableView = () => {
       )}
 
       <table className={tableStyles.main}>
-        <thead className="bg-gray-50">
-          <tr>
-            {table.config.fields.map((field: TableField) => {
-              return (
-                <th
-                  scope="col"
-                  className={tableStyles.fieldTitle}
-                  key={field.id}>
-                  {field.label}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
+        <TableHead />
         <tbody className={tableStyles.body}>
           {table.state.items.map((item: any) => {
             return (

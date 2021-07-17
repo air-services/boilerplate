@@ -6,6 +6,7 @@ import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 
 
 class RolesTableConfig {
+  limit = 10;
   editUrl = 'roles'
   fields = [
     { id: 'id', label: 'ID' },
@@ -20,3 +21,5 @@ const tableConfig = new RolesTableConfig();
 const RoleList = () => <Table tableConfig={tableConfig} />;
 
 export default RoleList;
+
+

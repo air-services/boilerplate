@@ -1,15 +1,23 @@
 import apiClient from 'services/client';
 import { AxiosPromise } from 'axios';
+import { serializeToSnake } from 'services/api/serializers';
 
 export interface RestModelApiPagination {
   page: number;
   limit: number;
 }
 
+export type OrderType = 'ASC' | 'DESC';
+
+export interface RestModelApiSorting {
+  field: string;
+  order: OrderType;
+}
+
 export interface RestModelApi {
   getList: (config?: {
     search?: any;
-    sorting?: any;
+    sorting?: RestModelApiSorting;
     pagination?: RestModelApiPagination;
   }) => AxiosPromise;
   getItem: (id: string) => AxiosPromise;
@@ -18,12 +26,15 @@ export interface RestModelApi {
 }
 
 export const getModelCrud = (url: string): RestModelApi => ({
-  getList: ({ search = {}, pagination = {} } = {}) => {
+  getList: ({ search = {}, pagination = {}, sorting = {} } = {}) => {
     const searchString = search ? JSON.stringify(search) : '';
     const paginationString = pagination ? JSON.stringify(pagination) : '';
+    const sortingString = sorting ? JSON.stringify(sorting) : '';
+
     const urlParams = new URLSearchParams({
       search: searchString,
       pagination: paginationString,
+      sorting: sortingString,
     }).toString();
 
     return apiClient.get(`${url}/?${urlParams}`);
@@ -36,7 +47,7 @@ export const getModelCrud = (url: string): RestModelApi => ({
   },
   removeItem: (id: string) => {
     return apiClient.delete(`${url}/${id}`);
-  }
+  },
 });
 
 class RestApi {

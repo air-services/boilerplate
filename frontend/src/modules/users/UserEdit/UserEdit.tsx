@@ -8,6 +8,7 @@ import EditItem, {
 import restApi from 'services/api/rest';
 
 class FormConfig implements EditItemFormConfig {
+  backUrl = '/users';
   title = 'Редактирование пользователя';
   submitLabel = 'Обновить';
   fields: FormConfigField[] = [
@@ -23,24 +24,24 @@ class FormConfig implements EditItemFormConfig {
       placeholder: 'Имя',
       render: 'TextInput',
     },
-    // {
-    //   id: 'lastName',
-    //   label: 'Фамилия',
-    //   placeholder: 'Фамилия',
-    //   render: 'TextInput',
-    // },
-    // {
-    //   id: 'patronymic',
-    //   label: 'Отчество',
-    //   placeholder: 'Отчество',
-    //   render: 'TextInput',
-    // },
-    // {
-    //   id: 'isActive',
-    //   label: 'Активный',
-    //   placeholder: 'Активный',
-    //   render: 'CheckBoxInput',
-    // },
+    {
+      id: 'lastName',
+      label: 'Фамилия',
+      placeholder: 'Фамилия',
+      render: 'TextInput',
+    },
+    {
+      id: 'patronymic',
+      label: 'Отчество',
+      placeholder: 'Отчество',
+      render: 'TextInput',
+    },
+    {
+      id: 'isActive',
+      label: 'Активный',
+      placeholder: 'Активный',
+      render: 'CheckBoxInput',
+    },
     {
       id: 'roles',
       label: 'Роли',
@@ -62,7 +63,7 @@ class FormConfig implements EditItemFormConfig {
                 },
               })
               .then((response) => {
-                resolve(response.data);
+                resolve(response.data.items);
               });
           });
         },
@@ -90,7 +91,7 @@ class FormConfig implements EditItemFormConfig {
                 },
               })
               .then((response) => {
-                resolve(response.data);
+                resolve(response.data.items);
               });
           });
         },
@@ -107,7 +108,7 @@ class FormConfig implements EditItemFormConfig {
   });
 
   serialize = (data: any) => {
-    const result =  serializeToSnake(excludeKeys('id')(data));
+    const result = serializeToSnake(excludeKeys('id')(data));
     return result;
   };
 

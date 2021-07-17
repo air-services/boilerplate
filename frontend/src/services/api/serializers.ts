@@ -1,10 +1,10 @@
-const stringToCamelCase = (s: string) => {
+export const stringToCamelCase = (s: string) => {
   return s.replace(/([-_][a-z])/gi, ($1) => {
     return $1.toUpperCase().replace('-', '').replace('_', '');
   });
 };
 
-const stringToSnakeCase = (input: string) =>
+export const stringToSnakeCase = (input: string) =>
   input.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 export const serializeObjectData = (

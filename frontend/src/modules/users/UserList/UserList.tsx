@@ -4,7 +4,7 @@ import restApi from 'services/api/rest';
 import classNames from 'classnames';
 import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 
-const IsActive = ({ value }: { value: any }) => {
+const IsActive = ({value}: {value: Boolean}) => {
   return (
     <td className="px-6 py-4 whitespace-nowrap">
       <span className={classNames("px-2 inline-flex text-xs leading-5 font-semibold rounded-full", {
@@ -20,6 +20,7 @@ const IsActive = ({ value }: { value: any }) => {
 
 class UsersTableConfig {
   editUrl = 'users';
+  limit = 10;
   fields = [
     { id: 'id', label: 'ID' },
     { id: 'email', label: 'Электронная почта' },

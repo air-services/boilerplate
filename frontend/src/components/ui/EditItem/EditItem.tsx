@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 import TextInput from 'components/ui/form/TextInput/TextInput';
 import CheckBoxInput from 'components/ui/form/CheckboxInput/CheckBoxInput';
@@ -33,6 +34,7 @@ export interface FormConfigField {
 }
 
 export interface EditItemFormConfig {
+  backUrl: string;
   title: string;
   api: RestModelApi;
   fields: any[];
@@ -48,6 +50,7 @@ const EditItemForm = ({
   item: any;
   formConfig: EditItemFormConfig;
 }) => {
+  const history = useHistory();
   const { showNotification } = useNotificationsContext();
   const formMethods = useForm({ defaultValues: item });
 
@@ -65,6 +68,13 @@ const EditItemForm = ({
           { title: 'Успех', content: 'Обновление прошло успешно' },
           null
         );
+
+        const { action } = history;
+        if (action === 'PUSH') {
+          history.goBack();
+        } else {
+          history.push(formConfig.backUrl);
+        }
       });
   }, []);
   return (
@@ -85,10 +95,7 @@ const EditItemForm = ({
               );
             })}
             <div className="form-buttons">
-              <Button
-                isSubmitting={isSubmitting}
-                title={formConfig.submitLabel}
-              />
+              <Button title={formConfig.submitLabel} />
             </div>
           </div>
         </FormProvider>

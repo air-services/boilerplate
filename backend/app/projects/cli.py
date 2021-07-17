@@ -3,6 +3,7 @@ import os
 import click
 import yaml
 from app.core.cli import coro, init_gino
+from app.core.database import db
 
 from .models import Project, ProjectsUsers
 
@@ -16,6 +17,7 @@ def projects():
 @coro
 async def generate_projects():
     await init_gino()
+    await db.status("alter sequence projects_id_seq restart with 1")
     await ProjectsUsers.delete.gino.status()
     await Project.delete.gino.status()
 
