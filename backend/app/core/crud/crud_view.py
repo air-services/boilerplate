@@ -92,7 +92,12 @@ class CrudView:
 
     @staticmethod
     async def _update_many_to_many_relations(
-        item_id, data, data_key, through_model, relation_key, base_key,
+        item_id,
+        data,
+        data_key,
+        through_model,
+        relation_key,
+        base_key,
     ):
         through_items = await through_model.query.where(
             getattr(through_model, base_key) == item_id
