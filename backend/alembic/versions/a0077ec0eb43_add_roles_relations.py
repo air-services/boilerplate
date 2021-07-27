@@ -21,8 +21,14 @@ def upgrade():
         "users_roles",
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("role_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(["role_id"], ["roles.id"],),
-        sa.ForeignKeyConstraint(["user_id"], ["users.id"],),
+        sa.ForeignKeyConstraint(
+            ["role_id"],
+            ["roles.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+        ),
     )
     # ### end Alembic commands ###
 

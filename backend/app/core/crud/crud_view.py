@@ -1,39 +1,42 @@
 import json
 
+from app.core.crud.crud_relations import CrudModelRelationType
 from app.core.database import db
 from fastapi import HTTPException
-from gino.loader import ColumnLoader
+from sqlalchemy import asc, desc
 from sqlalchemy.sql.expression import and_
-from sqlalchemy.sql.functions import count
 
+from .crud_relations import CrudRelations
 from .crud_serializer import CrudSerializer
+
+SORT_ORDER_MAP = {"DESC": desc, "ASC": asc}
 
 
 class CrudView:
-    def __init__(self, model, serializer: CrudSerializer):
+    def __init__(
+        self,
+        model: db.Model,
+        serializer: CrudSerializer = None,
+        relations: CrudRelations = None,
+    ):
         self.model = model
+        self.relations = relations
         self.serializer = serializer
         self.limit = 10
 
     def get_list_view(self):
-        async def list_view(search: str = "", pagination: str = ""):
-            # TODO: configure filters
-            filters = None
-            query = self.model.query.order_by(self.model.id)
-            if search:
-                name = json.loads(search).get("name", "")
-                filters = self.model.name.like(f"{name}%")
-                if name:
-                    query = query.where(filters)
-
-            count_query = db.select([db.func.count(self.model.id)])
-            if filters is not None:
-                count_query = count_query.where(
-                    self.model.name.like(f"{name}%")
-                )
-            items_count = await count_query.gino.scalar()
+        async def list_view(
+            search: str = "", pagination: str = "", sorting: str = ""
+        ):
+            query = self.model.query
+            query = self._apply_search(query, search)
+            query = query.order_by(self._get_list_order(sorting))
             query = self._apply_pagination(query, pagination)
+
             items = await query.gino.all()
+            items_count = await self._apply_search(
+                db.select([db.func.count(self.model.id)]), search
+            ).gino.scalar()
 
             return {
                 "items": [item.to_dict() for item in items],
@@ -47,9 +50,24 @@ class CrudView:
             item = await self.model.get(item_id)
             if not item:
                 raise HTTPException(status_code=404, detail="Not found")
-            return item.to_dict()
+            item_data = item.to_dict()
+            relations_data = await self.get_item_relations_data(item.id)
+            return {**item_data, **relations_data}
 
         return item_view
+
+    async def get_item_relations_data(self, item_id):
+        result = {}
+        for relation in self.relations.get_item_relations:
+            relation_data = await self._get_many_to_many_item_relations(
+                item_id=item_id,
+                relation_model=relation.relation_model,
+                through_model=relation.through_model,
+                relation_key=relation.relation_key,
+                through_key=relation.through_key,
+            )
+            result[relation.field] = relation_data
+        return result
 
     def get_create_view(self):
         create_model = self.serializer.create_item_request_model
@@ -75,10 +93,31 @@ class CrudView:
 
         async def update_view(item_id: int, data: update_model):
             item = await self.model.get(item_id)
-            await item.update(**dict(data)).apply()
-            return item.to_dict()
+            await self._update_main_data(data, item)
+            await self._update_relations(data, item)
+            return {"id": item_id, **data.dict()}
 
         return update_view
+
+    async def _update_main_data(self, data, item):
+        relation_fields = {
+            relation.field for relation in self.relations.update_item_relations
+        }
+        await item.update(
+            **{key: value for key, value in data if key not in relation_fields}
+        ).apply()
+
+    async def _update_relations(self, data, item):
+        for relation in self.relations.update_item_relations:
+            if relation.relation_type == CrudModelRelationType.MANY_TO_MANY:
+                await self._update_many_to_many_relations(
+                    item_id=item.id,
+                    data=data,
+                    data_key=relation.field,
+                    through_model=relation.through_model,
+                    relation_key=relation.relation_key,
+                    base_key=relation.base_key,
+                )
 
     def _apply_pagination(self, query, pagination):
         page = 1
@@ -90,9 +129,56 @@ class CrudView:
             limit = pagination_data.get("limit", limit)
         return query.limit(limit).offset((page - 1) * limit)
 
+    def _apply_search(self, query, search):
+        if search:
+            for filter in json.loads(search):
+                operator = filter.get("operator")
+                field_key = filter.get("field")
+                value = filter.get("value")
+
+                field = getattr(self.model, field_key)
+
+                if operator == "like":
+                    query = query.where(getattr(field, operator)(f"%{value}%"))
+        return query
+
+    def _get_list_order(self, sorting):
+        if sorting:
+            order_key = json.loads(sorting).get("order", "ASC")
+            field_key = json.loads(sorting).get("field", "id")
+
+            field = getattr(self.model, field_key)
+            order = SORT_ORDER_MAP.get(order_key)
+            return order(field)
+        return self.model.id
+
+    @staticmethod
+    async def _get_many_to_many_list_relations(
+        ids, relation_key, base_key, through_model, relation_model
+    ):
+        return []
+
+    @staticmethod
+    async def _get_many_to_many_item_relations(
+        item_id, relation_model, through_model, relation_key, through_key
+    ):
+        through_items = await through_model.query.where(
+            getattr(through_model, through_key) == item_id
+        ).gino.all()
+        ids = [getattr(item, relation_key) for item in through_items]
+        items = await relation_model.query.where(
+            relation_model.id.in_(ids)
+        ).gino.all()
+        return [item.to_dict() for item in items]
+
     @staticmethod
     async def _update_many_to_many_relations(
-        item_id, data, data_key, through_model, relation_key, base_key,
+        item_id,
+        data,
+        data_key,
+        through_model,
+        relation_key,
+        base_key,
     ):
         through_items = await through_model.query.where(
             getattr(through_model, base_key) == item_id

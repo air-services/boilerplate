@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import TextInput from 'components/ui/form/TextInput/TextInput';
@@ -8,7 +8,10 @@ import MultiSelectInput from 'components/ui/form/MultiSelectInput/MultiSelectInp
 
 import Button from 'components/ui/Button/Button';
 import { serializeToCamel } from 'services/api/serializers';
-import { useNotificationsContext } from 'providers/NotificationsContextProvider';
+import {
+  NotificationStyle,
+  useNotificationsContext,
+} from 'providers/NotificationsContextProvider';
 import { RestModelApi } from 'services/api/rest';
 import Select from 'react-select';
 
@@ -65,16 +68,31 @@ const EditItemForm = ({
       .patchItem(data.id, formConfig.serialize(data))
       .then((response: any) => {
         showNotification(
-          { title: 'Успех', content: 'Обновление прошло успешно' },
+          {
+            title: 'Успех',
+            content: 'Обновление прошло успешно',
+            style: NotificationStyle.success,
+          },
           null
         );
 
+        // smart go back action
         const { action } = history;
         if (action === 'PUSH') {
           history.goBack();
         } else {
           history.push(formConfig.backUrl);
         }
+      })
+      .catch(() => {
+        showNotification(
+          {
+            title: 'Ошибка',
+            content: 'Что-то пошло не так',
+            style: NotificationStyle.danger,
+          },
+          null
+        );
       });
   }, []);
   return (

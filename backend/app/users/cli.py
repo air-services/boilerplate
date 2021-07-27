@@ -54,5 +54,22 @@ async def generate_roles():
     click.echo("Reload roles")
 
 
+@click.command()
+@coro
+async def generate_users_roles():
+    await init_gino()
+    await UsersRoles.delete.gino.status()
+
+    with open(
+        f"{os.path.abspath('.')}/app/users/fixtures/users_roles.yaml", "r"
+    ) as yaml_file:
+        users_roles = yaml.safe_load(yaml_file)
+
+    for user_role in users_roles:
+        await UsersRoles.create(**user_role)
+    click.echo("Reload users roles")
+
+
 users.add_command(generate_users)
 users.add_command(generate_roles)
+users.add_command(generate_users_roles)

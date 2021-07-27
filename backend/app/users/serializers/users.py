@@ -47,10 +47,10 @@ class UserRemoveModel(BaseModel):
 
 
 class UserSerializer(CrudSerializer):
-    get_list_response_model = UserListGetModel
+    # get_list_response_model = UserListGetModel
     get_item_response_model = UserItemGetModel
     update_item_request_model = UserUpdateModel
-    update_item_response_model = UserItemGetModel
+    # update_item_response_model = UserItemGetModel
     create_item_request_model = UserBaseFields
     create_item_response_model = UserItemGetModel
     remove_item_response_model = UserRemoveModel

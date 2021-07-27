@@ -32,7 +32,10 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(), nullable=True),
         sa.Column("project_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(["project_id"], ["projects.id"],),
+        sa.ForeignKeyConstraint(
+            ["project_id"],
+            ["projects.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -45,8 +48,14 @@ def upgrade():
         "projects_users",
         sa.Column("project_id", sa.Integer(), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(["project_id"], ["projects.id"],),
-        sa.ForeignKeyConstraint(["user_id"], ["users.id"],),
+        sa.ForeignKeyConstraint(
+            ["project_id"],
+            ["projects.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+        ),
     )
     # ### end Alembic commands ###
 

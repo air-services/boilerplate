@@ -58,9 +58,13 @@ class FormConfig implements EditItemFormConfig {
           return new Promise((resolve) => {
             restApi.api.roles
               .getList({
-                search: {
-                  name: inputValue,
-                },
+                search: [
+                  {
+                    field: 'name',
+                    value: inputValue,
+                    operator: 'like',
+                  },
+                ],
               })
               .then((response) => {
                 resolve(response.data.items);
@@ -86,9 +90,13 @@ class FormConfig implements EditItemFormConfig {
           return new Promise((resolve) => {
             restApi.api.projects
               .getList({
-                search: {
-                  name: inputValue,
-                },
+                search: [
+                  {
+                    field: 'name',
+                    value: inputValue,
+                    operator: 'like',
+                  },
+                ],
               })
               .then((response) => {
                 resolve(response.data.items);

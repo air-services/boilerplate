@@ -31,4 +31,22 @@ async def generate_projects():
     click.echo("Reload projects")
 
 
+@click.command()
+@coro
+async def generate_projects_users():
+    await init_gino()
+    await ProjectsUsers.delete.gino.status()
+
+    with open(
+        f"{os.path.abspath('.')}/app/projects/fixtures/projects_users.yaml",
+        "r",
+    ) as yaml_file:
+        projects_users = yaml.safe_load(yaml_file)
+
+    for project_user in projects_users:
+        await ProjectsUsers.create(**project_user)
+    click.echo("Reload projects users")
+
+
 projects.add_command(generate_projects)
+projects.add_command(generate_projects_users)

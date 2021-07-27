@@ -1,8 +1,17 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import classNames from 'classnames';
+
+export enum NotificationStyle {
+  danger,
+  success,
+  info,
+  warning,
+}
 
 export interface NotificationInfo {
   title: string;
   content: string;
+  style?: NotificationStyle;
 }
 
 interface NotificationsData {
@@ -11,12 +20,25 @@ interface NotificationsData {
 
 const defaultNotifications: NotificationInfo[] = [];
 
-const Notification = ({ title, content }: NotificationInfo) => {
+const Notification = ({
+  title,
+  content,
+  style = NotificationStyle.info,
+}: NotificationInfo) => {
+  const notificationTextColor = classNames({
+    'text-green-500': style === NotificationStyle.success,
+    'text-red-500': style === NotificationStyle.danger,
+    'text-orange-500': style === NotificationStyle.warning,
+    'text-blue-500': style === NotificationStyle.info,
+  });
+
   return (
     <div className="bg-white rounded-lg border-gray-300 border p-3 shadow-lg mt-6">
       <div className="flex flex-row">
         <div className="ml-2 mr-6">
-          <span className="font-semibold text-green-500">{title}</span>
+          <span className={classNames('font-semibold', notificationTextColor)}>
+            {title}
+          </span>
           <span className="block text-gray-500">{content}</span>
         </div>
       </div>
@@ -33,6 +55,7 @@ const Notifications = ({ notifications }: NotificationsData) => {
             key={idx}
             title={notification.title}
             content={notification.content}
+            style={notification.style}
           />
         );
       })}
