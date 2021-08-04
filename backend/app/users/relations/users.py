@@ -33,3 +33,4 @@ class ProjectsRelation(CrudModelRelation):
 class UserCrudRelations(CrudRelations):
     get_item_relations = [RolesRelation, ProjectsRelation]
     update_item_relations = [RolesRelation, ProjectsRelation]
+    get_list_relations = [RolesRelation, ProjectsRelation]

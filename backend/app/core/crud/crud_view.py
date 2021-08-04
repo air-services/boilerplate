@@ -33,13 +33,17 @@ class CrudView:
             query = query.order_by(self._get_list_order(sorting))
             query = self._apply_pagination(query, pagination)
 
-            items = await query.gino.all()
+            items_query = await query.gino.all()
             items_count = await self._apply_search(
                 db.select([db.func.count(self.model.id)]), search
             ).gino.scalar()
 
+            self.items = [item.to_dict() for item in items_query]
+            for relation in self.relations.get_list_relations:
+                await self._inject_many_to_many_info(relation)
+
             return {
-                "items": [item.to_dict() for item in items],
+                "items": self.items,
                 "count": items_count,
             }
 
@@ -153,12 +157,6 @@ class CrudView:
         return self.model.id
 
     @staticmethod
-    async def _get_many_to_many_list_relations(
-        ids, relation_key, base_key, through_model, relation_model
-    ):
-        return []
-
-    @staticmethod
     async def _get_many_to_many_item_relations(
         item_id, relation_model, through_model, relation_key, through_key
     ):
@@ -207,3 +205,56 @@ class CrudView:
         ]
 
         await through_model.insert().gino.all(insert_values)
+
+    async def _inject_many_to_many_info(self, relation):
+        relations_cache = await self._cache_many_to_many_list_view_map(
+            base_items=self.items,
+            relation_model=relation.relation_model,
+            through_model=relation.through_model,
+            base_key=relation.base_key,
+            relation_key=relation.relation_key,
+        )
+
+        self.items = [
+            {**item, relation.field: relations_cache.get(item.get("id"), [])}
+            for item in self.items
+        ]
+
+    async def _cache_many_to_many_list_view_map(
+        self,
+        base_items,
+        relation_model,
+        through_model,
+        base_key,
+        relation_key,
+    ):
+        base_ids = [item.get("id") for item in base_items]
+
+        through_items = await through_model.query.where(
+            getattr(through_model, base_key).in_(base_ids)
+        ).gino.all()
+        #
+        relations_ids = [
+            getattr(through_item, relation_key)
+            for through_item in through_items
+        ]
+        relations = await relation_model.query.where(
+            relation_model.id.in_(relations_ids)
+        ).gino.all()
+
+        self.relations_map = {}
+        for relation in relations:
+            self.relations_map[relation.id] = relation.to_dict()
+
+        relations_cache = {}
+
+        for through_item in through_items:
+            base_key_value = getattr(through_item, base_key)
+            relation_key_value = getattr(through_item, relation_key)
+            if not relations_cache.get(base_key_value):
+                relations_cache[base_key_value] = []
+            relations_cache.get(base_key_value).append(
+                self.relations_map[relation_key_value]
+            )
+
+        return relations_cache
