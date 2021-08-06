@@ -1,12 +1,13 @@
 import json
 
-from app.core.crud.crud_relations import CrudModelRelationType
-from app.core.database import db
 from fastapi import HTTPException
 from sqlalchemy import asc, desc
 from sqlalchemy.sql.expression import and_
 
-from .crud_relations import CrudRelations
+from app.core.crud.crud_relations import CrudModelRelationType
+from app.core.database import db
+
+from .crud_relations import CrudModelRelationType, CrudRelations
 from .crud_serializer import CrudSerializer
 
 SORT_ORDER_MAP = {"DESC": desc, "ASC": asc}
@@ -17,7 +18,7 @@ class CrudView:
         self,
         model: db.Model,
         serializer: CrudSerializer = None,
-        relations: CrudRelations = None,
+        relations: CrudRelations = CrudRelations,
     ):
         self.model = model
         self.relations = relations
@@ -39,8 +40,8 @@ class CrudView:
             ).gino.scalar()
 
             self.items = [item.to_dict() for item in items_query]
-            for relation in self.relations.get_list_relations:
-                await self._inject_many_to_many_info(relation)
+
+            await self._inject_many_to_many_relations()
 
             return {
                 "items": self.items,
@@ -63,14 +64,23 @@ class CrudView:
     async def get_item_relations_data(self, item_id):
         result = {}
         for relation in self.relations.get_item_relations:
-            relation_data = await self._get_many_to_many_item_relations(
-                item_id=item_id,
-                relation_model=relation.relation_model,
-                through_model=relation.through_model,
-                relation_key=relation.relation_key,
-                through_key=relation.through_key,
-            )
-            result[relation.field] = relation_data
+            if relation.relation_type == CrudModelRelationType.MANY_TO_MANY:
+                relation_data = await self._get_many_to_many_item_relations(
+                    item_id=item_id,
+                    relation_model=relation.relation_model,
+                    through_model=relation.through_model,
+                    relation_key=relation.relation_key,
+                    through_key=relation.through_key,
+                )
+                result[relation.field] = relation_data
+            if relation.relation_type == CrudModelRelationType.CHILDREN:
+                relation_data = await self._get_children_relations(
+                    item_id=item_id,
+                    relation_model=relation.relation_model,
+                    base_key=relation.base_key,
+                )
+                result[relation.field] = relation_data
+
         return result
 
     def get_create_view(self):
@@ -170,6 +180,13 @@ class CrudView:
         return [item.to_dict() for item in items]
 
     @staticmethod
+    async def _get_children_relations(item_id, relation_model, base_key):
+        items = await relation_model.query.where(
+            getattr(relation_model, base_key) == item_id
+        ).gino.all()
+        return [item.to_dict() for item in items]
+
+    @staticmethod
     async def _update_many_to_many_relations(
         item_id,
         data,
@@ -206,19 +223,26 @@ class CrudView:
 
         await through_model.insert().gino.all(insert_values)
 
-    async def _inject_many_to_many_info(self, relation):
-        relations_cache = await self._cache_many_to_many_list_view_map(
-            base_items=self.items,
-            relation_model=relation.relation_model,
-            through_model=relation.through_model,
-            base_key=relation.base_key,
-            relation_key=relation.relation_key,
-        )
+    async def _inject_many_to_many_relations(self):
+        for relation in self.relations.get_list_relations:
+            if relation.relation_type == CrudModelRelationType.MANY_TO_MANY:
+                relations_cache = await self._cache_many_to_many_list_view_map(
+                    base_items=self.items,
+                    relation_model=relation.relation_model,
+                    through_model=relation.through_model,
+                    base_key=relation.base_key,
+                    relation_key=relation.relation_key,
+                )
 
-        self.items = [
-            {**item, relation.field: relations_cache.get(item.get("id"), [])}
-            for item in self.items
-        ]
+                self.items = [
+                    {
+                        **item,
+                        relation.field: relations_cache.get(
+                            item.get("id"), []
+                        ),
+                    }
+                    for item in self.items
+                ]
 
     async def _cache_many_to_many_list_view_map(
         self,

@@ -5,7 +5,7 @@ import yaml
 from app.core.cli import coro, init_gino
 from app.core.database import db
 
-from .models import Project, ProjectsUsers
+from .models import Dashboard, Project, ProjectsUsers
 
 
 @click.group()
@@ -48,5 +48,23 @@ async def generate_projects_users():
     click.echo("Reload projects users")
 
 
+@click.command()
+@coro
+async def generate_dashboards():
+    await init_gino()
+    await db.status("alter sequence dashboards_id_seq restart with 1")
+    await Dashboard.delete.gino.status()
+
+    with open(
+        f"{os.path.abspath('.')}/app/projects/fixtures/dashboards.yaml", "r"
+    ) as yaml_file:
+        dashboards = yaml.safe_load(yaml_file)
+
+    for dashboard in dashboards:
+        await Dashboard.create(**dashboard)
+    click.echo("Reload dashboards")
+
+
 projects.add_command(generate_projects)
 projects.add_command(generate_projects_users)
+projects.add_command(generate_dashboards)

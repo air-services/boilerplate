@@ -9,7 +9,7 @@ type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
 interface ButtonData {
   isSubmitting?: boolean;
   title: string;
-  onClickHandler?: () => void;
+  onClickHandler?: (event: any) => void;
   buttonStyle?: ButtonStyle;
 }
 
@@ -29,7 +29,7 @@ const Button = ({
       disabled={isSubmitting}
       type="submit"
       {...(onClickHandler ? { onClick: onClickHandler } : {})}>
-      <div className="flex justify-center" style={{ width: '100px' }}>
+      <div className="flex justify-center">
         {isSubmitting && <Processing />}
         <span className={buttonStyles.title}>{title}</span>
       </div>

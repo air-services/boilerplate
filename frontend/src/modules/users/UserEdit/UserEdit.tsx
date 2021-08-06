@@ -10,7 +10,8 @@ import restApi from 'services/api/rest';
 class FormConfig implements EditItemFormConfig {
   backUrl = '/users';
   title = 'Редактирование пользователя';
-  submitLabel = 'Обновить';
+  submitLabel = 'Сохранить';
+  submitAndContinueEditLabel = 'Сохранить и продолжить редактирование';
   fields: FormConfigField[] = [
     {
       id: 'email',

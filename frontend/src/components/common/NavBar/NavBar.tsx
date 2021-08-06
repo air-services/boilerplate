@@ -1,9 +1,8 @@
 import React from 'react';
-import NavBarLink from 'components/common/NavBar/NavBarLink'
+import NavBarLink from 'components/common/NavBar/NavBarLink';
 import ProfileNavigation from 'components/common/ProfileNavigation/ProfileNavigation';
 
 import 'components/common/NavBar/NavBarStyle.scss';
-
 
 const NavBar = () => {
   return (
@@ -13,6 +12,7 @@ const NavBar = () => {
         <NavBarLink title="Users" url="/users" />
         <NavBarLink title="Roles" url="/roles" />
         <NavBarLink title="Projects" url="/projects" />
+        <NavBarLink title="Dashboards" url="/dashboards" />
       </div>
       <ProfileNavigation />
     </nav>

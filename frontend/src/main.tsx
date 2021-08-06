@@ -20,6 +20,8 @@ import RoleListPage from 'pages/roles/RoleListPage';
 import RoleEditPage from 'pages/roles/RoleEditPage';
 import ProjectListPage from 'pages/projects/ProjectListPage';
 import ProjectEditPage from 'pages/projects/ProjectEditPage';
+import DashboardListPage from 'pages/dashboards/DashboardListPage';
+import DashboardEditPage from 'pages/dashboards/DashboardEditPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -37,6 +39,9 @@ ReactDOM.render(
             <Route path="/roles" component={RoleListPage} />
             <Route path="/projects/:id" component={ProjectEditPage} />
             <Route path="/projects" component={ProjectListPage} />
+            <Route path="/dashboards/:id" component={DashboardEditPage} />
+            <Route path="/dashboards" component={DashboardListPage} />
+
             <Route path="/account/settings" component={AccountSettingsPage} />
             <Route path="/" component={StartPage} />
           </Switch>

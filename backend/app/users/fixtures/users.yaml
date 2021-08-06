@@ -1,4 +1,9 @@
 ---
+- first_name: Alexei
+  last_name: Rysev
+  patronymic: Dmitrievich
+  email: alex@mail.com
+  password: alex1988
 - first_name: Addy
   last_name: Speedy
   patronymic: Nutting

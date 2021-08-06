@@ -43,6 +43,7 @@ export interface EditItemFormConfig {
   fields: any[];
   serialize: (data: any) => any;
   submitLabel: string;
+  submitAndContinueEditLabel?: string;
   defaultState: () => any;
 }
 
@@ -63,38 +64,62 @@ const EditItemForm = ({
     formState: { isSubmitting },
   } = formMethods;
 
+  const showError = useCallback(() => {
+    showNotification(
+      {
+        title: 'Ошибка',
+        content: 'Что-то пошло не так',
+        style: NotificationStyle.danger,
+      },
+      null
+    );
+  }, []);
+
+  const showSuccess = useCallback(() => {
+    showNotification(
+      {
+        title: 'Успех',
+        content: 'Обновление прошло успешно',
+        style: NotificationStyle.success,
+      },
+      null
+    );
+  }, []);
+
+  const goBack = useCallback(() => {
+    // smart go back action
+    const { action } = history;
+    if (action === 'PUSH') {
+      history.goBack();
+    } else {
+      history.push(formConfig.backUrl);
+    }
+  }, [history]);
+
+  const submitAndContinueEdit = useCallback((data) => {
+    return formConfig.api
+      .patchItem(data.id, formConfig.serialize(data))
+      .then(() => {
+        showSuccess();
+      })
+      .catch(showError);
+  }, []);
+
+  const onSubmitAndContinueEditHandler = useCallback((event) => {
+    event.preventDefault();
+    handleSubmit(submitAndContinueEdit)();
+  }, []);
+
   const onFormSubmit = useCallback((data) => {
     return formConfig.api
       .patchItem(data.id, formConfig.serialize(data))
-      .then((response: any) => {
-        showNotification(
-          {
-            title: 'Успех',
-            content: 'Обновление прошло успешно',
-            style: NotificationStyle.success,
-          },
-          null
-        );
-
-        // smart go back action
-        const { action } = history;
-        if (action === 'PUSH') {
-          history.goBack();
-        } else {
-          history.push(formConfig.backUrl);
-        }
+      .then(() => {
+        showSuccess();
+        goBack();
       })
-      .catch(() => {
-        showNotification(
-          {
-            title: 'Ошибка',
-            content: 'Что-то пошло не так',
-            style: NotificationStyle.danger,
-          },
-          null
-        );
-      });
+      .catch(showError);
   }, []);
+
   return (
     <div className="p-20">
       <h1 className="pb-10 text-2xl">{formConfig.title}</h1>
@@ -114,6 +139,14 @@ const EditItemForm = ({
             })}
             <div className="form-buttons">
               <Button title={formConfig.submitLabel} />
+              {formConfig.submitAndContinueEditLabel && (
+                <span className="ml-5">
+                  <Button
+                    onClickHandler={onSubmitAndContinueEditHandler}
+                    title={formConfig.submitAndContinueEditLabel}
+                  />
+                </span>
+              )}
             </div>
           </div>
         </FormProvider>

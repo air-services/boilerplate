@@ -22,6 +22,6 @@ class CrudModelRelation:
 
 
 class CrudRelations:
-    get_item_relations: [CrudModelRelation]
-    get_list_relations: [CrudModelRelation]
-    update_item_relations: [CrudModelRelation]
+    get_item_relations: [CrudModelRelation] = []
+    get_list_relations: [CrudModelRelation] = []
+    update_item_relations: [CrudModelRelation] = []

@@ -1,2 +1,2 @@
 from .roles import RoleView
-from .users import AlternativeUserView, UsersView
+from .users import UsersView

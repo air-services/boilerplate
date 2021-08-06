@@ -1,7 +1,9 @@
 import os
 
+import bcrypt
 import click
 import yaml
+from app.account.router import salt, secret
 from app.core.cli import coro, init_gino
 from app.core.database import db
 from app.projects.models import ProjectsUsers
@@ -29,12 +31,17 @@ async def generate_users():
         users = yaml.safe_load(yaml_file)
 
     for user in users:
-        await User.create(
+        user_object = await User.create(
             email=user.get("email"),
             first_name=user.get("first_name"),
             last_name=user.get("last_name"),
             patronymic=user.get("patronymic"),
         )
+        if user.get("password"):
+            hashed_password = bcrypt.hashpw(
+                user.get("password").encode("utf-8"), salt
+            ).decode("utf-8")
+            await user_object.update(hashed_password=hashed_password).apply()
     click.echo("Reload users")
 
 

@@ -1,7 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter
 
+from .crud_relations import CrudRelations
 from .crud_serializer import CrudSerializer
 from .crud_view import CrudView
 
@@ -11,13 +10,17 @@ class CrudRouter:
         self,
         prefix,
         tags,
+        model,
         view: CrudView,
         serializer: CrudSerializer,
+        relations: CrudRelations = CrudRelations,
         responses={404: {"description": "Not found"}},
     ):
         self.router = APIRouter(prefix=prefix, tags=tags, responses=responses)
         self.serializers = serializer
-        self.view = view
+        self.view = view(
+            model=model, serializer=serializer, relations=relations
+        )
         self._add_routes()
 
     def get_router(self):

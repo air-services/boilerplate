@@ -1,5 +1,3 @@
-import json
-
 from app.core.crud import CrudView
 
 
