@@ -55,6 +55,7 @@ class FormConfig implements EditItemFormConfig {
       label: 'Пространства',
       placeholder: 'Пространства',
       render: 'MultiSelectInput',
+      isMulti: true,
       selectConfig: {
         getOptionLabel: (option: any) => {
           return option.name;

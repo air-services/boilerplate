@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from .crud_relations import CrudRelations
 from .crud_serializer import CrudSerializer
-from .crud_view import CrudView
+from .view import CrudView
 
 
 class CrudRouter:

@@ -19,6 +19,39 @@ class FormConfig implements EditItemFormConfig {
       placeholder: 'Название',
       render: 'TextInput',
     },
+
+    {
+      id: 'project',
+      label: 'Проект',
+      placeholder: 'Проект',
+      render: 'MultiSelectInput',
+      isMulti: false,
+      selectConfig: {
+        getOptionLabel: (option: any) => {
+          return option.name;
+        },
+        getOptionValue: (option: any) => {
+          return option.id;
+        },
+        loadOptions: (inputValue: string) => {
+          return new Promise((resolve) => {
+            restApi.api.projects
+              .getList({
+                search: [
+                  {
+                    field: 'name',
+                    value: inputValue,
+                    operator: 'like',
+                  },
+                ],
+              })
+              .then((response) => {
+                resolve(response.data.items);
+              });
+          });
+        },
+      },
+    },
   ];
 
   defaultState = () => ({

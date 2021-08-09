@@ -28,5 +28,5 @@ class UsersRelation(CrudModelRelation):
 
 class ProjectCrudRelations(CrudRelations):
     get_item_relations = [UsersRelation, DashboardRelation]
-    update_item_relations = [UsersRelation]
+    update_item_relations = [UsersRelation, DashboardRelation]
     get_list_relations = [UsersRelation]

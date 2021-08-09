@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import TextInput from 'components/ui/form/TextInput/TextInput';
 import CheckBoxInput from 'components/ui/form/CheckboxInput/CheckBoxInput';
-import MultiSelectInput from 'components/ui/form/MultiSelectInput/MultiSelectInput';
+import AsyncSelectInput from 'components/ui/form/AsyncSelectInput/AsyncSelectInput';
 
 import Button from 'components/ui/Button/Button';
 import { serializeToCamel } from 'services/api/serializers';
@@ -25,7 +25,7 @@ const FieldRenderMap = {
   TextInput: TextInput,
   CheckBoxInput: CheckBoxInput,
   SelectInput: Select,
-  MultiSelectInput: MultiSelectInput,
+  MultiSelectInput: AsyncSelectInput,
 };
 
 export interface FormConfigField {
@@ -34,6 +34,7 @@ export interface FormConfigField {
   placeholder: string;
   render: FormRender;
   selectConfig?: any;
+  isMulti?: boolean;
 }
 
 export interface EditItemFormConfig {
@@ -97,6 +98,8 @@ const EditItemForm = ({
   }, [history]);
 
   const submitAndContinueEdit = useCallback((data) => {
+    console.log(data);
+
     return formConfig.api
       .patchItem(data.id, formConfig.serialize(data))
       .then(() => {

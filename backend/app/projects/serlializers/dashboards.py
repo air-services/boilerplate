@@ -1,11 +1,17 @@
 from typing import List
 
-from app.core.crud import CrudSerializer
 from pydantic import BaseModel
+
+from app.core.crud import CrudSerializer
 
 
 class UserModel(BaseModel):
     email: str
+
+
+class ProjectUpdateModel(BaseModel):
+    id: int
+    name: str
 
 
 class DashboardGetModel(BaseModel):
@@ -15,6 +21,7 @@ class DashboardGetModel(BaseModel):
 
 class DashboardCreateUpdateModel(BaseModel):
     name: str
+    project: ProjectUpdateModel
 
 
 class DashboardRemoveModel(BaseModel):
@@ -28,7 +35,7 @@ class DashboardGetListModel(BaseModel):
 
 class DashboardSerializer(CrudSerializer):
     # get_list_response_model = DashboardGetListModel
-    get_item_response_model = DashboardGetModel
+    # get_item_response_model = DashboardGetModel
     update_item_request_model = DashboardCreateUpdateModel
     update_item_response_model = DashboardGetModel
     create_item_request_model = DashboardCreateUpdateModel

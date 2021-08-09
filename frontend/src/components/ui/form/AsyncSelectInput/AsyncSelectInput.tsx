@@ -1,10 +1,9 @@
 import React from 'react';
 import Async from 'react-select/async';
 import { FormConfigField } from 'components/ui/EditItem/EditItem';
-import multiSelectStyle from 'components/ui/form/MultiSelectInput/MultiSelectInput.module.scss';
 import { useFormContext, Controller } from 'react-hook-form';
 
-const MultiSelectInput = ({
+const AsyncSelectInput = ({
   field,
 }: {
   field: FormConfigField;
@@ -23,11 +22,11 @@ const MultiSelectInput = ({
         formState,
       }) => {
         return (
-          <div className={multiSelectStyle.wrapper}>
+          <div className="py-5">
             <Async
               defaultValue={value}
               {...field.selectConfig}
-              isMulti={true}
+              isMulti={field.isMulti}
               onChange={onChange}
               defaultOptions
             />
@@ -38,4 +37,4 @@ const MultiSelectInput = ({
   );
 };
 
-export default MultiSelectInput;
+export default AsyncSelectInput;
