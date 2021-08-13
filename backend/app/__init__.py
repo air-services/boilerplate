@@ -17,6 +17,19 @@ app.include_router(account_router)
 app.include_router(projects_router)
 app.include_router(dashboards_router)
 
+from app.users.serializers import UserSerializer
+
+
+@app.post("/api/cool")
+async def cool(data: UserSerializer.update_item_request_model):
+    print(data)
+    return {"message": "Hello World"}
+
+
+@app.get("/create-user")
+async def create_user():
+    return {"message": "Hello World"}
+
 
 @app.on_event("startup")
 async def startup():

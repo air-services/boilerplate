@@ -2,6 +2,8 @@ import React from 'react';
 import TableElement, {
   TableField,
 } from 'components/ui/table/TableElement/TableElement';
+import { Link } from 'react-router-dom';
+
 import tableStyles from 'components/ui/table/Table.module.scss';
 import Processing from 'components/ui/Processing/Processing';
 import TableProvider, {
@@ -10,6 +12,7 @@ import TableProvider, {
 } from 'components/ui/table/TableProvider';
 import Pagination from 'components/ui/Pagination/Pagination';
 import TableHead from 'components/ui/table/TableHead';
+import Button from 'components/ui/Button/Button';
 
 const TableView = () => {
   const table = useTableContext();
@@ -35,6 +38,19 @@ const TableView = () => {
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={table.config.fields.length}>
+              <Pagination />
+              <div className="p-5">
+                <Button
+                  link={table.config.createUrl}
+                  title={table.config.createLabel}
+                />
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
@@ -44,7 +60,6 @@ const Table = ({ tableConfig }: { tableConfig: TableConfig }) => {
   return (
     <TableProvider config={tableConfig}>
       <TableView />
-      <Pagination />
     </TableProvider>
   );
 };

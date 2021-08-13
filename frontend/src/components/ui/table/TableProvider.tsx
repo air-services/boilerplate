@@ -20,6 +20,8 @@ export interface TableConfig {
   fields: any[];
   api: RestModelApi;
   editUrl: string;
+  createUrl: string;
+  createLabel: string;
 }
 
 export interface TableStateModel {
@@ -167,6 +169,8 @@ const TableContext = createContext({
     limit: 5,
     fields: defaultFields,
     editUrl: '',
+    createUrl: '',
+    createLabel: '',
     api: {
       getList: (config: any) => {
         return apiClient.get('/');

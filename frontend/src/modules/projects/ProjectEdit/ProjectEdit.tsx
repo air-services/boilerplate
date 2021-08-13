@@ -4,7 +4,7 @@ import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import EditItem, {
   FormConfigField,
   EditItemFormConfig,
-} from 'components/ui/EditItem/EditItem';
+} from 'components/ui/form/EditItem/EditItem';
 import restApi from 'services/api/rest';
 
 class FormConfig implements EditItemFormConfig {

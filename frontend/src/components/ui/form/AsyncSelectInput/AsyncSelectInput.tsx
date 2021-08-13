@@ -1,6 +1,6 @@
 import React from 'react';
 import Async from 'react-select/async';
-import { FormConfigField } from 'components/ui/EditItem/EditItem';
+import { FormConfigField } from 'components/ui/form/EditItem/EditItem';
 import { useFormContext, Controller } from 'react-hook-form';
 
 const AsyncSelectInput = ({

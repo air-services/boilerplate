@@ -1,17 +1,16 @@
 import React from 'react';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
-import EditItem, {
+import CreateItem, {
   FormConfigField,
-  EditItemFormConfig,
-} from 'components/ui/form/EditItem/EditItem';
+  CreateItemFormConfig,
+} from 'components/ui/form/CreateItem/CreateItem';
 import restApi from 'services/api/rest';
 
-class FormConfig implements EditItemFormConfig {
+class FormConfig implements CreateItemFormConfig {
   backUrl = '/users';
-  title = 'Редактирование пользователя';
-  submitLabel = 'Сохранить';
-  submitAndContinueEditLabel = 'Сохранить и продолжить редактирование';
+  title = 'Создание пользователя';
+  submitLabel = 'Создать';
   fields: FormConfigField[] = [
     {
       id: 'email',
@@ -109,12 +108,14 @@ class FormConfig implements EditItemFormConfig {
     },
   ];
 
-  defaultState = () => ({
-    isLoaded: false,
-    data: {
-      id: null,
-      name: '',
-    },
+  defaultValues = () => ({
+    email: '',
+    firstName: '',
+    lastName: '',
+    patronymic: '',
+    isActive: false,
+    projects: [],
+    roles: [],
   });
 
   serialize = (data: any) => {
@@ -125,10 +126,10 @@ class FormConfig implements EditItemFormConfig {
   api = restApi.api.users;
 }
 
-const EditUser = ({ id }: { id: string }) => {
+const UserCreate = () => {
   const formConfig = new FormConfig();
 
-  return <EditItem id={id} formConfig={formConfig} />;
+  return <CreateItem formConfig={formConfig} />;
 };
 
-export default EditUser;
+export default UserCreate;

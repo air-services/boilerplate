@@ -1,7 +1,8 @@
 from typing import List
 
-from app.core.crud import CrudSerializer
 from pydantic import BaseModel
+
+from app.core.crud import CrudSerializer
 
 
 class UserRole(BaseModel):
@@ -34,7 +35,8 @@ class UserListGetModel(BaseModel):
 
 
 class UserCreateModel(UserBaseFields):
-    pass
+    roles: List[UserRole]
+    projects: List[UserProject]
 
 
 class UserUpdateModel(UserBaseFields):
@@ -47,10 +49,10 @@ class UserRemoveModel(BaseModel):
 
 
 class UserSerializer(CrudSerializer):
-    # get_list_response_model = UserListGetModel
+    get_list_response_model = UserListGetModel
     get_item_response_model = UserItemGetModel
     update_item_request_model = UserUpdateModel
     # update_item_response_model = UserItemGetModel
-    create_item_request_model = UserBaseFields
-    create_item_response_model = UserItemGetModel
+    create_item_request_model = UserCreateModel
+    # create_item_response_model = UserItemGetModel
     remove_item_response_model = UserRemoveModel

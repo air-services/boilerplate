@@ -30,7 +30,15 @@ class CrudRouter:
         self.router.add_api_route(
             "/",
             self.view.get_list_view(),
+            methods=["GET"],
             response_model=self.serializers.get_list_response_model,
+        )
+
+        self.router.add_api_route(
+            "/",
+            self.view.get_create_view(),
+            methods=["POST"],
+            response_model=self.serializers.create_item_response_model,
         )
 
         self.router.add_api_route(

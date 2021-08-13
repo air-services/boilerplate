@@ -98,8 +98,6 @@ const EditItemForm = ({
   }, [history]);
 
   const submitAndContinueEdit = useCallback((data) => {
-    console.log(data);
-
     return formConfig.api
       .patchItem(data.id, formConfig.serialize(data))
       .then(() => {

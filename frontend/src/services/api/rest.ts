@@ -20,6 +20,7 @@ export interface RestModelApi {
     sorting?: RestModelApiSorting;
     pagination?: RestModelApiPagination;
   }) => AxiosPromise;
+  createItem: (data: any) => AxiosPromise;
   getItem: (id: string) => AxiosPromise;
   patchItem: (id: string, data: any) => AxiosPromise;
   removeItem: (id: string) => AxiosPromise;
@@ -38,6 +39,9 @@ export const getModelCrud = (url: string): RestModelApi => ({
     }).toString();
 
     return apiClient.get(`${url}/?${urlParams}`);
+  },
+  createItem: (data: any) => {
+    return apiClient.post(`${url}/`, data);
   },
   getItem: (id: string) => {
     return apiClient.get(`${url}/${id}`);

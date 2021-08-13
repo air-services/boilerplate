@@ -16,6 +16,7 @@ import AccountSettingsPage from 'pages/AccountSettingsPage';
 // modules
 import UserListPage from 'pages/users/UserListPage';
 import UserEditPage from 'pages/users/UserEditPage';
+import UserCreatePage from 'pages/users/UserCreatePage';
 import RoleListPage from 'pages/roles/RoleListPage';
 import RoleEditPage from 'pages/roles/RoleEditPage';
 import ProjectListPage from 'pages/projects/ProjectListPage';
@@ -32,6 +33,7 @@ ReactDOM.render(
           <Switch>
             <Route path="/signup" component={SignUpPage} />
             <Route path="/login" component={LogInPage} />
+            <Route path="/users/create" component={UserCreatePage} />
             <Route path="/users/:id" component={UserEditPage} />
             <Route path="/users" component={UserListPage} />
             <Route path="/roles/:id" component={RoleEditPage} />
