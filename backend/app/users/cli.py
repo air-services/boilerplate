@@ -3,12 +3,14 @@ import os
 import bcrypt
 import click
 import yaml
-from app.account.router import salt, secret
+
+from app.account.router import salt
 from app.core.cli import coro, init_gino
 from app.core.database import db
-from app.projects.models import ProjectsUsers
+from app.projects.associations import ProjectsUsers
 
-from .models import Role, User, UsersRoles
+from .associations import UsersRoles
+from .models import User
 
 
 @click.group()
@@ -47,22 +49,6 @@ async def generate_users():
 
 @click.command()
 @coro
-async def generate_roles():
-    await init_gino()
-    await Role.delete.gino.status()
-
-    with open(
-        f"{os.path.abspath('.')}/app/users/fixtures/roles.yaml", "r"
-    ) as yaml_file:
-        roles = yaml.safe_load(yaml_file)
-
-    for role in roles:
-        await Role.create(**role)
-    click.echo("Reload roles")
-
-
-@click.command()
-@coro
 async def generate_users_roles():
     await init_gino()
     await UsersRoles.delete.gino.status()
@@ -78,5 +64,5 @@ async def generate_users_roles():
 
 
 users.add_command(generate_users)
-users.add_command(generate_roles)
+
 users.add_command(generate_users_roles)

@@ -16,7 +16,7 @@ class CrudCreateItemView(UpdateItemRelations):
         async def create_view(data: create_model):
             item = await self.create_main_data(data)
             await self.update_item_relations(data, item, self.relations)
-            return data
+            return {"id": item.id, **data.dict()}
 
         return create_view
 

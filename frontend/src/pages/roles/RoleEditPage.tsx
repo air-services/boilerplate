@@ -1,8 +1,7 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import RoleEdit from 'modules/roles/RoleEdit/RoleEdit';
-
+import RoleEdit from 'modules/roles/RoleEdit';
 
 const RoleEditPage = () => {
   const match: { params: { id: string } } = useRouteMatch();

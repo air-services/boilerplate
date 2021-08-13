@@ -1,5 +1,5 @@
 import React from 'react';
-import UserList from 'modules/users/UserList/UserList';
+import UserList from 'modules/users/UserList';
 
 const UserListPage = () => {
   return (

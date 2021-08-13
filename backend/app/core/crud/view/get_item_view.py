@@ -45,7 +45,7 @@ class CrudGetItemView:
                 result[relation.field] = relation_data
             if relation.relation_type == CrudModelRelationType.CHILDREN:
                 relation_data = (
-                    await CrudGetItemView._get_children_item_relations(
+                    await CrudGetItemView._get_item_children_relations(
                         item_id=item.id,
                         relation_model=relation.relation_model,
                         base_key=relation.base_key,
@@ -54,7 +54,7 @@ class CrudGetItemView:
                 result[relation.field] = relation_data
             if relation.relation_type == CrudModelRelationType.PARENT:
                 relation_data = (
-                    await CrudGetItemView._get_parent_item_relations(
+                    await CrudGetItemView._get_item_parent_relations(
                         item=item, relation=relation
                     )
                 )

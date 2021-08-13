@@ -4,3 +4,5 @@
 /backend/alembic.ini
 /backend/.env
 /frontend/node_modules
+/frontend/dist
+/public

@@ -99,7 +99,7 @@ const CreateItemForm = ({
       .createItem(formConfig.serialize(data))
       .then(() => {
         showSuccess();
-        // goBack();
+        goBack();
       })
       .catch(showError);
   }, []);

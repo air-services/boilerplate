@@ -27,7 +27,7 @@ class UpdateItemRelations:
 
     @staticmethod
     async def _update_item_parent_relations(
-        self, item, data, relation: CrudModelRelation
+        item, data, relation: CrudModelRelation
     ):
         prev_id = getattr(item, relation.relation_key)
         next_id = getattr(data, relation.field).dict().get("id")
@@ -37,7 +37,7 @@ class UpdateItemRelations:
 
     @staticmethod
     async def _update_item_children_relations(
-        self, item_id, data, relation: CrudModelRelation
+        item_id, data, relation: CrudModelRelation
     ):
         next_ids = set(
             [item.get("id") for item in data.dict().get(relation.field)]

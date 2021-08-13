@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  db:
+    image: 'postgres'
+    volumes:
+      - 'dbdata:/var/lib/postgresql/data'
+    env_file:
+      - env_file
+    networks:
+      - db_nw
+
+  reactapp:
+    image: node:12-slim
+    volumes:
+      - ./frontend:/frontend
+      - ./public/:/frontend/dist
+    command: bash -c "
+      cd frontend;
+      npm install;
+      npm run build;"
+
+  fastapi:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fastapi
+    environment:
+      - PORT=8000
+    ports:
+      - 8000:8000
+
+    volumes:
+      - ./public/:/upload
+      - ./fixtures:/fixtures
+    env_file:
+      - env_file
+
+
+    networks:
+      - db_nw
+      - web_nw
+    depends_on:
+      - db
+
+  nginx:
+    image: 'nginx:1.13.5'
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./public:/public
+    networks:
+      - web_nw
+    depends_on:
+      - fastapi
+
+networks:
+  db_nw:
+    driver: bridge
+  web_nw:
+    driver: bridge
+volumes:
+  dbdata:

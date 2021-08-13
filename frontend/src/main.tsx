@@ -17,12 +17,18 @@ import AccountSettingsPage from 'pages/AccountSettingsPage';
 import UserListPage from 'pages/users/UserListPage';
 import UserEditPage from 'pages/users/UserEditPage';
 import UserCreatePage from 'pages/users/UserCreatePage';
+
 import RoleListPage from 'pages/roles/RoleListPage';
 import RoleEditPage from 'pages/roles/RoleEditPage';
+import RoleCreatePage from 'pages/roles/RoleCreatePage';
+
 import ProjectListPage from 'pages/projects/ProjectListPage';
 import ProjectEditPage from 'pages/projects/ProjectEditPage';
+import ProjectCreatePage from 'pages/projects/ProjectCreatePage';
+
 import DashboardListPage from 'pages/dashboards/DashboardListPage';
 import DashboardEditPage from 'pages/dashboards/DashboardEditPage';
+import DashboardCreatePage from 'pages/dashboards/DashboardCreatePage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -33,14 +39,20 @@ ReactDOM.render(
           <Switch>
             <Route path="/signup" component={SignUpPage} />
             <Route path="/login" component={LogInPage} />
+
             <Route path="/users/create" component={UserCreatePage} />
             <Route path="/users/:id" component={UserEditPage} />
             <Route path="/users" component={UserListPage} />
-            <Route path="/roles/:id" component={RoleEditPage} />
 
+            <Route path="/roles/create" component={RoleCreatePage} />
+            <Route path="/roles/:id" component={RoleEditPage} />
             <Route path="/roles" component={RoleListPage} />
+
+            <Route path="/projects/create" component={ProjectCreatePage} />
             <Route path="/projects/:id" component={ProjectEditPage} />
             <Route path="/projects" component={ProjectListPage} />
+
+            <Route path="/dashboards/create" component={DashboardCreatePage} />
             <Route path="/dashboards/:id" component={DashboardEditPage} />
             <Route path="/dashboards" component={DashboardListPage} />
 

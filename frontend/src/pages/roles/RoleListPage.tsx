@@ -1,5 +1,5 @@
 import React from 'react';
-import RoleList from 'modules/roles/RoleList/RoleList';
+import RoleList from 'modules/roles/RoleList';
 
 const RoleListPage = () => {
   return (
