@@ -1,0 +1,65 @@
+.main {
+  @apply
+  bg-white
+  shadow
+  py-4
+  px-6
+  flex-shrink-0
+    w-60
+  ;
+}
+
+
+.logo {
+  @apply
+  md:block
+  text-left
+  md:pb-2
+  text-gray-600
+  mr-0
+  inline-block
+  whitespace-nowrap
+  text-sm
+  font-bold p-4 px-0;
+}
+
+.navigationItem {
+  @apply
+  text-gray-700
+  hover:text-gray-500
+  text-xs
+  uppercase
+  py-3
+  font-bold
+  block;
+}
+
+.divider {
+  @apply my-4 md:min-w-full;
+}
+
+.sectionTitle {
+  @apply md:min-w-full text-gray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline;
+}
+
+
+.sectionListWrapper {
+  @apply
+  md:flex
+  md:flex-col
+  md:items-stretch
+  md:relative
+  md:mt-4
+  md:shadow-none
+  shadow
+  top-0
+  left-0
+  right-0
+  z-40
+  overflow-y-auto
+  overflow-x-hidden
+  h-auto
+  items-center
+  flex-1 rounded
+  ;
+}

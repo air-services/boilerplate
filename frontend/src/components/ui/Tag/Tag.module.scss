@@ -1,0 +1,20 @@
+.main {
+  @apply mr-4 text-xs inline-flex items-center font-bold px-3 py-1  rounded-full;
+}
+
+.success {
+  @apply bg-green-200 text-green-700;
+}
+
+
+.info {
+  @apply bg-blue-200 text-blue-700;
+}
+
+.danger {
+  @apply bg-red-200 text-red-700;
+}
+
+.warning {
+  @apply bg-yellow-200 text-yellow-700;
+}

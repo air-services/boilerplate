@@ -5,6 +5,7 @@ import Table from 'components/ui/table/Table';
 import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 
 class RolesTableConfig {
+  title = 'Роли';
   limit = 10;
   editUrl = 'roles';
   createUrl = 'roles/create';

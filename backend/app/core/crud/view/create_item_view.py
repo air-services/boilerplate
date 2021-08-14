@@ -1,12 +1,9 @@
-from app.core.database import db
-
 from ..crud_relations import CrudRelations
 from ..crud_serializer import CrudSerializer
 from .update_relations import UpdateItemRelations
 
 
 class CrudCreateItemView(UpdateItemRelations):
-    model: db.Model
     serializer: CrudSerializer = None
     relations: CrudRelations = CrudRelations
 
@@ -24,6 +21,7 @@ class CrudCreateItemView(UpdateItemRelations):
         relation_fields = {
             relation.field for relation in self.relations.update_item_relations
         }
+
         item = await self.model.create(
             **{key: value for key, value in data if key not in relation_fields}
         )

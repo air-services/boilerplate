@@ -1,11 +1,7 @@
 import React from 'react';
-import TableElement, {
-  TableField,
-} from 'components/ui/table/TableElement/TableElement';
-import { Link } from 'react-router-dom';
-
 import tableStyles from 'components/ui/table/Table.module.scss';
-import Processing from 'components/ui/Processing/Processing';
+
+import TableElement from 'components/ui/table/TableElement/TableElement';
 import TableProvider, {
   useTableContext,
   TableConfig,
@@ -13,21 +9,23 @@ import TableProvider, {
 import Pagination from 'components/ui/Pagination/Pagination';
 import TableHead from 'components/ui/table/TableHead';
 import Button from 'components/ui/Button/Button';
+import classNames from 'classnames';
 
 const TableView = () => {
   const table = useTableContext();
 
   return (
-    <div className="shadow relative">
-      {table.state.isProcessing && (
-        <div className={tableStyles.processingWrapper}>
-          <Processing size="large" />
-        </div>
-      )}
-
+    <div
+      className={classNames(tableStyles.wrapper, {
+        [tableStyles.isLoaded]: table.state.isLoaded,
+      })}>
+      <h2 className={tableStyles.title}>{table.config.title}</h2>
       <table className={tableStyles.main}>
         <TableHead />
-        <tbody className={tableStyles.body}>
+        <tbody
+          className={classNames(tableStyles.body, {
+            [tableStyles.isProcessing]: table.state.isProcessing,
+          })}>
           {table.state.items.map((item: any) => {
             return (
               <TableElement
@@ -38,19 +36,21 @@ const TableView = () => {
             );
           })}
         </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={table.config.fields.length}>
-              <Pagination />
-              <div className="p-5">
-                <Button
-                  link={table.config.createUrl}
-                  title={table.config.createLabel}
-                />
-              </div>
-            </td>
-          </tr>
-        </tfoot>
+        {table.state.isLoaded && (
+          <tfoot>
+            <tr>
+              <td colSpan={table.config.fields.length}>
+                <Pagination />
+                <div className="p-5">
+                  <Button
+                    link={table.config.createUrl}
+                    title={table.config.createLabel}
+                  />
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        )}
       </table>
     </div>
   );

@@ -1,21 +1,14 @@
 import json
 
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, func, select
 
-from app.core.database import db
-
-from ..crud_relations import (
-    CrudModelRelation,
-    CrudModelRelationType,
-    CrudRelations,
-)
+from ..crud_relations import CrudModelRelationType, CrudRelations
 from ..crud_serializer import CrudSerializer
 
 SORT_ORDER_MAP = {"DESC": desc, "ASC": asc}
 
 
 class CrudGetListView:
-    model: db.Model
     serializer: CrudSerializer = None
     relations: CrudRelations = CrudRelations
 
@@ -30,7 +23,7 @@ class CrudGetListView:
 
             items_query = await query.gino.all()
             items_count = await self._apply_search(
-                db.select([db.func.count(self.model.id)]), search
+                select([func.count(self.model.id)]), search
             ).gino.scalar()
 
             self.items = [item.to_dict() for item in items_query]

@@ -16,6 +16,7 @@ import apiClient from 'axios';
 import { serializeToCamel, stringToSnakeCase } from 'services/api/serializers';
 
 export interface TableConfig {
+  title: string;
   limit: number;
   fields: any[];
   api: RestModelApi;
@@ -27,6 +28,7 @@ export interface TableConfig {
 export interface TableStateModel {
   items: any[];
   isProcessing: boolean;
+  isLoaded: boolean;
 }
 
 export interface PaginationModel {
@@ -38,7 +40,8 @@ export interface PaginationModel {
 export const defaultTableState = (): TableStateModel => {
   return {
     items: [],
-    isProcessing: false,
+    isLoaded: false,
+    isProcessing: true,
   };
 };
 
@@ -86,7 +89,16 @@ const TableContextProvider = ({
     defaultPaginationState(urlPagination.page)
   );
 
+  const setTableProcessing = useCallback((isProcessing) => {
+    setTableState((state) => ({ ...state, isProcessing }));
+  }, []);
+
+  const setIsLoadedTrue = useCallback(() => {
+    setTableState((state) => ({ ...state, isLoaded: true }));
+  }, []);
+
   const loadItems = useCallback(() => {
+    setTableProcessing(true);
     config.api
       .getList({
         pagination: { limit: config.limit, page: pagination.page },
@@ -106,6 +118,8 @@ const TableContextProvider = ({
           count,
           pages: Math.ceil(count / config.limit),
         }));
+        setTableProcessing(false);
+        setIsLoadedTrue();
       });
   }, [pagination, sorting]);
 
@@ -166,6 +180,7 @@ const TableContext = createContext({
 
   state: defaultTableState(),
   config: {
+    title: '',
     limit: 5,
     fields: defaultFields,
     editUrl: '',

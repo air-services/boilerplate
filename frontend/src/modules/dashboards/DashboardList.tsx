@@ -5,6 +5,7 @@ import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 import { TableConfig } from 'components/ui/table/TableProvider';
 
 class DashboardsTableConfig implements TableConfig {
+  title = 'Пространства';
   limit = 5;
   editUrl = 'dashboards';
   createUrl = 'dashboards/create';

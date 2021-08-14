@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
-import EditItem, {
+import ItemEditForm, {
   FormConfigField,
-  EditItemFormConfig,
-} from 'components/ui/form/EditItem/EditItem';
+  ItemEditFormConfig,
+} from 'components/ui/form/ItemEditForm/ItemEditForm';
 import restApi from 'services/api/rest';
+import { useRouteMatch } from 'react-router-dom';
 
-class FormConfig implements EditItemFormConfig {
+class FormConfig implements ItemEditFormConfig {
   backUrl = '/users';
   title = 'Редактирование пользователя';
   submitLabel = 'Сохранить';
@@ -126,9 +127,10 @@ class FormConfig implements EditItemFormConfig {
 }
 
 const EditUser = ({ id }: { id: string }) => {
+  const match: { params: { id: string } } = useRouteMatch();
   const formConfig = new FormConfig();
 
-  return <EditItem id={id} formConfig={formConfig} />;
+  return <ItemEditForm id={match.params.id} formConfig={formConfig} />;
 };
 
 export default EditUser;

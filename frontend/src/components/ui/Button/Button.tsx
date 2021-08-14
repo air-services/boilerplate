@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Processing from 'components/ui/Processing/Processing';
 
 import buttonStyles from 'components/ui/Button/Button.module.scss';
 
@@ -30,7 +29,6 @@ const Button = ({
     <ButtonLinkWrapper link={link}>
       <button
         className={classNames(buttonStyles.main, {
-          [buttonStyles.notSubmittingHover]: !isSubmitting,
           [buttonStyles.primary]: buttonStyle === 'primary',
           [buttonStyles.danger]: buttonStyle === 'danger',
         })}
@@ -38,7 +36,6 @@ const Button = ({
         type="submit"
         {...(onClickHandler ? { onClick: onClickHandler } : {})}>
         <div className="flex justify-center">
-          {isSubmitting && <Processing />}
           <span className={buttonStyles.title}>{title}</span>
         </div>
       </button>

@@ -37,7 +37,7 @@ export interface FormConfigField {
   isMulti?: boolean;
 }
 
-export interface EditItemFormConfig {
+export interface ItemEditFormConfig {
   backUrl: string;
   title: string;
   api: RestModelApi;
@@ -53,7 +53,7 @@ const EditItemForm = ({
   formConfig,
 }: {
   item: any;
-  formConfig: EditItemFormConfig;
+  formConfig: ItemEditFormConfig;
 }) => {
   const history = useHistory();
   const { showNotification } = useNotificationsContext();
@@ -156,12 +156,12 @@ const EditItemForm = ({
   );
 };
 
-const EditItem = ({
+const ItemEditForm = ({
   id,
   formConfig,
 }: {
   id: string;
-  formConfig: EditItemFormConfig;
+  formConfig: ItemEditFormConfig;
 }) => {
   const [item, setItem] = useState(formConfig.defaultState());
 
@@ -176,4 +176,4 @@ const EditItem = ({
   ) : null;
 };
 
-export default EditItem;
+export default ItemEditForm;

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
-import EditItem, {
+import ItemEditForm, {
   FormConfigField,
-  EditItemFormConfig,
-} from 'components/ui/form/EditItem/EditItem';
+  ItemEditFormConfig,
+} from 'components/ui/form/ItemEditForm/ItemEditForm';
 import restApi from 'services/api/rest';
 
-class FormConfig implements EditItemFormConfig {
+class FormConfig implements ItemEditFormConfig {
   backUrl = '/dashboards';
   title = 'Редактирование пространства';
   submitLabel = 'Обновить';
@@ -72,7 +72,7 @@ class FormConfig implements EditItemFormConfig {
 const EditDashboard = ({ id }: { id: string }) => {
   const formConfig = new FormConfig();
 
-  return <EditItem id={id} formConfig={formConfig} />;
+  return <ItemEditForm id={id} formConfig={formConfig} />;
 };
 
 export default EditDashboard;

@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
-import CreateItem, {
+import ItemCreateForm, {
   FormConfigField,
   CreateItemFormConfig,
-} from 'components/ui/form/CreateItem/CreateItem';
+} from 'components/ui/form/ItemCreateForm/ItemCreateForm';
 import restApi from 'services/api/rest';
 
 class FormConfig implements CreateItemFormConfig {
@@ -129,7 +129,7 @@ class FormConfig implements CreateItemFormConfig {
 const UserCreate = () => {
   const formConfig = new FormConfig();
 
-  return <CreateItem formConfig={formConfig} />;
+  return <ItemCreateForm formConfig={formConfig} />;
 };
 
 export default UserCreate;

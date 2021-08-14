@@ -1,10 +1,11 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
-import EditItem, {
+import ItemEditForm, {
   FormConfigField,
   EditItemFormConfig,
-} from 'components/ui/form/EditItem/EditItem';
+} from 'components/ui/form/ItemEditForm/ItemEditForm';
 import restApi from 'services/api/rest';
 
 class FormConfig implements EditItemFormConfig {
@@ -36,10 +37,11 @@ class FormConfig implements EditItemFormConfig {
   api = restApi.api.roles;
 }
 
-const EditRole = ({ id }: { id: string }) => {
-  const formConfig = new FormConfig();
+const EditRole = () => {
+  const match: { params: { id: string } } = useRouteMatch();
 
-  return <EditItem id={id} formConfig={formConfig} />;
+  const formConfig = new FormConfig();
+  return <ItemEditForm id={match.params.id} formConfig={formConfig} />;
 };
 
 export default EditRole;

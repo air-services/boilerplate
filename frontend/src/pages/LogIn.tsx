@@ -11,7 +11,6 @@ import i18n from 'services/translate';
 
 import { useAppContext } from 'providers/AppContextProvider';
 import { useNotificationsContext } from 'providers/NotificationsContextProvider';
-import Processing from 'components/ui/Processing/Processing';
 
 const validateLogInEmail = (email: string) => {
   if (!validateEmail(email)) {
@@ -143,7 +142,8 @@ const LogInPage = () => {
 
           <div className="flex items-center justify-between">
             <button
-              className={classNames(`
+              className={classNames(
+                `
                 w-full
                 bg-blue-500
                 text-white
@@ -161,7 +161,6 @@ const LogInPage = () => {
               disabled={formState.isSubmitting}
               type="submit">
               <div className="flex justify-center">
-                {formState.isSubmitting && <Processing />}
                 <span>{i18n.t(LogInLocales.SUBMIT_BUTTON)}</span>
               </div>
             </button>

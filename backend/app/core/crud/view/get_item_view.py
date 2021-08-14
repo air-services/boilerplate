@@ -1,7 +1,5 @@
 from fastapi import HTTPException
 
-from app.core.database import db
-
 from ..crud_relations import (
     CrudModelRelation,
     CrudModelRelationType,
@@ -11,7 +9,6 @@ from ..crud_serializer import CrudSerializer
 
 
 class CrudGetItemView:
-    model: db.Model
     serializer: CrudSerializer = None
     relations: CrudRelations = CrudRelations
 

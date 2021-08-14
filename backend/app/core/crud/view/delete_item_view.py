@@ -1,13 +1,10 @@
 from fastapi import HTTPException
 
-from app.core.database import db
-
 from ..crud_relations import CrudRelations
 from ..crud_serializer import CrudSerializer
 
 
 class CrudDeleteItemView:
-    model: db.Model
     serializer: CrudSerializer = None
     relations: CrudRelations = CrudRelations
 

@@ -1,5 +1,3 @@
-from app.core.database import db
-
 from ..crud_relations import CrudRelations
 from ..crud_serializer import CrudSerializer
 from .create_item_view import CrudCreateItemView
@@ -18,7 +16,7 @@ class CrudView(
 ):
     def __init__(
         self,
-        model: db.Model,
+        model,
         serializer: CrudSerializer = None,
         relations: CrudRelations = CrudRelations,
     ):

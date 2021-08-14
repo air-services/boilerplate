@@ -36,7 +36,7 @@ export interface FormConfigField {
   isMulti?: boolean;
 }
 
-export interface CreateItemFormConfig {
+export interface ItemCreateFormConfig {
   backUrl: string;
   title: string;
   api: RestModelApi;
@@ -49,7 +49,7 @@ export interface CreateItemFormConfig {
 const CreateItemForm = ({
   formConfig,
 }: {
-  formConfig: CreateItemFormConfig;
+  formConfig: ItemCreateFormConfig;
 }) => {
   const history = useHistory();
   const { showNotification } = useNotificationsContext();
@@ -130,8 +130,12 @@ const CreateItemForm = ({
   );
 };
 
-const CreateItem = ({ formConfig }: { formConfig: CreateItemFormConfig }) => {
+const ItemCreateForm = ({
+  formConfig,
+}: {
+  formConfig: ItemCreateFormConfig;
+}) => {
   return <CreateItemForm formConfig={formConfig} />;
 };
 
-export default CreateItem;
+export default ItemCreateForm;

@@ -1,14 +1,36 @@
+.wrapper {
+  @apply relative
+  rounded
+  opacity-50
+  transition-opacity
+  delay-150
+  ease-in
+  overflow-hidden;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 3%);
+  background: #fff;
+}
+
+
+.isLoaded {
+  opacity: 1;
+}
+
 .main {
   @apply min-w-full divide-y divide-gray-200;
 }
+
+
+.title {
+  @apply bg-white py-4 px-4 text-xl text-gray-700}
 
 .fieldTitle {
   @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer;
 }
 
 .body {
-  @apply bg-white divide-y divide-gray-200;
+  @apply bg-white divide-y divide-gray-200  opacity-100 transition-opacity delay-150 ease-out;
 }
+
 
 .processingWrapper {
   @apply bg-gray-500
@@ -22,4 +44,8 @@
   flex
   absolute;
   min-height: 500px;
+}
+
+.isProcessing {
+  @apply opacity-50;
 }

@@ -5,6 +5,7 @@ import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 import { TableConfig } from 'components/ui/table/TableProvider';
 
 class ProjectsTableConfig implements TableConfig {
+  title = 'Проекты';
   limit = 5;
   editUrl = 'projects';
   createUrl = 'projects/create';
