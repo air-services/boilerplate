@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useAppContext } from 'providers/AppContextProvider';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import NavBarLink from 'components/common/NavBar/NavBarLink';
 
 import profileNavigationStyles from 'components/common/ProfileNavigation/ProfileNavigatoin.module.scss';
 
@@ -70,13 +69,6 @@ const ProfileNavigation = () => {
             </div>
           </a>
           {isShowAccountMenu && <AccountMenu logout={logout} />}
-        </>
-      )}
-
-      {account.isLoaded && !account.data.id && (
-        <>
-          <NavBarLink title={'LogIn'} url={'/login'} />
-          <NavBarLink title={'SignUp'} url={'/signup'} />
         </>
       )}
     </div>

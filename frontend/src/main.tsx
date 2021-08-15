@@ -64,6 +64,7 @@ ReactDOM.render(
               <Route path="/dashboards" component={DashboardListPage} />
 
               <Route path="/account/settings" component={AccountSettingsPage} />
+
               <Route path="/" component={StartPage} />
             </Switch>
           </Page>
