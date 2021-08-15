@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import ItemEditForm, {
@@ -69,10 +70,10 @@ class FormConfig implements ItemEditFormConfig {
   api = restApi.api.dashboards;
 }
 
-const EditDashboard = ({ id }: { id: string }) => {
+const EditDashboard = () => {
   const formConfig = new FormConfig();
-
-  return <ItemEditForm id={id} formConfig={formConfig} />;
+  const match: { params: { id: string } } = useRouteMatch();
+  return <ItemEditForm id={match.params.id} formConfig={formConfig} />;
 };
 
 export default EditDashboard;

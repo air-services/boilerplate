@@ -1,0 +1,12 @@
+.buttonsWrapper {
+  @apply flex flex-col;
+}
+
+.button {
+  @apply py-1;
+}
+
+.dropdownButton {
+
+  @apply cursor-pointer p-1
+}

@@ -1,0 +1,16 @@
+.title {
+  @apply bg-white py-4 px-4 text-xl text-gray-700
+}
+
+.wrapper {
+  @apply relative
+  rounded;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 3%);
+  background: #fff;
+}
+
+
+
+.main {
+  @apply grid grid-cols-6 p-5;
+}

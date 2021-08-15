@@ -1,12 +1,9 @@
-from app.core.database import db
-
 from ..crud_relations import CrudRelations
 from ..crud_serializer import CrudSerializer
 from .update_relations import UpdateItemRelations
 
 
 class CrudUpdateItemView(UpdateItemRelations):
-    model: db.Model
     serializer: CrudSerializer = None
     relations: CrudRelations = CrudRelations
 

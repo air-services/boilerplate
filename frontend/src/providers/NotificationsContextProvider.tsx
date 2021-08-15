@@ -48,7 +48,7 @@ const Notification = ({
 
 const Notifications = ({ notifications }: NotificationsData) => {
   return (
-    <div className="fixed top-10 right-10">
+    <div className="fixed top-10 right-10 z-10">
       {notifications.map((notification, idx) => {
         return (
           <Notification

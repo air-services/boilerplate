@@ -2,7 +2,6 @@ import React from 'react';
 import Table from 'components/ui/table/Table';
 import Tag, { TagStyle } from 'components/ui/Tag/Tag';
 import restApi from 'services/api/rest';
-import classNames from 'classnames';
 import ItemActions from 'components/ui/table/ItemActions/ItemActions';
 
 const UserRoles = ({ value }: any) => {
@@ -35,7 +34,7 @@ class UsersTableConfig {
   limit = 10;
   fields = [
     { id: 'id', label: 'ID' },
-    { id: 'email', label: 'Электронная почта' },
+    { id: 'email', label: 'Электронная почта', isLink: true },
     { id: 'firstName', label: 'Имя' },
     { id: 'lastName', label: 'Фамилия' },
     { id: 'patronymic', label: 'Отчество' },

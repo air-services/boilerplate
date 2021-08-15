@@ -1,8 +1,6 @@
 from enum import Enum
 from typing import Optional
 
-from app.core.database import db
-
 
 class CrudModelRelationType(Enum):
     MANY_TO_MANY = "many_to_many"
@@ -13,9 +11,9 @@ class CrudModelRelationType(Enum):
 class CrudModelRelation:
     field: str
     relation_type: CrudModelRelationType
-    model: db.Model
-    relation_model: db.Model
-    through_model: Optional[db.Model]
+    model: object
+    relation_model: object
+    through_model: Optional[object]
     relation_key: str
     base_key: str
     through_key: Optional[str]

@@ -3,24 +3,26 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Page from 'components/ui/Page/Page';
 
 import AppContextProvider from './providers/AppContextProvider';
 import NotificationsContextProvider from 'providers/NotificationsContextProvider';
 
+import Page from 'components/ui/Page/Page';
 import Navigation from 'components/common/Navigation/Navigation';
-import SignUpPage from 'pages/SignUp';
-import LogInPage from 'pages/LogIn';
-import StartPage from 'pages/Start';
-import AccountSettingsPage from 'pages/AccountSettingsPage';
 
-// modules
+import StartPage from 'pages/Start';
+
+import SignUpPage from 'pages/account/AccountSignUpPage';
+import LogInPage from 'pages/account/AccountLogInPage';
+import AccountSettingsPage from 'pages/account/AccountSettingsPage';
+
+// rest
 import UserListPage from 'pages/users/UserListPage';
 import UserEditPage from 'pages/users/UserEditPage';
 import UserCreatePage from 'pages/users/UserCreatePage';
 
 import RoleListPage from 'pages/roles/RoleListPage';
-import RoleEditPage from 'modules/roles/RoleEdit';
+import RoleEditPage from 'pages/roles/RoleEditPage';
 import RoleCreatePage from 'pages/roles/RoleCreatePage';
 
 import ProjectListPage from 'pages/projects/ProjectListPage';
@@ -31,8 +33,6 @@ import DashboardListPage from 'pages/dashboards/DashboardListPage';
 import DashboardEditPage from 'pages/dashboards/DashboardEditPage';
 import DashboardCreatePage from 'pages/dashboards/DashboardCreatePage';
 
-import AdminMainPage from 'pages/admin/AdminMainPage';
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -41,7 +41,6 @@ ReactDOM.render(
           <Navigation />
           <Page>
             <Switch>
-              <Route path="/admin" component={AdminMainPage} />
               <Route path="/signup" component={SignUpPage} />
               <Route path="/login" component={LogInPage} />
 

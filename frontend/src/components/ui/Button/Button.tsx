@@ -8,10 +8,11 @@ type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
 
 interface ButtonData {
   isSubmitting?: boolean;
-  title: string;
+  title?: string;
   onClickHandler?: (event: any) => void;
   buttonStyle?: ButtonStyle;
   link?: string;
+  icon?: string;
 }
 
 const ButtonLinkWrapper = ({ link, children }: any) => {
@@ -23,6 +24,7 @@ const Button = ({
   title,
   onClickHandler,
   link,
+  icon,
   buttonStyle = 'primary',
 }: ButtonData) => {
   return (
@@ -36,7 +38,8 @@ const Button = ({
         type="submit"
         {...(onClickHandler ? { onClick: onClickHandler } : {})}>
         <div className="flex justify-center">
-          <span className={buttonStyles.title}>{title}</span>
+          {title && <span className={buttonStyles.title}>{title}</span>}
+          {icon && <i className={`far ${icon}`}></i>}
         </div>
       </button>
     </ButtonLinkWrapper>

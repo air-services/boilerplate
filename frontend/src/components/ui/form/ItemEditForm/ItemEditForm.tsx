@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import itemEditFormStyle from './ItemEditForm.module.scss';
+
 import TextInput from 'components/ui/form/TextInput/TextInput';
 import CheckBoxInput from 'components/ui/form/CheckboxInput/CheckBoxInput';
 import AsyncSelectInput from 'components/ui/form/AsyncSelectInput/AsyncSelectInput';
@@ -122,9 +124,11 @@ const EditItemForm = ({
   }, []);
 
   return (
-    <div className="p-20">
-      <h1 className="pb-10 text-2xl">{formConfig.title}</h1>
-      <form className="grid grid-cols-6" onSubmit={handleSubmit(onFormSubmit)}>
+    <div className={itemEditFormStyle.wrapper}>
+      <h2 className={itemEditFormStyle.title}>{formConfig.title}</h2>
+      <form
+        className={itemEditFormStyle.main}
+        onSubmit={handleSubmit(onFormSubmit)}>
         <FormProvider {...formMethods}>
           <div className="col-span-4">
             {formConfig.fields.map((field: FormConfigField) => {

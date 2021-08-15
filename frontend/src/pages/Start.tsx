@@ -1,10 +1,26 @@
 import React from 'react';
+import Dropdown, {
+  DropdownWrapper,
+  useDropdown,
+} from 'components/ui/Dropdown/Dropdown';
 
 const Start = () => {
+  const { isOpen, setIsOpen, close } = useDropdown();
+
   return (
-    <div className="p-20">
-      <h1>start page</h1>
-    </div>
+    <>
+      <h1
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}>
+        start page
+      </h1>
+      <DropdownWrapper>
+        <Dropdown close={close} isOpen={isOpen}>
+          content
+        </Dropdown>
+      </DropdownWrapper>
+    </>
   );
 };
 

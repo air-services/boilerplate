@@ -14,6 +14,10 @@ import {
 } from 'services/api/rest';
 import apiClient from 'axios';
 import { serializeToCamel, stringToSnakeCase } from 'services/api/serializers';
+import {
+  NotificationStyle,
+  useNotificationsContext,
+} from 'providers/NotificationsContextProvider';
 
 export interface TableConfig {
   title: string;
@@ -69,6 +73,7 @@ const TableContextProvider = ({
 }) => {
   const history = useHistory();
   const query = useQuery();
+  const { showNotification } = useNotificationsContext();
 
   const urlPagination: { page: number } = JSON.parse(
     query.get('pagination') || '{"page": 1}'
@@ -140,7 +145,19 @@ const TableContextProvider = ({
 
   const removeItem = useCallback(
     (id: string) => {
-      config.api.removeItem(id).then(loadItems);
+      config.api
+        .removeItem(id)
+        .then(loadItems)
+        .catch(() => {
+          showNotification(
+            {
+              title: 'Ошибка',
+              content: 'Что-то пошло не так',
+              style: NotificationStyle.danger,
+            },
+            null
+          );
+        });
     },
     [pagination]
   );

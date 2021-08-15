@@ -4,11 +4,11 @@ import { useRouteMatch } from 'react-router-dom';
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import ItemEditForm, {
   FormConfigField,
-  EditItemFormConfig,
+  ItemEditFormConfig,
 } from 'components/ui/form/ItemEditForm/ItemEditForm';
 import restApi from 'services/api/rest';
 
-class FormConfig implements EditItemFormConfig {
+class FormConfig implements ItemEditFormConfig {
   backUrl = '/roles';
   title = 'Редактирование роли';
   submitLabel = 'Обновить';

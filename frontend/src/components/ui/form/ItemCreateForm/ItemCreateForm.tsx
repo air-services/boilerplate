@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import itemCreateFormStyle from './ItemCreateForm.module.scss';
+
 import TextInput from 'components/ui/form/TextInput/TextInput';
 import CheckBoxInput from 'components/ui/form/CheckboxInput/CheckBoxInput';
 import AsyncSelectInput from 'components/ui/form/AsyncSelectInput/AsyncSelectInput';
@@ -58,7 +60,6 @@ const CreateItemForm = ({
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { isSubmitting },
   } = formMethods;
 
@@ -105,9 +106,11 @@ const CreateItemForm = ({
   }, []);
 
   return (
-    <div className="p-20">
-      <h1 className="pb-10 text-2xl">{formConfig.title}</h1>
-      <form className="grid grid-cols-6" onSubmit={handleSubmit(onFormSubmit)}>
+    <div className={itemCreateFormStyle.wrapper}>
+      <h2 className={itemCreateFormStyle.title}>{formConfig.title}</h2>
+      <form
+        className={itemCreateFormStyle.main}
+        onSubmit={handleSubmit(onFormSubmit)}>
         <FormProvider {...formMethods}>
           <div className="col-span-4">
             {formConfig.fields.map((field: FormConfigField) => {

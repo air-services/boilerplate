@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import navigationStyle from './Navigation.module.scss';
@@ -26,7 +25,7 @@ const navigationSections: NavigationSectionProps[] = [
   },
   {
     title: 'Config',
-    items: [{ to: 'profile', text: 'Settings', icon: 'fa-tools' }],
+    items: [{ to: 'settings', text: 'Settings', icon: 'fa-tools' }],
   },
 ];
 
@@ -69,7 +68,9 @@ const NavigationSection = (navigationSection: NavigationSectionProps) => {
 const Navigation = () => {
   return (
     <nav className={navigationStyle.main}>
-      <a className={navigationStyle.logo}>FastAPI admin</a>
+      <Link to="/" className={navigationStyle.logo}>
+        FastAPI admin
+      </Link>
       <div>
         {navigationSections.map((navigationSection: NavigationSectionProps) => {
           return (

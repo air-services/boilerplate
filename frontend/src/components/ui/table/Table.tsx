@@ -30,6 +30,7 @@ const TableView = () => {
             return (
               <TableElement
                 fields={table.config.fields}
+                editUrl={table.config.editUrl}
                 element={item}
                 key={item.id}
               />

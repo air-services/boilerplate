@@ -3,11 +3,11 @@ import React from 'react';
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import ItemCreateForm, {
   FormConfigField,
-  CreateItemFormConfig,
+  ItemCreateFormConfig,
 } from 'components/ui/form/ItemCreateForm/ItemCreateForm';
 import restApi from 'services/api/rest';
 
-class FormConfig implements CreateItemFormConfig {
+class FormConfig implements ItemCreateFormConfig {
   backUrl = '/roles';
   title = 'Создание роль';
   submitLabel = 'Создать';

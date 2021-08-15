@@ -1,13 +1,14 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import { excludeKeys, serializeToSnake } from 'services/api/serializers';
 import ItemEditForm, {
   FormConfigField,
-  EditItemFormConfig,
+  ItemEditFormConfig,
 } from 'components/ui/form/ItemEditForm/ItemEditForm';
 import restApi from 'services/api/rest';
 
-class FormConfig implements EditItemFormConfig {
+class FormConfig implements ItemEditFormConfig {
   backUrl = '/projects';
   title = 'Редактирование проекта';
   submitLabel = 'Обновить';
@@ -100,10 +101,11 @@ class FormConfig implements EditItemFormConfig {
   api = restApi.api.projects;
 }
 
-const EditProject = ({ id }: { id: string }) => {
+const EditProject = () => {
   const formConfig = new FormConfig();
+  const match: { params: { id: string } } = useRouteMatch();
 
-  return <ItemEditForm id={id} formConfig={formConfig} />;
+  return <ItemEditForm id={match.params.id} formConfig={formConfig} />;
 };
 
 export default EditProject;
