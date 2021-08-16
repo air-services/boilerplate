@@ -6,6 +6,9 @@ CRUD api generate helper for FastAPI applications
 - Easy edit and update models
 - Common pattern for all modules and easy to support micro-applications
 
+## Live example
+[FastAPI admin demo](https://air-services.online)
+
 ## How to use
 1. Create db model with fields
 ```
