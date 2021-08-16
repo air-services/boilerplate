@@ -61,6 +61,8 @@ class RestApi {
     projects: RestModelApi;
     roles: RestModelApi;
     dashboards: RestModelApi;
+    icons: RestModelApi;
+    cards: RestModelApi;
   };
 
   constructor() {
@@ -69,6 +71,8 @@ class RestApi {
       projects: getModelCrud(`${this.baseUrl}/projects`),
       roles: getModelCrud(`${this.baseUrl}/roles`),
       dashboards: getModelCrud(`${this.baseUrl}/dashboards`),
+      icons: getModelCrud(`${this.baseUrl}/icons`),
+      cards: getModelCrud(`${this.baseUrl}/cards`),
     };
   }
 }

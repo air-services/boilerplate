@@ -28,7 +28,7 @@ class CrudGetListView:
 
             self.items = [item.to_dict() for item in items_query]
 
-            await self._inject_many_to_many_relations()
+            await self._inject_relations()
 
             return {
                 "items": self.items,
@@ -70,7 +70,7 @@ class CrudGetListView:
             return order(field)
         return self.model.id
 
-    async def _inject_many_to_many_relations(self):
+    async def _inject_relations(self):
         for relation in self.relations.get_list_relations:
             if relation.relation_type == CrudModelRelationType.MANY_TO_MANY:
                 relations_cache = await self._cache_many_to_many_list_view_map(
@@ -90,6 +90,44 @@ class CrudGetListView:
                     }
                     for item in self.items
                 ]
+            if relation.relation_type == CrudModelRelationType.PARENT:
+                relations_cache = await self._cache_parent_list_view_map(
+                    base_items=self.items,
+                    relation_model=relation.relation_model,
+                    base_key=relation.base_key,
+                    relation_key=relation.relation_key,
+                )
+
+                self.items = [
+                    {
+                        **item,
+                        relation.field: relations_cache.get(
+                            item.get("id"), None
+                        ),
+                    }
+                    for item in self.items
+                ]
+
+    async def _cache_parent_list_view_map(
+        self, base_items, relation_model, base_key, relation_key
+    ):
+        base_ids = [item.get(relation_key) for item in base_items]
+
+        relations = await relation_model.query.where(
+            getattr(relation_model, "id").in_(base_ids)
+        ).gino.all()
+        #
+
+        relations_map = {}
+        for relation in relations:
+            relations_map[relation.id] = relation.to_dict()
+
+        cache = {}
+
+        for item in base_items:
+            cache[item.get("id")] = relations_map.get(item.get(relation_key))
+
+        return cache
 
     async def _cache_many_to_many_list_view_map(
         self,

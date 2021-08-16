@@ -33,6 +33,7 @@ const Button = ({
         className={classNames(buttonStyles.main, {
           [buttonStyles.primary]: buttonStyle === 'primary',
           [buttonStyles.danger]: buttonStyle === 'danger',
+          [buttonStyles.success]: buttonStyle === 'success',
         })}
         disabled={isSubmitting}
         type="submit"

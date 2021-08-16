@@ -24,8 +24,8 @@ const navigationSections: NavigationSectionProps[] = [
     ],
   },
   {
-    title: 'Config',
-    items: [{ to: 'settings', text: 'Settings', icon: 'fa-tools' }],
+    title: 'Statistic',
+    items: [{ to: '/cards', text: 'Cards', icon: 'fa-card' }],
   },
 ];
 

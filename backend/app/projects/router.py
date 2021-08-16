@@ -1,4 +1,4 @@
-from app.core.crud import CrudRouter, CrudSerializer
+from app.core.crud import CrudRouter
 
 from .models import Project
 from .relations import ProjectCrudRelations

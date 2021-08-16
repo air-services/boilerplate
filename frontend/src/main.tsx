@@ -33,6 +33,10 @@ import DashboardListPage from 'pages/dashboards/DashboardListPage';
 import DashboardEditPage from 'pages/dashboards/DashboardEditPage';
 import DashboardCreatePage from 'pages/dashboards/DashboardCreatePage';
 
+import CardListPage from 'pages/statistic/cards/CardListPage';
+import CardCreatePage from 'pages/statistic/cards/CardCreatePage';
+import CardEditPage from 'pages/statistic/cards/CardEditPage';
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -55,6 +59,10 @@ ReactDOM.render(
               <Route path="/projects/create" component={ProjectCreatePage} />
               <Route path="/projects/:id" component={ProjectEditPage} />
               <Route path="/projects" component={ProjectListPage} />
+
+              <Route path="/cards/create" component={CardCreatePage} />
+              <Route path="/cards/:id" component={CardEditPage} />
+              <Route path="/cards" component={CardListPage} />
 
               <Route
                 path="/dashboards/create"

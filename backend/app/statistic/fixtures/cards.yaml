@@ -1,0 +1,31 @@
+ - title: Traffic
+   value: 49.65%
+   icon_id: 1721
+   color: 'from-blue-500 to-blue-700 shadow-lg-blue'
+   change: '3.48'
+   change_title: 'Since last month'
+   direction: up
+
+ - title: New Users
+   value: '526'
+   icon_id: 782
+   color: 'from-purple-500 to-purple-700 shadow-lg-blue'
+   change: '+52'
+   change_title: 'Since last month'
+   direction: up
+
+ - title: Performance
+   value: 49.65%
+   icon_id: 1280
+   color: 'from-red-500 to-red-700 shadow-lg-red'
+   change: '3.48'
+   change_title: 'Since last month'
+   direction: down
+
+ - title: Sales
+   value: '2345'
+   icon_id: 1163
+   color: 'from-green-500 to-green-700 shadow-lg-green'
+   change: '-30.5%'
+   change_title: 'Since last week'
+   direction: down
