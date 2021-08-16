@@ -94,13 +94,15 @@ articles_router = CrudRouter(
 
 app.include_router(articles_router)
 ```
-- Run and apply alembic migrations
+4. Run and apply alembic migrations
 ```
 alembic upgrade head;
 alembic revision --autogenerate -m "Add articles"
 ```
-- Start applications
-
+5. Start applications
+```
+uvicorn app:app --reload
+```
 ## Docker compose
 - Install docker and docker-compose
 - Copy backend/alembic.example.ini -> backend/alembic.ini, configure alembic.ini
