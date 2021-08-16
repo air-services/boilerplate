@@ -7,47 +7,47 @@ CRUD api generate helper for FastAPI applications
 - Common pattern for all modules and easy to support micro-applications
 
 ## How to use
-- Create db model with fields
+1. Create db model with fields
 ```
-class MyModel(db.Model):
+class Article(db.Model):
     __tablename__ = "models"
 
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String, unique=True, index=True)
-    description = db.Column(db.String)
-    parent_id = db.Column(db.Integer, db.ForeignKey("parents.id"))
+    content = db.Column(db.String)
+    blog_id = db.Column(db.Integer, db.ForeignKey("blogs.id"))
 
 
-class ParentModel(db.Model):
-    __tablename__ = "parents"
+class Blog(db.Model):
+    __tablename__ = "blogs"
 
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String, unique=True, index=True)
 ```
-- Add serializers and relations classes
+2. Add serializers and relations classes
 
 ```
 # serializer
 from typing import List
 from pydantic import BaseModel
 
-class MyModel(BaseModel):
+class ArticleBaseFields(BaseModel):
     name: str
     description: str
 
-class MyModelGetItem(MyModel):
+class ArticleGetItem(ArticleBaseFields):
     id: int
     name: str
     description: str
 
 class ModelSerializer(CrudSerializer):
-    get_list_response_model = MyModelGetList
-    get_item_response_model = MyModelGetItem
-    update_item_request_model = MyModelCreateUpdate
+    get_list_response_model = ArticleGetList
+    get_item_response_model = ArticleGetItem
+    update_item_request_model = ArticleCreateUpdate
     update_item_response_model = MyModeGetItem
-    create_item_request_model = MyModelCreateUpdate
-    create_item_response_model = MyModelGetItem
-    remove_item_response_model = MyModelGetItem
+    create_item_request_model = ArticleCreateUpdate
+    create_item_response_model = ArticleGetItem
+    remove_item_response_model = ArticleGetItem
 
 # relations
 from app.core.crud.crud_relations import (
@@ -55,38 +55,49 @@ from app.core.crud.crud_relations import (
     CrudModelRelationType,
     CrudRelations,
 )
-from .models import MyModel, ParentModel
+from .models import Article, Blog
 
 
-class ParentRelation(CrudModelRelation):
+class BlogRelation(CrudModelRelation):
     relation_type = CrudModelRelationType.PARENT
-    field = "project"
-    model = MyModel
-    relation_model = ParentModel
-    base_key = "my_model_id"
-    relation_key = "parent_id"
+    field = "blog"
+    model = Artoicle
+    relation_model = Blog
+    base_key = "article_id"
+    relation_key = "blog_id"
 
-class MyModelCrudRelations(CrudRelations):
-    get_item_relations = [ParentRelation]
-    update_item_relations = [ParentRelation]
+class ArticleCrudRelations(CrudRelations):
+    get_item_relations = [BlogRelation]
+    update_item_relations = [BlogRelation]
 ```
 
-- Configure and register router in FastAPI appliction
+3. Configure and register router in FastAPI appliction
 ```
-mymodel_router = CrudRouter(
-    serializer=MoModelSerializer,
-    view=MoModelView,
-    model=MoModel,
-    relations=MoModelCrudRelations,
-    prefix="/api/v1/models",
-    tags=["models"],
+
+from fastapi import FastAPI
+from starlette.config import Config
+
+from app.articles.router import articles_router
+
+config = Config(".env")
+app = FastAPI()
+
+articles_router = CrudRouter(
+    serializer=ArticleSerializer,
+    view=ArticleView,
+    model=Article,
+    relations=ArticleCrudRelations,
+    prefix="/api/v1/articles",
+    tags=["articles"],
     responses={404: {"description": "Not found"}},
 ).get_router()
+
+app.include_router(articles_router)
 ```
 - Run and apply alembic migrations
 ```
 alembic upgrade head;
-alembic revision --autogenerate -m "Add my model"
+alembic revision --autogenerate -m "Add articles"
 ```
 - Start applications
 
