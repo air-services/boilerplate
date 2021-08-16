@@ -14,7 +14,6 @@ import StartPage from 'pages/Start';
 
 import SignUpPage from 'pages/account/AccountSignUpPage';
 import LogInPage from 'pages/account/AccountLogInPage';
-import AccountSettingsPage from 'pages/account/AccountSettingsPage';
 
 // rest
 import UserListPage from 'pages/users/UserListPage';
@@ -70,8 +69,6 @@ ReactDOM.render(
               />
               <Route path="/dashboards/:id" component={DashboardEditPage} />
               <Route path="/dashboards" component={DashboardListPage} />
-
-              <Route path="/account/settings" component={AccountSettingsPage} />
 
               <Route path="/" component={StartPage} />
             </Switch>
