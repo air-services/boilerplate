@@ -23,6 +23,9 @@ const AsyncSelectInput = ({
       }) => {
         return (
           <div className="py-5">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              {field.label}
+            </label>
             <Async
               defaultValue={value}
               {...field.selectConfig}

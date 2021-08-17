@@ -1,12 +1,17 @@
-import os
-
 import click
-import yaml
 
 from app.core.cli import coro, init_gino
-from app.core.database import db
+from app.core.utils import reload_model
 
 from .models import Dashboard
+
+
+async def reset_dashboards():
+    await reload_model(
+        model=Dashboard,
+        sequence="dashboards_id_seq",
+        fixture_path="app/dashboards/fixtures/dashboards.yaml",
+    )
 
 
 @click.group()
@@ -18,15 +23,7 @@ def dashboards():
 @coro
 async def generate_dashboards():
     await init_gino()
-    await db.status("alter sequence dashboards_id_seq restart with 1")
-    await Dashboard.delete.gino.status()
-    with open(
-        f"{os.path.abspath('.')}/app/dashboards/fixtures/dashboards.yaml", "r"
-    ) as yaml_file:
-        dashboards = yaml.safe_load(yaml_file)
-
-    for dashboard in dashboards:
-        await Dashboard.create(**dashboard)
+    await reset_dashboards()
     click.echo("Reload dashboards")
 
 

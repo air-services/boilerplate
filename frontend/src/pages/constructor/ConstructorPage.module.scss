@@ -1,0 +1,57 @@
+.titleWrapper {
+  @apply
+  mb-4
+  items-center
+  shadow-sm
+  w-full
+  h-10
+  px-8;
+}
+
+.table {
+  @apply items-center w-full bg-transparent border-collapse;
+}
+
+.tableHeadItem {
+  @apply px-2
+  align-middle
+  border-b
+  border-solid
+  border-gray-200
+  py-3
+  whitespace-nowrap
+  text-purple-500
+  font-light
+  text-left;
+}
+
+.tableBodyItem {
+  @apply border-b
+  border-gray-200
+  align-middle
+  font-light
+  whitespace-nowrap
+  px-2
+  py-4
+  text-left;
+}
+
+.input {
+  @apply font-light;
+  border: none;
+  outline: none;
+}
+
+.input:active {
+  outline: none;
+}
+
+.tableButtons {
+  @apply mt-4;
+}
+
+.appNameInput {
+  @apply font-light;
+  border: none;
+  outline: none;
+}

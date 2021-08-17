@@ -7,6 +7,7 @@ from app.constructor.fields.router import fields_router
 from app.constructor.templates.router import templates_router
 from app.core.database import db
 from app.dashboards.router import dashboards_router
+from app.dev.router import dev_router
 from app.projects.router import projects_router
 from app.roles.router import roles_router
 from app.statistic.router import card_router, icon_router
@@ -27,6 +28,7 @@ app.include_router(icon_router)
 app.include_router(data_types_router)
 app.include_router(fields_router)
 app.include_router(templates_router)
+app.include_router(dev_router)
 
 
 @app.on_event("startup")

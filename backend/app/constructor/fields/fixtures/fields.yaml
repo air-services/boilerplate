@@ -1,0 +1,35 @@
+- name: id
+  data_type_id: 1
+  template_id: 1
+  description: index
+  size: 8
+
+- name: title
+  description: article title
+  data_type_id: 2
+  template_id: 1
+  size: 255
+
+- name: description
+  description: article description
+  data_type_id: 2
+  template_id: 1
+  size: 255
+
+- name: id
+  data_type_id: 1
+  template_id: 2
+  description: index
+  size: 8
+
+- name: title
+  description: blog title
+  data_type_id: 2
+  template_id: 2
+  size: 255
+
+- name: description
+  description: blog description
+  data_type_id: 2
+  template_id: 2
+  size: 255

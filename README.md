@@ -113,6 +113,7 @@ uvicorn app:app --reload
 
 ## Roadmap
 - Backend:
+    - Update nested strategy
     - Permissions
     - Support for one-to-one relations
     - Configure celery for queue tasks

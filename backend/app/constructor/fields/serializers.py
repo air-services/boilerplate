@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -7,7 +7,7 @@ from app.core.crud import CrudSerializer
 
 class FieldBase(BaseModel):
     name: str
-    description: str
+    description: Optional[str]
 
 
 class FieldGetItem(FieldBase):

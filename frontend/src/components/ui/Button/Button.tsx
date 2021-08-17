@@ -7,6 +7,7 @@ import buttonStyles from 'components/ui/Button/Button.module.scss';
 type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
 
 interface ButtonData {
+  buttonType?: 'reset' | 'submit' | 'button';
   isSubmitting?: boolean;
   title?: string;
   onClickHandler?: (event: any) => void;
@@ -26,6 +27,7 @@ const Button = ({
   link,
   icon,
   buttonStyle = 'primary',
+  buttonType = 'submit',
 }: ButtonData) => {
   return (
     <ButtonLinkWrapper link={link}>
@@ -36,7 +38,7 @@ const Button = ({
           [buttonStyles.success]: buttonStyle === 'success',
         })}
         disabled={isSubmitting}
-        type="submit"
+        type={buttonType}
         {...(onClickHandler ? { onClick: onClickHandler } : {})}>
         <div className="flex justify-center">
           {title && <span className={buttonStyles.title}>{title}</span>}

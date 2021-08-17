@@ -13,15 +13,7 @@ from .associations import UsersRoles
 from .models import User
 
 
-@click.group()
-def users():
-    pass
-
-
-@click.command()
-@coro
-async def generate_users():
-    await init_gino()
+async def reset_users():
     await ProjectsUsers.delete.gino.status()
     await UsersRoles.delete.gino.status()
     await User.delete.gino.status()
@@ -44,15 +36,10 @@ async def generate_users():
                 user.get("password").encode("utf-8"), salt
             ).decode("utf-8")
             await user_object.update(hashed_password=hashed_password).apply()
-    click.echo("Reload users")
 
 
-@click.command()
-@coro
-async def generate_users_roles():
-    await init_gino()
+async def reset_users_roles():
     await UsersRoles.delete.gino.status()
-
     with open(
         f"{os.path.abspath('.')}/app/users/fixtures/users_roles.yaml", "r"
     ) as yaml_file:
@@ -60,6 +47,26 @@ async def generate_users_roles():
 
     for user_role in users_roles:
         await UsersRoles.create(**user_role)
+
+
+@click.group()
+def users():
+    pass
+
+
+@click.command()
+@coro
+async def generate_users():
+    await init_gino()
+    await reset_users()
+    click.echo("Reload users")
+
+
+@click.command()
+@coro
+async def generate_users_roles():
+    await init_gino()
+    await reset_users_roles()
     click.echo("Reload users roles")
 
 

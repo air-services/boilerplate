@@ -40,7 +40,11 @@ class UpdateItemRelations:
         item_id, data, relation: CrudModelRelation
     ):
         next_ids = set(
-            [item.get("id") for item in data.dict().get(relation.field)]
+            [
+                item.get("id")
+                for item in data.dict().get(relation.field)
+                if item.get("id")
+            ]
         )
         prev_ids = set(
             [

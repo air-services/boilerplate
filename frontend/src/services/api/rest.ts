@@ -63,6 +63,8 @@ class RestApi {
     dashboards: RestModelApi;
     icons: RestModelApi;
     cards: RestModelApi;
+    templates: RestModelApi;
+    dataTypes: RestModelApi;
   };
 
   constructor() {
@@ -73,6 +75,8 @@ class RestApi {
       dashboards: getModelCrud(`${this.baseUrl}/dashboards`),
       icons: getModelCrud(`${this.baseUrl}/icons`),
       cards: getModelCrud(`${this.baseUrl}/cards`),
+      templates: getModelCrud(`${this.baseUrl}/constructor/templates`),
+      dataTypes: getModelCrud(`${this.baseUrl}/constructor/data-types`),
     };
   }
 }

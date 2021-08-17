@@ -1,8 +1,16 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
 from app.core.crud import CrudSerializer
+
+
+class TemplateField(BaseModel):
+    id: Optional[int]
+    name: str
+    description: Optional[str]
+    size: Optional[int]
+    data_type_id: int
 
 
 class TemplateBase(BaseModel):
@@ -12,6 +20,7 @@ class TemplateBase(BaseModel):
 
 class TemplateGetItem(TemplateBase):
     id: int
+    fields: List[TemplateField]
 
 
 class TemplateUpdate(TemplateGetItem):

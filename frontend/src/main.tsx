@@ -36,6 +36,8 @@ import CardListPage from 'pages/statistic/cards/CardListPage';
 import CardCreatePage from 'pages/statistic/cards/CardCreatePage';
 import CardEditPage from 'pages/statistic/cards/CardEditPage';
 
+import ConstructorPage from 'pages/constructor/ConstructorPage';
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -69,6 +71,8 @@ ReactDOM.render(
               />
               <Route path="/dashboards/:id" component={DashboardEditPage} />
               <Route path="/dashboards" component={DashboardListPage} />
+
+              <Route path="/constructor" component={ConstructorPage} />
 
               <Route path="/" component={StartPage} />
             </Switch>

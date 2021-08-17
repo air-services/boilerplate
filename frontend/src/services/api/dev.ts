@@ -1,8 +1,8 @@
 import apiClient from '../client';
 
 const devApi = {
-  generateContent: () => {
-    return apiClient.post('/api/v1/dev/generate-content/');
+  runCommand: (command: string) => {
+    return apiClient.post('/api/v1/dev/run-command/', { command });
   },
 };
 

@@ -10,6 +10,7 @@ async def load_from_yaml(model, fixture_path):
     fixture_file_path = os.path.join(os.path.abspath("."), fixture_path)
     with open(fixture_file_path, "r") as yaml_file:
         values = yaml.safe_load(yaml_file)
+        print(values)
         await insert(model).values(values).gino.scalar()
 
 

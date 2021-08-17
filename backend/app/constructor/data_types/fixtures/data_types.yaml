@@ -3,4 +3,4 @@
 - name: boolean
 - name: date
 - name: json
-- name: double precision
+- name: double

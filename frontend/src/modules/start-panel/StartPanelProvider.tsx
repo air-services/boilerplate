@@ -26,7 +26,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
 
   const generateContent = useCallback(() => {
     devApi
-      .generateContent()
+      .runCommand('reset-content')
       .then(() => {
         showNotification(
           {
@@ -42,7 +42,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
           {
             title: 'Ошибка',
             content: 'Не удалось сгенерировать данные',
-            style: NotificationStyle.success,
+            style: NotificationStyle.danger,
           },
           null
         );

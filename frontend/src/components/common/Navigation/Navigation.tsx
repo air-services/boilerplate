@@ -27,6 +27,12 @@ const navigationSections: NavigationSectionProps[] = [
     title: 'Statistic',
     items: [{ to: '/cards', text: 'Cards', icon: 'fa-card' }],
   },
+  {
+    title: 'Constructor',
+    items: [
+      { to: '/constructor', text: 'Constructor', icon: 'fa-greater-than' },
+    ],
+  },
 ];
 
 const NavigationItem = (navigationItem: NavigationItemProps) => {

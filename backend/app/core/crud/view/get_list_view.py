@@ -107,6 +107,22 @@ class CrudGetListView:
                     }
                     for item in self.items
                 ]
+            if relation.relation_type == CrudModelRelationType.CHILDREN:
+                relations_cache = await self._cache_children_list_view_map(
+                    base_items=self.items,
+                    relation_model=relation.relation_model,
+                    base_key=relation.base_key,
+                )
+
+                self.items = [
+                    {
+                        **item,
+                        relation.field: relations_cache.get(
+                            item.get("id"), []
+                        ),
+                    }
+                    for item in self.items
+                ]
 
     async def _cache_parent_list_view_map(
         self, base_items, relation_model, base_key, relation_key
@@ -126,6 +142,28 @@ class CrudGetListView:
 
         for item in base_items:
             cache[item.get("id")] = relations_map.get(item.get(relation_key))
+
+        return cache
+
+    async def _cache_children_list_view_map(
+        self,
+        base_items,
+        relation_model,
+        base_key,
+    ):
+        base_ids = [item.get("id") for item in base_items]
+
+        relations = await relation_model.query.where(
+            getattr(relation_model, base_key).in_(base_ids)
+        ).gino.all()
+
+        cache = {}
+        for relation in relations:
+            base_id = getattr(relation, base_key)
+            if not cache.get(base_id):
+                cache[base_id] = []
+
+            cache[base_id].append(relation.to_dict())
 
         return cache
 

@@ -1,12 +1,17 @@
-import os
-
-import bcrypt
 import click
-import yaml
 
 from app.core.cli import coro, init_gino
+from app.core.utils import reload_model
 
 from .models import Role
+
+
+async def reset_roles():
+    await reload_model(
+        model=Role,
+        sequence="roles_id_seq",
+        fixture_path="app/roles/fixtures/roles.yaml",
+    )
 
 
 @click.group()
@@ -18,15 +23,7 @@ def roles():
 @coro
 async def generate_roles():
     await init_gino()
-    await Role.delete.gino.status()
-
-    with open(
-        f"{os.path.abspath('.')}/app/roles/fixtures/roles.yaml", "r"
-    ) as yaml_file:
-        roles = yaml.safe_load(yaml_file)
-
-    for role in roles:
-        await Role.create(**role)
+    await reset_roles()
     click.echo("Reload roles")
 
 
