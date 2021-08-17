@@ -5,6 +5,7 @@ import yaml
 
 from app.core.cli import coro, init_gino
 from app.core.database import db
+from app.core.utils import reload_model
 from app.dashboards.models import Dashboard
 
 from .associations import ProjectsUsers
@@ -20,18 +21,14 @@ def projects():
 @coro
 async def generate_projects():
     await init_gino()
-    await db.status("alter sequence projects_id_seq restart with 1")
-    await ProjectsUsers.delete.gino.status()
-    await Dashboard.update.values(project_id=None).gino.status()
-    await Project.delete.gino.status()
-
-    with open(
-        f"{os.path.abspath('.')}/app/projects/fixtures/projects.yaml", "r"
-    ) as yaml_file:
-        projects = yaml.safe_load(yaml_file)
-
-    for project in projects:
-        await Project.create(**project)
+    await reload_model(
+        model=Project,
+        sequence="projects_id_seq",
+        fixture_path="app/projects/fixtures/projects.yaml",
+        children_model=Dashboard,
+        children_relation_key="project_id",
+        many_to_many_model=ProjectsUsers,
+    )
     click.echo("Reload projects")
 
 
@@ -41,14 +38,10 @@ async def generate_projects_users():
     await init_gino()
     await ProjectsUsers.delete.gino.status()
 
-    with open(
-        f"{os.path.abspath('.')}/app/projects/fixtures/projects_users.yaml",
-        "r",
-    ) as yaml_file:
-        projects_users = yaml.safe_load(yaml_file)
-
-    for project_user in projects_users:
-        await ProjectsUsers.create(**project_user)
+    await reload_model(
+        model=ProjectsUsers,
+        fixture_path="app/projects/fixtures/projects_users.yaml",
+    )
     click.echo("Reload projects users")
 
 

@@ -1,10 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from starlette.config import Config
 
 from app.account.router import account_router
+from app.constructor.data_types.router import data_types_router
+from app.constructor.fields.router import fields_router
+from app.constructor.templates.router import templates_router
 from app.core.database import db
 from app.dashboards.router import dashboards_router
-from app.dev import generate_content_handler
 from app.projects.router import projects_router
 from app.roles.router import roles_router
 from app.statistic.router import card_router, icon_router
@@ -22,25 +24,9 @@ app.include_router(projects_router)
 app.include_router(dashboards_router)
 app.include_router(card_router)
 app.include_router(icon_router)
-
-
-@app.post("/api/v1/dev/generate-content/")
-async def generate_content():
-    print("generate")
-    await generate_content_handler()
-
-    return {"status": "ok"}
-    # try:
-    #     return {"status": "success"}
-    # except Exception:
-    #     raise HTTPException(
-    #         status_code=400, detail={"message": "generate error"}
-    #     )
-
-
-@app.get("/create-user")
-async def create_user():
-    return {"message": "Hello World"}
+app.include_router(data_types_router)
+app.include_router(fields_router)
+app.include_router(templates_router)
 
 
 @app.on_event("startup")

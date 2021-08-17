@@ -1,0 +1,6 @@
+- name: int
+- name: text
+- name: boolean
+- name: date
+- name: json
+- name: double precision
