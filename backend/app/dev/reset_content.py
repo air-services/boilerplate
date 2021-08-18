@@ -20,6 +20,3 @@ async def reset_content():
     await reset_data_types()
     await reset_templates()
     await reset_fields()
-
-
-s

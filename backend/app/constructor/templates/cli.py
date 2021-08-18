@@ -3,6 +3,7 @@ import click
 from app.core.cli import coro, init_gino
 from app.core.utils import reload_model
 
+from ..fields.models import Field
 from .models import Template
 
 
@@ -11,6 +12,8 @@ async def reset_templates():
         model=Template,
         sequence="constructor_templates_id_seq",
         fixture_path="app/constructor/templates/fixtures/templates.yaml",
+        children_model=Field,
+        children_relation_key="template_id",
     )
 
 
