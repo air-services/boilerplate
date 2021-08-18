@@ -100,7 +100,6 @@ ReactDOM.render(
               />
               <Route path="/dashboards/:id" component={DashboardEditPage} />
               <Route path="/dashboards" component={DashboardListPage} />
-
               <Route path="/constructor" component={ConstructorPage} />
 
               <Route path="/" component={StartPage} />
