@@ -2,6 +2,7 @@ import click
 
 from app.core.cli import coro, init_gino
 from app.core.utils import reload_model
+from app.users.associations import UsersRoles
 
 from .models import Role
 
@@ -11,6 +12,7 @@ async def reset_roles():
         model=Role,
         sequence="roles_id_seq",
         fixture_path="app/roles/fixtures/roles.yaml",
+        many_to_many_model=UsersRoles,
     )
 
 

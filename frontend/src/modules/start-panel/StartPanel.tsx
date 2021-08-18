@@ -5,12 +5,17 @@ import StartPanelCard, {
 } from 'modules/start-panel/StartPanelCard';
 import { useStartPanelContext } from 'modules/start-panel/StartPanelProvider';
 import Button from 'components/ui/Button/Button';
+import classNames from 'classnames';
+import startPanelStyle from './StartPanel.module.scss';
 
 const StartPanel = () => {
-  const { cards, generateContent } = useStartPanelContext();
+  const { cards, generateContent, isProcessing } = useStartPanelContext();
 
   return (
-    <div className="wrapper -mx-20 -my-10">
+    <div
+      className={classNames('wrapper -mx-20 -my-10', startPanelStyle.main, {
+        [startPanelStyle.isProcessing]: isProcessing,
+      })}>
       <div className="bg-blue-300 pt-14 pb-28 px-3 md:px-8 h-auto">
         <div className="container mx-auto max-w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
@@ -119,7 +124,7 @@ const StartPanel = () => {
 
       <div className="px-16 mb-20">
         <Button
-          title="RESET CONTENT"
+          title={isProcessing ? '...loading' : 'RESET CONTENT'}
           onClickHandler={generateContent}
           buttonStyle="danger"
         />

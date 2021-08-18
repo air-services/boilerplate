@@ -69,7 +69,7 @@ const ConstructorTemplateField = ({
       </td>
       <td className={constructorStyle.tableBodyItem}>
         <Button
-          icon={'far fa-trash-alt'}
+          icon="trash-alt"
           buttonStyle="danger"
           buttonType="button"
           onClickHandler={() => {

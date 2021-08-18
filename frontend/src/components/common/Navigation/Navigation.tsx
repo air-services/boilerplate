@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import navigationStyle from './Navigation.module.scss';
 
 interface NavigationItemProps {
   to: string;
-  icon: string;
+  icon: any;
   text: string;
 }
 
@@ -18,20 +19,20 @@ const navigationSections: NavigationSectionProps[] = [
   {
     title: 'Apps',
     items: [
-      { to: '/users', text: 'Users', icon: 'fa-users' },
-      { to: '/projects', text: 'Projects', icon: 'fa-desktop' },
-      { to: '/roles', text: 'Roles', icon: 'fa-key' },
+      { to: '/users', text: 'Users', icon: 'user' },
+      { to: '/roles', text: 'Roles', icon: 'key' },
+
+      { to: '/projects', text: 'Projects', icon: 'desktop' },
+      { to: '/dashboards', text: 'Dashboards', icon: 'info' },
     ],
   },
   {
     title: 'Statistic',
-    items: [{ to: '/cards', text: 'Cards', icon: 'fa-card' }],
+    items: [{ to: '/cards', text: 'Cards', icon: 'id-card' }],
   },
   {
     title: 'Constructor',
-    items: [
-      { to: '/constructor', text: 'Constructor', icon: 'fa-greater-than' },
-    ],
+    items: [{ to: '/constructor', text: 'Constructor', icon: 'greater-than' }],
   },
 ];
 
@@ -42,6 +43,12 @@ const NavigationItem = (navigationItem: NavigationItemProps) => {
         <i
           className={`fas ${navigationItem.icon} text-gray-300 mr-2 text-sm`}
         />
+
+        <FontAwesomeIcon
+          className="text-gray-300 mr-2 text-sm"
+          icon={navigationItem.icon}
+        />
+
         {navigationItem.text}
       </Link>
     </li>

@@ -1,5 +1,34 @@
 import './index.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faCheckSquare,
+  faCoffee,
+  faUser,
+  faKey,
+  faDesktop,
+  faInfo,
+  faIdCard,
+  faGreaterThan,
+  faEdit,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  fab,
+  faCheckSquare,
+  faCoffee,
+  faUser,
+  faKey,
+  faDesktop,
+  faInfo,
+  faIdCard,
+  faGreaterThan,
+  faEdit,
+  faTrashAlt
+);
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';

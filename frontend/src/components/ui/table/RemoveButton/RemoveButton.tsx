@@ -13,7 +13,7 @@ const RemoveItemButton = ({
   }, []);
   return (
     <Button
-      icon="fa-trash-alt"
+      icon="trash-alt"
       onClickHandler={onClickHandler}
       buttonStyle={'danger'}
     />

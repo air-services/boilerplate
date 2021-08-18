@@ -91,6 +91,7 @@ const TemplateView = ({
                   </th>
                   <th className={constructorStyle.tableHeadItem}>data type</th>
                   <th className={constructorStyle.tableHeadItem}>size</th>
+                  <th className={constructorStyle.tableHeadItem}>actions</th>
                 </tr>
               </thead>
               <tbody>

@@ -1,8 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import buttonStyles from 'components/ui/Button/Button.module.scss';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
 
@@ -13,7 +15,7 @@ interface ButtonData {
   onClickHandler?: (event: any) => void;
   buttonStyle?: ButtonStyle;
   link?: string;
-  icon?: string;
+  icon?: IconProp;
 }
 
 const ButtonLinkWrapper = ({ link, children }: any) => {
@@ -42,7 +44,7 @@ const Button = ({
         {...(onClickHandler ? { onClick: onClickHandler } : {})}>
         <div className="flex justify-center">
           {title && <span className={buttonStyles.title}>{title}</span>}
-          {icon && <i className={`far ${icon}`}></i>}
+          {icon && <FontAwesomeIcon icon={icon} />}
         </div>
       </button>
     </ButtonLinkWrapper>

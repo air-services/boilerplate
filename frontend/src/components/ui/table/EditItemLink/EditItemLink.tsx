@@ -6,7 +6,7 @@ import Button from 'components/ui/Button/Button';
 const EditItemLink = ({ id, editUrl }: { id: string; editUrl: string }) => {
   return (
     <Link to={`/${editUrl}/${id}`}>
-      <Button icon="fa-edit" />
+      <Button icon="edit" />
     </Link>
   );
 };

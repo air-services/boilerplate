@@ -13,18 +13,27 @@ import {
   NotificationStyle,
   useNotificationsContext,
 } from 'providers/NotificationsContextProvider';
+import { Simulate } from 'react-dom/test-utils';
+import load = Simulate.load;
 
 const StartPanelProvider = ({ children }: { children: any }) => {
   const [cards, setCards] = useState([]);
 
-  useEffect(() => {
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const loadCards = useCallback(() => {
     rest.api.cards.getList().then((response) => {
       setCards(serializeToCamel(response.data.items));
     });
   }, []);
+
+  useEffect(() => {
+    loadCards();
+  }, []);
   const { showNotification } = useNotificationsContext();
 
   const generateContent = useCallback(() => {
+    setIsProcessing(true);
     devApi
       .runCommand('reset-content')
       .then(() => {
@@ -36,6 +45,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
           },
           null
         );
+        loadCards();
       })
       .catch(() => {
         showNotification(
@@ -46,6 +56,9 @@ const StartPanelProvider = ({ children }: { children: any }) => {
           },
           null
         );
+      })
+      .finally(() => {
+        setIsProcessing(false);
       });
   }, []);
 
@@ -54,6 +67,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
       value={{
         cards,
         generateContent,
+        isProcessing,
       }}>
       {children}
     </StartPanelContext.Provider>
@@ -63,6 +77,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
 const StartPanelContext = createContext({
   cards: [],
   generateContent: () => {},
+  isProcessing: false,
 });
 
 export const useStartPanelContext = () => {

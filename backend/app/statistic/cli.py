@@ -5,8 +5,27 @@ import yaml
 
 from app.core.cli import coro, init_gino
 from app.core.database import db
+from app.core.utils import reload_model
 
 from .models import Card, Icon
+
+
+async def reset_cards():
+    await reload_model(
+        model=Card,
+        sequence="cards_id_seq",
+        fixture_path="app/statistic/fixtures/cards.yaml",
+    )
+
+
+async def reset_icons():
+    await reload_model(
+        model=Icon,
+        sequence="icons_id_seq",
+        children_model=Card,
+        children_relation_key="icon_id",
+        fixture_path="app/statistic/fixtures/icons.yaml",
+    )
 
 
 @click.group()
@@ -18,15 +37,7 @@ def statistic():
 @coro
 async def generate_icons():
     await init_gino()
-    await Icon.delete.gino.status()
-    await db.status("alter sequence icons_id_seq restart with 1")
-    with open(
-        f"{os.path.abspath('.')}/app/statistic/fixtures/icons.yaml", "r"
-    ) as yaml_file:
-        icons = yaml.safe_load(yaml_file)
-
-    for icon in icons:
-        await Icon.create(**icon)
+    await reset_icons()
     click.echo("Generate  icons")
 
 
@@ -34,16 +45,7 @@ async def generate_icons():
 @coro
 async def generate_cards():
     await init_gino()
-    await Card.delete.gino.status()
-    await db.status("alter sequence cards_id_seq restart with 1")
-
-    with open(
-        f"{os.path.abspath('.')}/app/statistic/fixtures/cards.yaml", "r"
-    ) as yaml_file:
-        cards = yaml.safe_load(yaml_file)
-
-    for card in cards:
-        await Card.create(**card)
+    await reset_cards()
     click.echo("Generate cards")
 
 
@@ -52,8 +54,6 @@ async def generate_cards():
 async def generate_statistic():
     # reset cards (clear icons relations)
     await init_gino()
-    await Card.delete.gino.status()
-
     await generate_icons()
     await generate_cards()
 
