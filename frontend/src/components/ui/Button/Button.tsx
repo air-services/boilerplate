@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import buttonStyles from 'components/ui/Button/Button.module.scss';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
+export type ButtonStyle = 'primary' | 'danger' | 'info' | 'success';
 
 interface ButtonData {
   buttonType?: 'reset' | 'submit' | 'button';

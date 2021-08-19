@@ -5,10 +5,12 @@ import {
 } from 'pages/constructor/constructorModels';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import rest from 'services/api/rest';
+import constructorApi from 'services/api/constructor';
+
 import constructorStyle from 'pages/constructor/ConstructorPage.module.scss';
 import ConstructorTemplateField from 'pages/constructor/ConstructorTemplateField';
-import Button from 'components/ui/Button/Button';
-import React from 'react';
+import Button, { ButtonStyle } from 'components/ui/Button/Button';
+import React, { useCallback } from 'react';
 import {
   NotificationStyle,
   useNotificationsContext,
@@ -24,12 +26,13 @@ const defaultFieldValues = () => ({
 const TemplateView = ({
   template,
   dataTypes,
+  removeTemplate,
 }: {
   template: Template;
   dataTypes: { items: DataType[]; cache: { [id: string]: DataType } };
+  removeTemplate(id: string): void;
 }) => {
   const methods = useForm({ defaultValues: template });
-
   const { showNotification } = useNotificationsContext();
 
   const onSubmit = methods.handleSubmit((data) => {
@@ -56,6 +59,23 @@ const TemplateView = ({
         );
       });
   });
+
+  const onRemoveTemplateHandler = useCallback(() => {
+    removeTemplate(String(template.id));
+  }, []);
+
+  const generateTemplate = useCallback(() => {
+    constructorApi.generateTemplate(String(template.id)).then(() => {
+      showNotification(
+        {
+          title: 'Успех',
+          content: 'Модель сгенерирована',
+          style: NotificationStyle.success,
+        },
+        null
+      );
+    });
+  }, []);
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -112,9 +132,25 @@ const TemplateView = ({
               <Button title="Update" />
               <span className="pl-4">
                 <Button
+                  buttonStyle="success"
                   title="Add field"
                   buttonType="button"
                   onClickHandler={addField}
+                />
+              </span>
+              <span className="pl-4">
+                <Button
+                  buttonStyle="danger"
+                  title="Remove"
+                  buttonType="button"
+                  onClickHandler={onRemoveTemplateHandler}
+                />
+              </span>
+              <span className={constructorStyle.generateButton}>
+                <Button
+                  title={'Generate'}
+                  buttonType={'button'}
+                  onClickHandler={generateTemplate}
                 />
               </span>
             </div>

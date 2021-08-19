@@ -1,9 +1,14 @@
-from app.core.crud import CrudView
+from pydantic import BaseModel
+
 from app.core.crud.crud_relations import (
     CrudModelRelation,
     CrudModelRelationType,
 )
 from app.core.crud.view.update_relations import UpdateItemRelations
+
+
+class TemplateModel(BaseModel):
+    id: int
 
 
 class UpdateNested(UpdateItemRelations):
@@ -70,7 +75,3 @@ class UpdateNested(UpdateItemRelations):
         )
         await UpdateNested._update_item_children_data(item_id, data, relation)
         await UpdateNested._create_item_children(item_id, data, relation)
-
-
-class TemplateView(CrudView, UpdateNested):
-    pass

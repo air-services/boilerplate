@@ -20,3 +20,4 @@ class TemplateCrudRelations(CrudRelations):
     get_item_relations = [FieldRelation]
     update_item_relations = [FieldRelation]
     get_list_relations = [FieldRelation]
+    delete_item_relations = [FieldRelation]

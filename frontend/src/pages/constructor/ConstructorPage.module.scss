@@ -47,11 +47,15 @@
 }
 
 .tableButtons {
-  @apply mt-4;
+  @apply mt-4 flex;
+}
+
+.generateButton {
+  @apply ml-auto;
 }
 
 .appNameInput {
-  @apply font-light;
+  @apply font-light w-full;
   border: none;
   outline: none;
 }

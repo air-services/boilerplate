@@ -28,7 +28,7 @@ class TemplateUpdate(TemplateGetItem):
 
 
 class TemplateCreate(TemplateBase):
-    pass
+    fields: List[TemplateField]
 
 
 class TemplateGetList(BaseModel):

@@ -1,15 +1,89 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import rest from 'services/api/rest';
+import { v4 } from 'uuid';
 import { Template } from 'pages/constructor/constructorModels';
 import ConstructorTemplateView from 'pages/constructor/ConstructorTemplateView';
+import {
+  NotificationStyle,
+  useNotificationsContext,
+} from 'providers/NotificationsContextProvider';
+import Button from 'components/ui/Button/Button';
+
+const defaultTemplateValues = () => ({
+  name: `new app ${v4()}`,
+  description: 'template description',
+  fields: [{ name: 'id', description: 'index', data_type_id: 1 }],
+});
 
 const ConstructorPage = () => {
+  const { showNotification } = useNotificationsContext();
   const [templates, setTemplates] = useState({ isLoaded: false, items: [] });
   const [dataTypes, setDataTypes] = useState({
     isLoaded: false,
     items: [],
     cache: {},
   });
+
+  const loadTemplates = useCallback(() => {
+    rest.api.templates.getList().then((response) => {
+      setTemplates((prevValue) => ({
+        isLoaded: true,
+        items: response.data.items,
+      }));
+    });
+  }, []);
+
+  const addTemplate = useCallback(() => {
+    rest.api.templates
+      .createItem(defaultTemplateValues())
+      .then((response) => {
+        showNotification(
+          {
+            title: 'success',
+            content: `success create ${response.data.name} template`,
+            style: NotificationStyle.success,
+          },
+          null
+        );
+        loadTemplates();
+      })
+      .catch(() => {
+        showNotification(
+          {
+            title: 'error',
+            content: 'Create template error',
+            style: NotificationStyle.danger,
+          },
+          null
+        );
+      });
+  }, []);
+
+  const removeTemplate = useCallback((id) => {
+    rest.api.templates
+      .removeItem(String(id))
+      .then(() => {
+        showNotification(
+          {
+            title: 'Успех',
+            content: 'Шаблон удален',
+            style: NotificationStyle.success,
+          },
+          null
+        );
+        loadTemplates();
+      })
+      .catch(() => {
+        showNotification(
+          {
+            title: 'Ошибка',
+            content: 'Невозможно удалить шаблон',
+            style: NotificationStyle.danger,
+          },
+          null
+        );
+      });
+  }, []);
 
   useEffect(() => {
     rest.api.dataTypes
@@ -25,12 +99,7 @@ const ConstructorPage = () => {
         });
       })
       .then(() => {
-        rest.api.templates.getList().then((response) => {
-          setTemplates((prevValue) => ({
-            isLoaded: true,
-            items: response.data.items,
-          }));
-        });
+        loadTemplates();
       });
   }, []);
 
@@ -44,9 +113,17 @@ const ConstructorPage = () => {
               key={template.id}
               template={template}
               dataTypes={dataTypes}
+              removeTemplate={removeTemplate}
             />
           );
         })}
+      <div className="my-10">
+        <Button
+          title="Add template"
+          onClickHandler={addTemplate}
+          buttonStyle={'success'}
+        />
+      </div>
     </div>
   );
 };
