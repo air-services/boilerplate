@@ -16,8 +16,14 @@ template_router_fabric = CrudRouter(
 
 # custom views
 templates_router = template_router_fabric.get_router()
+# templates_router.add_api_route(
+#     "/generate",
+#     template_router_fabric.view.generate_template,
+#     methods=["POST"],
+# )
+
 templates_router.add_api_route(
     "/generate",
-    template_router_fabric.view.generate_template,
+    template_router_fabric.view.configure,
     methods=["POST"],
 )

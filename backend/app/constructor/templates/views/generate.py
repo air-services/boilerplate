@@ -23,9 +23,6 @@ def to_model_format_name(snake_str):
     )
 
 
-from app.core.crud.view.get_item_view import CrudGetItemView
-
-
 class TemplateGenerate:
     async def generate_template(self, template: TemplateModel):
         template = await self.model.get(template.id)
