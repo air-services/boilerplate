@@ -3,7 +3,12 @@ import click
 from app.constructor.data_types.cli import data_types
 from app.constructor.fields.cli import fields
 from app.constructor.templates.cli import templates
-from app.core.cli import apply_migrations, generate_migrations
+from app.core.cli import (
+    apply_migrations,
+    coro,
+    generate_migrations,
+    reset_database,
+)
 from app.dashboards.cli import dashboards
 from app.projects.cli import projects
 from app.roles.cli import roles
@@ -12,7 +17,7 @@ from app.users.cli import users
 
 
 @click.group()
-def alembic():
+def db():
     pass
 
 
@@ -22,7 +27,7 @@ def alembic():
     prompt="Insert migration message",
     help="Migration version message",
 )
-def make_migrations(message):
+def makemigrations(message):
     generate_migrations(message)
 
 
@@ -31,12 +36,19 @@ def migrate():
     apply_migrations()
 
 
-alembic.add_command(make_migrations)
-alembic.add_command(migrate)
+@click.command()
+@coro
+async def reset():
+    await reset_database()
+
+
+db.add_command(makemigrations)
+db.add_command(migrate)
+db.add_command(reset)
 
 cli = click.CommandCollection(
     sources=[
-        alembic,
+        db,
         users,
         projects,
         roles,

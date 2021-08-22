@@ -3,6 +3,7 @@ export interface TemplateField {
   name: string;
   description: string;
   data_type_id: number;
+  foreign_key_id?: number;
   size: number;
 }
 

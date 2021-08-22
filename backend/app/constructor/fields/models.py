@@ -21,4 +21,8 @@ class Field(db.Model):
         db.Integer, db.ForeignKey("constructor_templates.id")
     )
 
+    foreign_key_id = db.Column(
+        db.Integer, db.ForeignKey("constructor_fields.id")
+    )
+
     size = db.Column(db.Integer)

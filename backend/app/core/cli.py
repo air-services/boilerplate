@@ -42,3 +42,24 @@ def apply_migrations():
 
 def generate_migrations(message):
     command.revision(configure_alembic(), autogenerate=True, message=message)
+
+
+async def reset_database():
+    await init_gino()
+    tables = [
+        "users_roles",
+        "projects_users",
+        "users",
+        "roles",
+        "dashboards",
+        "projects",
+        "constructor_fields",
+        "constructor_templates",
+        "constructor_data_types",
+        "cards",
+        "icons",
+        "alembic_version",
+    ]
+    for table in tables:
+        query = db.text(f"drop table if exists  {table} ")
+        await db.first(query)

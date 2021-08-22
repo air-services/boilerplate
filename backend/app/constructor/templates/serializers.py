@@ -11,6 +11,7 @@ class TemplateField(BaseModel):
     description: Optional[str]
     size: Optional[int]
     data_type_id: int
+    foreign_key_id: Optional[int]
 
 
 class TemplateBase(BaseModel):

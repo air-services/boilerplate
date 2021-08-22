@@ -12,13 +12,21 @@ import Button from 'components/ui/Button/Button';
 const defaultTemplateValues = () => ({
   name: `new app ${v4()}`,
   description: 'template description',
-  fields: [{ name: 'id', description: 'index', data_type_id: 1 }],
+  fields: [
+    { name: 'id', description: 'index', data_type_id: 1, foreign_key_id: null },
+  ],
 });
 
 const ConstructorPage = () => {
   const { showNotification } = useNotificationsContext();
   const [templates, setTemplates] = useState({ isLoaded: false, items: [] });
   const [dataTypes, setDataTypes] = useState({
+    isLoaded: false,
+    items: [],
+    cache: {},
+  });
+
+  const [fields, setFields] = useState({
     isLoaded: false,
     items: [],
     cache: {},
@@ -101,6 +109,17 @@ const ConstructorPage = () => {
       .then(() => {
         loadTemplates();
       });
+
+    rest.api.fields.getList().then((response) => {
+      setFields({
+        isLoaded: true,
+        items: response.data.items,
+        cache: response.data.items.reduce(
+          (cache: any, item: any) => ({ ...cache, [item.id]: item }),
+          {}
+        ),
+      });
+    });
   }, []);
 
   return (
@@ -113,6 +132,7 @@ const ConstructorPage = () => {
               key={template.id}
               template={template}
               dataTypes={dataTypes}
+              fieldsCache={fields.cache}
               removeTemplate={removeTemplate}
             />
           );

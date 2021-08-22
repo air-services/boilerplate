@@ -5,6 +5,11 @@ from pydantic import BaseModel
 from app.core.crud import CrudSerializer
 
 
+class TemplateBase(BaseModel):
+    id: int
+    name: str
+
+
 class FieldBase(BaseModel):
     name: str
     description: Optional[str]
@@ -12,6 +17,7 @@ class FieldBase(BaseModel):
 
 class FieldGetItem(FieldBase):
     id: int
+    template: Optional[TemplateBase]
 
 
 class FieldUpdate(FieldGetItem):
@@ -32,7 +38,7 @@ class FieldRemove(BaseModel):
 
 
 class FieldSerializer(CrudSerializer):
-    get_list_response_model = FieldGetList
+    # get_list_response_model = FieldGetList
     get_item_response_model = FieldGetItem
     update_item_request_model = FieldUpdate
     update_item_response_model = FieldGetItem

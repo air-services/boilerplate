@@ -65,6 +65,7 @@ class RestApi {
     cards: RestModelApi;
     templates: RestModelApi;
     dataTypes: RestModelApi;
+    fields: RestModelApi;
   };
 
   constructor() {
@@ -77,6 +78,7 @@ class RestApi {
       cards: getModelCrud(`${this.baseUrl}/cards`),
       templates: getModelCrud(`${this.baseUrl}/constructor/templates`),
       dataTypes: getModelCrud(`${this.baseUrl}/constructor/data-types`),
+      fields: getModelCrud(`${this.baseUrl}/constructor/fields`),
     };
   }
 }

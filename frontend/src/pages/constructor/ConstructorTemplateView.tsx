@@ -26,10 +26,12 @@ const defaultFieldValues = () => ({
 const TemplateView = ({
   template,
   dataTypes,
+  fieldsCache,
   removeTemplate,
 }: {
   template: Template;
   dataTypes: { items: DataType[]; cache: { [id: string]: DataType } };
+  fieldsCache: any;
   removeTemplate(id: string): void;
 }) => {
   const methods = useForm({ defaultValues: template });
@@ -122,6 +124,7 @@ const TemplateView = ({
                     description
                   </th>
                   <th className={constructorStyle.tableHeadItem}>data type</th>
+                  <th className={constructorStyle.tableHeadItem}>foreign</th>
                   <th className={constructorStyle.tableHeadItem}>size</th>
                   <th className={constructorStyle.tableHeadItem}>actions</th>
                 </tr>
@@ -132,6 +135,7 @@ const TemplateView = ({
                     <ConstructorTemplateField
                       field={field}
                       dataTypes={dataTypes}
+                      fieldsCache={fieldsCache}
                       key={field.id}
                       index={index}
                       remove={remove}

@@ -28,7 +28,6 @@ from app.constructor.data_types.models import DataType
 
 class Configure:
     async def configure(self, template: TemplateModel):
-        print("configure")
         template = await self.model.get(template.id)
         data_types = await DataType.query.gino.all()
         data_types = {data_type.id: data_type for data_type in data_types}
@@ -47,12 +46,11 @@ class Configure:
             for field in fields
         }
 
-        model_class = type(
+        type(
             "ModelClass",
             (db.Model,),
             {
                 "__tablename__": template.name,
-                # "__table_args__ ": {"extend_existing": True},
                 **model_class_fields,
             },
         )
