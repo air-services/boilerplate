@@ -65,16 +65,28 @@ const TemplateView = ({
   }, []);
 
   const generateTemplate = useCallback(() => {
-    constructorApi.generateTemplate(String(template.id)).then(() => {
-      showNotification(
-        {
-          title: 'Успех',
-          content: 'Модель сгенерирована',
-          style: NotificationStyle.success,
-        },
-        null
-      );
-    });
+    constructorApi
+      .generateTemplate(String(template.id))
+      .then(() => {
+        showNotification(
+          {
+            title: 'Успех',
+            content: 'Модель сгенерирована',
+            style: NotificationStyle.success,
+          },
+          null
+        );
+      })
+      .catch(() => {
+        showNotification(
+          {
+            title: 'Ошибка',
+            content: 'Не удалось сгененировать миграцию',
+            style: NotificationStyle.danger,
+          },
+          null
+        );
+      });
   }, []);
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(

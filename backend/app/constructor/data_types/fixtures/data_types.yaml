@@ -1,6 +1,4 @@
-- name: int
-- name: text
-- name: boolean
-- name: date
-- name: json
-- name: double
+- name: Integer
+- name: String
+- name: Boolean
+- name: Date

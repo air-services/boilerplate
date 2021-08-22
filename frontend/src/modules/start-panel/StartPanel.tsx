@@ -9,7 +9,8 @@ import classNames from 'classnames';
 import startPanelStyle from './StartPanel.module.scss';
 
 const StartPanel = () => {
-  const { cards, generateContent, isProcessing } = useStartPanelContext();
+  const { cards, generateContent, isProcessing, migrate } =
+    useStartPanelContext();
 
   return (
     <div
@@ -128,6 +129,13 @@ const StartPanel = () => {
           onClickHandler={generateContent}
           buttonStyle="danger"
         />
+        <span className="px-8">
+          <Button
+            title={isProcessing ? '...loading' : 'Apply migrations'}
+            onClickHandler={migrate}
+            buttonStyle="info"
+          />
+        </span>
       </div>
       <footer className="py-6 px-16 border-t border-gray-200 font-light flex flex-col lg:flex-row justify-between items-center">
         <p className="text-gray-700 mb-6 lg:mb-0">

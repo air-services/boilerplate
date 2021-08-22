@@ -1,6 +1,6 @@
-- name: Atricle
+- name: articles
   description: Article model
 
 
-- name: Blog
+- name: blogs
   description: Blog model

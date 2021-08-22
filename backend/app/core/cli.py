@@ -41,5 +41,4 @@ def apply_migrations():
 
 
 def generate_migrations(message):
-    print("try to generate alembic")
     command.revision(configure_alembic(), autogenerate=True, message=message)

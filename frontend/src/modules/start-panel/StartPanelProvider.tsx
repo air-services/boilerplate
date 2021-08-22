@@ -32,6 +32,36 @@ const StartPanelProvider = ({ children }: { children: any }) => {
   }, []);
   const { showNotification } = useNotificationsContext();
 
+  const migrate = useCallback(() => {
+    setIsProcessing(true);
+    devApi
+      .runCommand('migrate')
+      .then(() => {
+        showNotification(
+          {
+            title: 'Успех',
+            content: 'Миграции прошли успешно',
+            style: NotificationStyle.success,
+          },
+          null
+        );
+        loadCards();
+      })
+      .catch(() => {
+        showNotification(
+          {
+            title: 'Ошибка',
+            content: 'Не удалось мигрировать базу данных',
+            style: NotificationStyle.danger,
+          },
+          null
+        );
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
+  }, []);
+
   const generateContent = useCallback(() => {
     setIsProcessing(true);
     devApi
@@ -67,6 +97,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
       value={{
         cards,
         generateContent,
+        migrate,
         isProcessing,
       }}>
       {children}
@@ -77,6 +108,7 @@ const StartPanelProvider = ({ children }: { children: any }) => {
 const StartPanelContext = createContext({
   cards: [],
   generateContent: () => {},
+  migrate: () => {},
   isProcessing: false,
 });
 
