@@ -1,10 +1,7 @@
 import datetime
-import os
 
 from pydantic import BaseModel
-from sqlalchemy import types
 
-from app.constructor.data_types.models import DataType
 from app.constructor.fields.models import Field
 from app.core.cli import generate_migrations
 from app.core.database import db
@@ -12,7 +9,7 @@ from app.core.database import db
 ALEMBIC_DATA_TYPES = {""}
 
 
-class TemplateModel(BaseModel):
+class ApplicationModel(BaseModel):
     id: int
 
 
@@ -27,10 +24,11 @@ from app.constructor.data_types.models import DataType
 
 
 class Configure:
-    async def configure(self, template: TemplateModel):
-        template = await self.model.get(template.id)
+    async def configure(self, application: ApplicationModel):
+        application = await self.model.get(application.id)
         data_types = await DataType.query.gino.all()
         data_types = {data_type.id: data_type for data_type in data_types}
+        now_date_time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
         fields = [
             {
@@ -38,7 +36,7 @@ class Configure:
                 "data_type": data_types.get(field.data_type_id).name,
             }
             for field in await Field.query.where(
-                Field.template_id == template.id
+                Field.application_id == application.id
             ).gino.all()
         ]
         model_class_fields = {
@@ -50,11 +48,11 @@ class Configure:
             "ModelClass",
             (db.Model,),
             {
-                "__tablename__": template.name,
+                "__tablename__": application.name,
+                "__table_args__": {"extend_existing": True},
                 **model_class_fields,
             },
         )
-
-        now_date_time = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        generate_migrations(f"Update {template.name} {now_date_time}")
-        return {"message": {"templateID": template.id}}
+        print("success")
+        generate_migrations(f"Update {application.name} {now_date_time}")
+        return {"message": {"applicationID": application.id}}

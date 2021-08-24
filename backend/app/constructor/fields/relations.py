@@ -4,20 +4,20 @@ from app.core.crud.crud_relations import (
     CrudRelations,
 )
 
-from ..templates.models import Template
+from ..applications.models import Application
 from .models import Field
 
 
-class TemplateRelation(CrudModelRelation):
+class ApplicationRelation(CrudModelRelation):
     relation_type = CrudModelRelationType.PARENT
-    field = "template"
+    field = "application"
     model = Field
-    relation_model = Template
+    relation_model = Application
     base_key = "field_id"
-    relation_key = "template_id"
+    relation_key = "application_id"
 
 
 class FieldCrudRelations(CrudRelations):
-    get_item_relations = [TemplateRelation]
-    get_list_relations = [TemplateRelation]
-    update_item_relations = [TemplateRelation]
+    get_item_relations = [ApplicationRelation]
+    get_list_relations = [ApplicationRelation]
+    update_item_relations = [ApplicationRelation]

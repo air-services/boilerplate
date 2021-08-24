@@ -7,7 +7,7 @@ import constructorStyle from 'pages/constructor/ConstructorPage.module.scss';
 import Button from 'components/ui/Button/Button';
 import restApi from 'services/api/rest';
 
-const ConstructorTemplateField = ({
+const ConstructorApplicationField = ({
   field,
   index,
   dataTypes,
@@ -139,4 +139,4 @@ const ConstructorTemplateField = ({
   );
 };
 
-export default ConstructorTemplateField;
+export default ConstructorApplicationField;

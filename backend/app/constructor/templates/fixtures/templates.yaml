@@ -1,6 +1,0 @@
-- name: articles
-  description: Article model
-
-
-- name: blogs
-  description: Blog model

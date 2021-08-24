@@ -7,7 +7,7 @@ from app.core.crud.crud_relations import (
 from app.core.crud.view.update_relations import UpdateItemRelations
 
 
-class TemplateModel(BaseModel):
+class ApplicationModel(BaseModel):
     id: int
 
 

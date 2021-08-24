@@ -5,18 +5,18 @@ from app.core.crud.crud_relations import (
 )
 
 from ..fields.models import Field
-from .models import Template
+from .models import Application
 
 
 class FieldRelation(CrudModelRelation):
     relation_type = CrudModelRelationType.CHILDREN
     field = "fields"
-    model = Template
+    model = Application
     relation_model = Field
-    base_key = "template_id"
+    base_key = "application_id"
 
 
-class TemplateCrudRelations(CrudRelations):
+class ApplicationCrudRelations(CrudRelations):
     get_item_relations = [FieldRelation]
     update_item_relations = [FieldRelation]
     get_list_relations = [FieldRelation]

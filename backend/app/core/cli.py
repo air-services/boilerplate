@@ -36,12 +36,15 @@ def configure_alembic():
     return alembic_cfg
 
 
+alembic_config = configure_alembic()
+
+
 def apply_migrations():
-    command.upgrade(configure_alembic(), "head")
+    command.upgrade(alembic_config, "head")
 
 
 def generate_migrations(message):
-    command.revision(configure_alembic(), autogenerate=True, message=message)
+    command.revision(alembic_config, autogenerate=True, message=message)
 
 
 async def reset_database():

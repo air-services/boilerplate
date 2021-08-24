@@ -1,8 +1,8 @@
 import click
 
+from app.constructor.applications.cli import applications
 from app.constructor.data_types.cli import data_types
 from app.constructor.fields.cli import fields
-from app.constructor.templates.cli import templates
 from app.core.cli import (
     apply_migrations,
     coro,
@@ -55,7 +55,7 @@ cli = click.CommandCollection(
         dashboards,
         statistic,
         data_types,
-        templates,
+        applications,
         fields,
     ]
 )

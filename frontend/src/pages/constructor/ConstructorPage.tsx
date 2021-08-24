@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import rest from 'services/api/rest';
 import { v4 } from 'uuid';
 import { Template } from 'pages/constructor/constructorModels';
-import ConstructorTemplateView from 'pages/constructor/ConstructorTemplateView';
+import ConstructorTemplateView from 'pages/constructor/ConstructorApplicationView';
 import {
   NotificationStyle,
   useNotificationsContext,

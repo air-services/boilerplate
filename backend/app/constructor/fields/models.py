@@ -6,7 +6,9 @@ from app.core.database import db
 class Field(db.Model):
     __tablename__ = "constructor_fields"
     __table_args__ = (
-        UniqueConstraint("name", "template_id", name="template field unique"),
+        UniqueConstraint(
+            "name", "application_id", name="application field unique"
+        ),
     )
 
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -17,8 +19,8 @@ class Field(db.Model):
         db.Integer, db.ForeignKey("constructor_data_types.id")
     )
 
-    template_id = db.Column(
-        db.Integer, db.ForeignKey("constructor_templates.id")
+    application_id = db.Column(
+        db.Integer, db.ForeignKey("constructor_applications.id")
     )
 
     foreign_key_id = db.Column(

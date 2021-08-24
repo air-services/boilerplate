@@ -8,8 +8,8 @@ import rest from 'services/api/rest';
 import constructorApi from 'services/api/constructor';
 
 import constructorStyle from 'pages/constructor/ConstructorPage.module.scss';
-import ConstructorTemplateField from 'pages/constructor/ConstructorTemplateField';
-import Button, { ButtonStyle } from 'components/ui/Button/Button';
+import ConstructorApplicationField from 'pages/constructor/ConstructorApplicationField';
+import Button from 'components/ui/Button/Button';
 import React, { useCallback } from 'react';
 import {
   NotificationStyle,
@@ -132,7 +132,7 @@ const TemplateView = ({
               <tbody>
                 {fields.map((field: TemplateField, index) => {
                   return (
-                    <ConstructorTemplateField
+                    <ConstructorApplicationField
                       field={field}
                       dataTypes={dataTypes}
                       fieldsCache={fieldsCache}

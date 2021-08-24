@@ -1,0 +1,5 @@
+- name: Articles
+  table_name: articles
+  api_url: articles
+  description: Application with articles
+

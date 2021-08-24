@@ -4,14 +4,14 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 
-class TemplateModel(BaseModel):
+class ApplicationModel(BaseModel):
     id: int
 
 
 templates = Jinja2Templates(
     directory=os.path.join(
         os.path.abspath("."),
-        "app/constructor/templates/views",
+        "app/constructor/applications/views",
     )
 )
 
@@ -23,26 +23,26 @@ def to_model_format_name(snake_str):
     )
 
 
-class TemplateGenerate:
-    async def generate_template(self, template: TemplateModel):
-        template = await self.model.get(template.id)
-        relations = await self.get_item_relations(template, self.relations)
+class ApplicationGenerate:
+    async def generate_application(self, application: ApplicationModel):
+        application = await self.model.get(application.id)
+        relations = await self.get_item_relations(application, self.relations)
         app_path = os.path.join(
-            os.path.abspath("."), "app/constructor/build/", template.name
+            os.path.abspath("."), "app/constructor/build/", application.name
         )
         if not os.path.exists(app_path):
             os.mkdir(app_path)
 
-        j2_template = templates.get_template("model_template.jinja2")
+        template = templates.get_template("model_template.jinja2")
 
         with open(os.path.join(app_path, "models.py"), "w") as models_file:
             models_file.write(
-                j2_template.render(
+                template.render(
                     {
-                        "name": to_model_format_name(template.name),
+                        "name": to_model_format_name(application.name),
                         "fields": relations.get("fields"),
                     },
                 )
             )
 
-        return {"message": {"templateID": template.id}}
+        return {"message": {"applicationID": application.id}}

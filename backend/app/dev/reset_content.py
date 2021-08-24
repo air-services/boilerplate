@@ -1,6 +1,6 @@
+from app.constructor.applications.cli import reset_templates
 from app.constructor.data_types.cli import reset_data_types
 from app.constructor.fields.cli import reset_fields
-from app.constructor.templates.cli import reset_templates
 from app.dashboards.cli import reset_dashboards
 from app.projects.cli import reset_projects, reset_projects_users
 from app.roles.cli import reset_roles
