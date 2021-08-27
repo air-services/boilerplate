@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import navigationStyle from './Navigation.module.scss';
+import restApi from 'services/api/rest';
+import { serializeToCamel } from 'services/api/serializers';
 
 interface NavigationItemProps {
   to: string;
@@ -14,27 +16,6 @@ interface NavigationSectionProps {
   title: string;
   items: NavigationItemProps[];
 }
-
-const navigationSections: NavigationSectionProps[] = [
-  {
-    title: 'Apps',
-    items: [
-      { to: '/users', text: 'Users', icon: 'user' },
-      { to: '/roles', text: 'Roles', icon: 'key' },
-
-      { to: '/projects', text: 'Projects', icon: 'desktop' },
-      { to: '/dashboards', text: 'Dashboards', icon: 'info' },
-    ],
-  },
-  {
-    title: 'Statistic',
-    items: [{ to: '/cards', text: 'Cards', icon: 'id-card' }],
-  },
-  {
-    title: 'Constructor',
-    items: [{ to: '/constructor', text: 'Constructor', icon: 'greater-than' }],
-  },
-];
 
 const NavigationItem = (navigationItem: NavigationItemProps) => {
   return (
@@ -79,21 +60,55 @@ const NavigationSection = (navigationSection: NavigationSectionProps) => {
 };
 
 const Navigation = () => {
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    restApi.api.applications.getList().then((response) => {
+      setApplications(serializeToCamel(response.data.items));
+    });
+  }, []);
+
+  const navigationSections = [
+    {
+      title: 'Scheme',
+      items: applications.map((application: any) => {
+        return {
+          to: `/constructor/applications/${application.id}`,
+          text: `${application.name} scheme`,
+          icon: 'greater-than',
+        };
+      }),
+    },
+    {
+      title: 'Data',
+      items: applications.map((application: any) => {
+        return {
+          to: `/${application.tableName}`,
+          text: `${application.name} data`,
+          icon: 'database',
+        };
+      }),
+    },
+  ];
+
   return (
     <nav className={navigationStyle.main}>
       <Link to="/" className={navigationStyle.logo}>
         FastAPI admin
       </Link>
       <div>
-        {navigationSections.map((navigationSection: NavigationSectionProps) => {
-          return (
-            <NavigationSection
-              title={navigationSection.title}
-              items={navigationSection.items}
-              key={navigationSection.title}
-            />
-          );
-        })}
+        {applications.length > 0 &&
+          navigationSections.map(
+            (navigationSection: NavigationSectionProps) => {
+              return (
+                <NavigationSection
+                  title={navigationSection.title}
+                  items={navigationSection.items}
+                  key={navigationSection.title}
+                />
+              );
+            }
+          )}
       </div>
     </nav>
   );

@@ -79,15 +79,16 @@ const TableContextProvider = ({
     query.get('pagination') || '{"page": 1}'
   );
 
-  const urlSorting: { field: string; order: OrderType } = JSON.parse(
-    query.get('sorting') ||
-      JSON.stringify({
-        order: 'ASC',
-        field: config.fields[0].id,
-      })
-  );
+  const getDefaultUrlSorting = (): { field: string; order: OrderType } =>
+    JSON.parse(
+      query.get('sorting') ||
+        JSON.stringify({
+          order: 'ASC',
+          field: config.fields[0].id,
+        })
+    );
 
-  const [sorting, setSorting] = useState(urlSorting);
+  const [sorting, setSorting] = useState(getDefaultUrlSorting());
 
   const [tableState, setTableState] = useState(defaultTableState());
   const [pagination, setPagination] = useState(
@@ -126,7 +127,7 @@ const TableContextProvider = ({
         setTableProcessing(false);
         setIsLoadedTrue();
       });
-  }, [pagination, sorting]);
+  }, [pagination, sorting, config]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams();
@@ -141,7 +142,13 @@ const TableContextProvider = ({
     });
   }, [pagination, sorting]);
 
-  useEffect(loadItems, [pagination.page, sorting]);
+  useEffect(() => {
+    loadItems();
+  }, [pagination.page, sorting, config.title]);
+
+  useEffect(() => {
+    setSorting(defaultSortingState());
+  }, [config.title]);
 
   const removeItem = useCallback(
     (id: string) => {

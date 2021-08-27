@@ -27,4 +27,7 @@ class Field(db.Model):
         db.Integer, db.ForeignKey("constructor_fields.id")
     )
 
+    is_primary_key = db.Column(db.Boolean, default=False)
+    is_index = db.Column(db.Boolean, default=False)
+
     size = db.Column(db.Integer)

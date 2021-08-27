@@ -13,6 +13,7 @@ import {
   faGreaterThan,
   faEdit,
   faTrashAlt,
+  faDatabase,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -26,7 +27,8 @@ library.add(
   faIdCard,
   faGreaterThan,
   faEdit,
-  faTrashAlt
+  faTrashAlt,
+  faDatabase
 );
 
 import React from 'react';
@@ -65,7 +67,12 @@ import CardListPage from 'pages/statistic/cards/CardListPage';
 import CardCreatePage from 'pages/statistic/cards/CardCreatePage';
 import CardEditPage from 'pages/statistic/cards/CardEditPage';
 
-import ConstructorPage from 'pages/constructor/ConstructorPage';
+// constructor
+import ApplicationListPage from 'pages/constructor/applications/ApplicationListPage';
+import ApplicationItemPage from 'pages/constructor/applications/ApplicationItemPage';
+import ApplicationDataListPage from 'pages/constructor/data/ApplicationDataListPage';
+import ApplicationDataCreatePage from 'pages/constructor/data/ApplicationDataCreatePage';
+import ApplicationDataEditPage from 'pages/constructor/data/ApplicationDataEditPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -100,7 +107,27 @@ ReactDOM.render(
               />
               <Route path="/dashboards/:id" component={DashboardEditPage} />
               <Route path="/dashboards" component={DashboardListPage} />
-              <Route path="/constructor" component={ConstructorPage} />
+
+              <Route
+                path="/constructor/applications/:id"
+                component={ApplicationItemPage}
+              />
+              <Route
+                path="/constructor/applications"
+                component={ApplicationListPage}
+              />
+
+              <Route
+                path="/:application/create"
+                component={ApplicationDataCreatePage}
+              />
+
+              <Route
+                path="/:application/:id"
+                component={ApplicationDataEditPage}
+              />
+
+              <Route path="/:application" component={ApplicationDataListPage} />
 
               <Route path="/" component={StartPage} />
             </Switch>

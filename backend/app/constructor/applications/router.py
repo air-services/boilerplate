@@ -16,14 +16,8 @@ applications_router_fabric = CrudRouter(
 
 # custom views
 applications_router = applications_router_fabric.get_router()
-# applications_router.add_api_route(
-#     "/generate",
-#     applications_router_fabric.view.generate_application,
-#     methods=["POST"],
-# )
-
 applications_router.add_api_route(
-    "/generate",
-    applications_router_fabric.view.configure,
+    "/generate-files",
+    applications_router_fabric.view.generate_files,
     methods=["POST"],
 )

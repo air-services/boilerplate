@@ -3,15 +3,32 @@
   application_id: 1
   description: index
   size: 8
+  is_primary_key: true
 
 - name: title
   description: article title
   data_type_id: 2
   application_id: 1
   size: 255
+  is_primary_key: false
 
 - name: description
   description: article description
   data_type_id: 2
   application_id: 1
   size: 255
+  is_primary_key: false
+
+- name: id
+  data_type_id: 1
+  application_id: 2
+  description: index
+  size: 8
+  is_primary_key: true
+
+- name: name
+  description: blog name
+  data_type_id: 2
+  application_id: 2
+  size: 255
+  is_primary_key: false

@@ -12,10 +12,13 @@ class ApplicationField(BaseModel):
     size: Optional[int]
     data_type_id: int
     foreign_key_id: Optional[int]
+    is_index: Optional[bool]
+    is_primary_key: Optional[bool]
 
 
 class ApplicationBase(BaseModel):
     name: str
+    table_name: str
     description: str
 
 

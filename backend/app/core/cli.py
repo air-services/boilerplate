@@ -57,7 +57,7 @@ async def reset_database():
         "dashboards",
         "projects",
         "constructor_fields",
-        "constructor_templates",
+        "constructor_applications",
         "constructor_data_types",
         "cards",
         "icons",

@@ -3,3 +3,8 @@
   api_url: articles
   description: Application with articles
 
+- name: Blogs
+  table_name: blogs
+  api_url: blogs
+  description: Application with blogs
+

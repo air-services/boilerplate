@@ -1,8 +1,8 @@
 import apiClient from '../client';
 
 const constructorApi = {
-  generateTemplate: (templateID: string) => {
-    return apiClient.post('/api/v1/constructor/templates/generate', {
+  generateApplicationFiles: (templateID: string) => {
+    return apiClient.post('/api/v1/constructor/applications/generate-files', {
       id: Number(templateID),
     });
   },

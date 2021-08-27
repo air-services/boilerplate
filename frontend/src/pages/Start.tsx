@@ -1,13 +1,13 @@
 import React from 'react';
-import StartPanel from 'modules/start-panel/StartPanel';
-import StartPanelProvider from 'modules/start-panel/StartPanelProvider';
+import DevPanel from 'modules/dev-panel/DevPanel';
+import DevPanelProvider from 'modules/dev-panel/DevPanelProvider';
 
-const Start = () => {
+const Dev = () => {
   return (
-    <StartPanelProvider>
-      <StartPanel />
-    </StartPanelProvider>
+    <DevPanelProvider>
+      <DevPanel />
+    </DevPanelProvider>
   );
 };
 
-export default Start;
+export default Dev;

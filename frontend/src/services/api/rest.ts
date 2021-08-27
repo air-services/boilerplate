@@ -63,7 +63,7 @@ class RestApi {
     dashboards: RestModelApi;
     icons: RestModelApi;
     cards: RestModelApi;
-    templates: RestModelApi;
+    applications: RestModelApi;
     dataTypes: RestModelApi;
     fields: RestModelApi;
   };
@@ -76,7 +76,7 @@ class RestApi {
       dashboards: getModelCrud(`${this.baseUrl}/dashboards`),
       icons: getModelCrud(`${this.baseUrl}/icons`),
       cards: getModelCrud(`${this.baseUrl}/cards`),
-      templates: getModelCrud(`${this.baseUrl}/constructor/templates`),
+      applications: getModelCrud(`${this.baseUrl}/constructor/applications`),
       dataTypes: getModelCrud(`${this.baseUrl}/constructor/data-types`),
       fields: getModelCrud(`${this.baseUrl}/constructor/fields`),
     };

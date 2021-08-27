@@ -2,5 +2,5 @@ from app.core.database import db
 
 
 class {{ name }}(db.Model):
-    {% for field in fields %}{{ field.name }} = db.Column(db.{{ field.data_type_id }})
+    {% for field in fields %}{{ field.name }} = {{ field | configure_field | safe }}
     {% endfor %}

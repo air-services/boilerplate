@@ -9,11 +9,13 @@ from app.core.cli import (
     generate_migrations,
     reset_database,
 )
-from app.dashboards.cli import dashboards
-from app.projects.cli import projects
-from app.roles.cli import roles
-from app.statistic.cli import statistic
-from app.users.cli import users
+from app.dev.cli import dev
+
+# from app.rest.dashboards.cli import dashboards
+# from app.rest.projects.cli import projects
+# from app.rest.roles.cli import roles
+# from app.rest.statistic.cli import statistic
+# from app.rest.users.cli import users
 
 
 @click.group()
@@ -49,14 +51,18 @@ db.add_command(reset)
 cli = click.CommandCollection(
     sources=[
         db,
-        users,
-        projects,
-        roles,
-        dashboards,
-        statistic,
+        # rest
+        # users,
+        # projects,
+        # roles,
+        # dashboards,
+        # statistic,
+        # constructor
         data_types,
         applications,
         fields,
+        # dev
+        dev,
     ]
 )
 

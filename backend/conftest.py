@@ -1,9 +1,10 @@
-import pytest
-from starlette.config import Config
 import asyncio
 
+import pytest
+from starlette.config import Config
+
 from app.core.database import db
-from app.users.models import User
+from app.rest.users.models import User
 
 config = Config(".env")
 
@@ -29,9 +30,11 @@ async def mock_user():
 
     return user
 
+
 @pytest.fixture
 def event_loop():
     yield asyncio.get_event_loop()
+
 
 def pytest_sessionfinish(session, exitstatus):
     asyncio.get_event_loop().close()
