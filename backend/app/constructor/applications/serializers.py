@@ -1,30 +1,19 @@
-from typing import List, Optional
+from typing import List
 
 from pydantic import BaseModel
 
 from app.core.crud import CrudSerializer
 
 
-class ApplicationField(BaseModel):
-    id: Optional[int]
-    name: str
-    description: Optional[str]
-    size: Optional[int]
-    data_type_id: int
-    foreign_key_id: Optional[int]
-    is_index: Optional[bool]
-    is_primary_key: Optional[bool]
-
-
 class ApplicationBase(BaseModel):
     name: str
-    table_name: str
     description: str
+    icon: str
+    url: str
 
 
 class ApplicationGetItem(ApplicationBase):
     id: int
-    fields: List[ApplicationField]
 
 
 class ApplicationUpdate(ApplicationGetItem):
@@ -32,7 +21,7 @@ class ApplicationUpdate(ApplicationGetItem):
 
 
 class ApplicationCreate(ApplicationBase):
-    fields: List[ApplicationField]
+    pass
 
 
 class ApplicationGetList(BaseModel):

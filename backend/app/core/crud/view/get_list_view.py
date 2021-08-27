@@ -2,8 +2,8 @@ import json
 
 from sqlalchemy import asc, desc, func, select
 
-from ..crud_relations import CrudModelRelationType, CrudRelations
-from ..crud_serializer import CrudSerializer
+from ..relations import CrudModelRelationType, CrudRelations
+from ..serializer import CrudSerializer
 
 SORT_ORDER_MAP = {"DESC": desc, "ASC": asc}
 

@@ -1,0 +1,14 @@
+- name: id
+  is_primary_key: true
+  is_index: true
+  allow_null: false
+  allow_empty: false
+  table_id: 1
+
+- name: price
+  is_primary_key: false
+  is_index: false
+  allow_null: false
+  allow_empty: false
+  type: string
+  table_id: 1

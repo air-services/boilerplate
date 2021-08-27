@@ -1,5 +1,5 @@
-from ..crud_relations import CrudRelations
-from ..crud_serializer import CrudSerializer
+from ..relations import CrudRelations
+from ..serializer import CrudSerializer
 from .update_relations import UpdateItemRelations
 
 

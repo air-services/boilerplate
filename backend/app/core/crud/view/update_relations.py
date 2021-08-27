@@ -1,6 +1,6 @@
 from sqlalchemy.sql.expression import and_
 
-from ..crud_relations import CrudModelRelation, CrudModelRelationType
+from ..relations import CrudModelRelation, CrudModelRelationType
 
 
 class UpdateItemRelations:

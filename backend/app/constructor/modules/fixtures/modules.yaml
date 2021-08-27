@@ -1,0 +1,23 @@
+- name: products
+  application_id: 1
+  icon: buffer
+  url: products
+  api: /api/v1/products
+
+- name: categories
+  application_id: 1
+  icon: shopping-bag
+  url: categories
+  api: /api/v1/categories
+
+- name: blogs
+  application_id: 2
+  icon: book
+  url: blogs
+  api: /api/v1/blogs
+
+- name: posts
+  application_id: 2
+  icon: book
+  url: posts
+  api: /api/v1/posts

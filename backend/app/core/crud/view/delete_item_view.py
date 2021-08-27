@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
-from ..crud_relations import CrudRelations
-from ..crud_serializer import CrudSerializer
+from ..relations import CrudRelations
+from ..serializer import CrudSerializer
 
 
 class CrudDeleteItemView:

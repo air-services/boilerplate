@@ -1,11 +1,7 @@
 from fastapi import HTTPException
 
-from ..crud_relations import (
-    CrudModelRelation,
-    CrudModelRelationType,
-    CrudRelations,
-)
-from ..crud_serializer import CrudSerializer
+from ..relations import CrudModelRelation, CrudModelRelationType, CrudRelations
+from ..serializer import CrudSerializer
 
 
 class CrudGetItemView:

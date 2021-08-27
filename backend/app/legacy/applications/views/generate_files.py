@@ -4,9 +4,9 @@ import jinja2
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from app.constructor.applications.models import Application
-from app.constructor.data_types.models import DataType
-from app.constructor.fields.models import Field
+from app.legacy.applications.models import Application
+from app.legacy.data_types.models import DataType
+from app.legacy.fields.models import Field
 
 
 class ApplicationModel(BaseModel):

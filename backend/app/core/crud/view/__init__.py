@@ -1,5 +1,5 @@
-from ..crud_relations import CrudRelations
-from ..crud_serializer import CrudSerializer
+from ..relations import CrudRelations
+from ..serializer import CrudSerializer
 from .create_item_view import CrudCreateItemView
 from .delete_item_view import CrudDeleteItemView
 from .get_item_view import CrudGetItemView

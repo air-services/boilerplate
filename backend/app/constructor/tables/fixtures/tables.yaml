@@ -1,0 +1,12 @@
+- name: products
+  module_id: 1
+
+- name: categories
+  module_id: 2
+
+- name: blogs
+  module_id: 3
+
+- name: posts
+  module_id: 4
+

@@ -2,8 +2,8 @@ import datetime
 
 from pydantic import BaseModel
 
-from app.constructor.applications.models import Application
 from app.core.cli import generate_migrations
+from app.legacy.applications.models import Application
 
 from .configure_applicatoin_model import ConfigureApplicationModel
 

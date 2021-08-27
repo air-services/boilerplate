@@ -1,10 +1,10 @@
-- name: Articles
-  table_name: articles
-  api_url: articles
-  description: Application with articles
+- name: Shop
+  description: Electronic products shop
+  url: shop
+  icon: stripe-s
 
-- name: Blogs
-  table_name: blogs
-  api_url: blogs
-  description: Application with blogs
 
+- name: Blog
+  description: Blog application
+  url: blog
+  icon: book
