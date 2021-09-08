@@ -57,28 +57,14 @@ export const getModelCrud = (url: string): RestModelApi => ({
 class RestApi {
   baseUrl = '/api/v1';
   api: {
-    users: RestModelApi;
-    projects: RestModelApi;
-    roles: RestModelApi;
-    dashboards: RestModelApi;
-    icons: RestModelApi;
-    cards: RestModelApi;
     applications: RestModelApi;
-    dataTypes: RestModelApi;
-    fields: RestModelApi;
+    icons: RestModelApi;
   };
 
   constructor() {
     this.api = {
-      users: getModelCrud(`${this.baseUrl}/users`),
-      projects: getModelCrud(`${this.baseUrl}/projects`),
-      roles: getModelCrud(`${this.baseUrl}/roles`),
-      dashboards: getModelCrud(`${this.baseUrl}/dashboards`),
+      applications: getModelCrud(`${this.baseUrl}/applications`),
       icons: getModelCrud(`${this.baseUrl}/icons`),
-      cards: getModelCrud(`${this.baseUrl}/cards`),
-      applications: getModelCrud(`${this.baseUrl}/constructor/applications`),
-      dataTypes: getModelCrud(`${this.baseUrl}/constructor/data-types`),
-      fields: getModelCrud(`${this.baseUrl}/constructor/fields`),
     };
   }
 }

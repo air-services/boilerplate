@@ -50,6 +50,12 @@ def generate_migrations(message):
 async def reset_database():
     await init_gino()
     tables = [
+        "icons",
+        "tables_fields",
+        "tables",
+        "serializers",
+        "modules",
+        "applications",
         "users_roles",
         "projects_users",
         "users",
@@ -63,6 +69,11 @@ async def reset_database():
         "icons",
         "alembic_version",
     ]
+
     for table in tables:
         query = db.text(f"drop table if exists  {table} ")
+        await db.first(query)
+
+    for postgres_type in ["serializertype", "tablefieldtype"]:
+        query = db.text(f"drop type if exists {postgres_type}")
         await db.first(query)

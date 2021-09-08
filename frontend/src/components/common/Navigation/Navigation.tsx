@@ -60,34 +60,14 @@ const NavigationSection = (navigationSection: NavigationSectionProps) => {
 };
 
 const Navigation = () => {
-  const [applications, setApplications] = useState([]);
-
-  useEffect(() => {
-    restApi.api.applications.getList().then((response) => {
-      setApplications(serializeToCamel(response.data.items));
-    });
-  }, []);
-
   const navigationSections = [
     {
-      title: 'Scheme',
-      items: applications.map((application: any) => {
-        return {
-          to: `/constructor/applications/${application.id}`,
-          text: `${application.name} scheme`,
-          icon: 'greater-than',
-        };
-      }),
-    },
-    {
-      title: 'Data',
-      items: applications.map((application: any) => {
-        return {
-          to: `/${application.tableName}`,
-          text: `${application.name} data`,
-          icon: 'database',
-        };
-      }),
+      title: 'Shop',
+      items: [
+        { to: `/shop/categories/`, text: `Categories`, icon: 'window-restore' },
+        { to: `/shop/Products/`, text: `Products`, icon: 'tshirt' },
+        { to: `/shop/tags/`, text: `Tags`, icon: 'tags' },
+      ],
     },
   ];
 
@@ -97,18 +77,15 @@ const Navigation = () => {
         FastAPI admin
       </Link>
       <div>
-        {applications.length > 0 &&
-          navigationSections.map(
-            (navigationSection: NavigationSectionProps) => {
-              return (
-                <NavigationSection
-                  title={navigationSection.title}
-                  items={navigationSection.items}
-                  key={navigationSection.title}
-                />
-              );
-            }
-          )}
+        {navigationSections.map((navigationSection: NavigationSectionProps) => {
+          return (
+            <NavigationSection
+              title={navigationSection.title}
+              items={navigationSection.items}
+              key={navigationSection.title}
+            />
+          );
+        })}
       </div>
     </nav>
   );

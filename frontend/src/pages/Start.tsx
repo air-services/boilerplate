@@ -1,13 +1,8 @@
 import React from 'react';
-import DevPanel from 'modules/dev-panel/DevPanel';
-import DevPanelProvider from 'modules/dev-panel/DevPanelProvider';
+import AppList from 'apps/AppList';
 
-const Dev = () => {
-  return (
-    <DevPanelProvider>
-      <DevPanel />
-    </DevPanelProvider>
-  );
+const StartPage = () => {
+  return <AppList />;
 };
 
-export default Dev;
+export default StartPage;

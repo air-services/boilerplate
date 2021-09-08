@@ -8,9 +8,9 @@ from app.core.crud import CrudSerializer
 class ModuleBase(BaseModel):
     application_id: int
     name: str
-    icon: str
     url: str
     api: str
+    icon_id: int
 
 
 class ModuleGetItem(ModuleBase):

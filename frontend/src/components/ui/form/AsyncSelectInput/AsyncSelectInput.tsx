@@ -5,10 +5,13 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 const AsyncSelectInput = ({
   field,
+  defaultValue,
 }: {
   field: FormConfigField;
-  register: any;
-  value: any;
+  defaultValue: {
+    label: string;
+    value: string;
+  };
 }) => {
   const { control } = useFormContext();
 
@@ -16,6 +19,7 @@ const AsyncSelectInput = ({
     <Controller
       control={control}
       name={field.id}
+      defaultValue={defaultValue}
       render={({
         field: { onChange, onBlur, value, name, ref },
         fieldState: { invalid, isTouched, isDirty, error },
@@ -27,7 +31,7 @@ const AsyncSelectInput = ({
               {field.label}
             </label>
             <Async
-              defaultValue={value}
+              defaultValue={defaultValue}
               {...field.selectConfig}
               isMulti={field.isMulti}
               onChange={onChange}

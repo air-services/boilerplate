@@ -1,10 +1,9 @@
 - name: Shop
   description: Electronic products shop
   url: shop
-  icon: stripe-s
-
+  icon_id: 20
 
 - name: Blog
   description: Blog application
   url: blog
-  icon: book
+  icon_id: 30

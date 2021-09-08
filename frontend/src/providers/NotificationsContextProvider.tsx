@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import classNames from 'classnames';
+import { useTabs } from 'components/ui/Tabs/Tabs';
 
 export enum NotificationStyle {
   danger,
@@ -16,15 +17,23 @@ export interface NotificationInfo {
 
 interface NotificationsData {
   notifications: NotificationInfo[];
+  close(key: number): void;
+}
+
+interface NotificationProps extends NotificationInfo {
+  idx: number;
+  close(key: number): void;
 }
 
 const defaultNotifications: NotificationInfo[] = [];
 
 const Notification = ({
+  close,
   title,
   content,
+  idx,
   style = NotificationStyle.info,
-}: NotificationInfo) => {
+}: NotificationProps) => {
   const notificationTextColor = classNames({
     'text-green-500': style === NotificationStyle.success,
     'text-red-500': style === NotificationStyle.danger,
@@ -32,27 +41,36 @@ const Notification = ({
     'text-blue-500': style === NotificationStyle.info,
   });
 
+  const onClickHandler = useCallback(() => close(idx), []);
+
   return (
-    <div className="bg-white rounded-lg border-gray-300 border p-3 shadow-lg mt-6">
+    <div
+      className="bg-white rounded-lg border-gray-300 border p-3 shadow-lg mt-6"
+      onClick={onClickHandler}>
       <div className="flex flex-row">
         <div className="ml-2 mr-6">
           <span className={classNames('font-semibold', notificationTextColor)}>
             {title}
           </span>
-          <span className="block text-gray-500">{content}</span>
+          <div
+            className="block text-gray-500"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-const Notifications = ({ notifications }: NotificationsData) => {
+const Notifications = ({ notifications, close }: NotificationsData) => {
   return (
     <div className="fixed top-10 right-10 z-10">
       {notifications.map((notification, idx) => {
         return (
           <Notification
             key={idx}
+            idx={idx}
+            close={close}
             title={notification.title}
             content={notification.content}
             style={notification.style}
@@ -89,10 +107,18 @@ const NotificationsContextProvider = ({ children }: { children: any }) => {
         setNotifications((notifications) => {
           return notifications.slice(0, notifications.length - 1);
         });
-      }, 1000);
+      }, 5000);
     },
     [notifications]
   );
+
+  const close = useCallback((idx) => {
+    console.log(idx);
+    setNotifications((notifications) => [
+      ...notifications.slice(0, idx),
+      ...notifications.slice(idx + 1),
+    ]);
+  }, []);
 
   return (
     <NotificationsContext.Provider
@@ -100,7 +126,7 @@ const NotificationsContextProvider = ({ children }: { children: any }) => {
         notifications,
         showNotification,
       }}>
-      <Notifications notifications={notifications} />
+      <Notifications notifications={notifications} close={close} />
       {children}
     </NotificationsContext.Provider>
   );

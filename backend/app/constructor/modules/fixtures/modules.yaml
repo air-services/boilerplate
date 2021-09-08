@@ -1,23 +1,23 @@
 - name: products
   application_id: 1
-  icon: buffer
   url: products
   api: /api/v1/products
+  icon_id: 1
 
 - name: categories
   application_id: 1
-  icon: shopping-bag
   url: categories
   api: /api/v1/categories
+  icon_id: 2
 
 - name: blogs
   application_id: 2
-  icon: book
   url: blogs
   api: /api/v1/blogs
+  icon_id: 3
 
 - name: posts
   application_id: 2
-  icon: book
   url: posts
   api: /api/v1/posts
+  icon_id: 4

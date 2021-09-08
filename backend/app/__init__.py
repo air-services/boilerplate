@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.config import Config
 
 from app.constructor.applications.crud import applications_crud
+from app.constructor.icons.crud import icons_crud
 from app.constructor.modules.crud import modules_crud
 from app.constructor.serializers.crud import serializers_crud
 from app.constructor.tables.crud import tables_crud
@@ -16,6 +17,7 @@ app.include_router(modules_crud.router)
 app.include_router(serializers_crud.router)
 app.include_router(tables_crud.router)
 app.include_router(tables_fields_crud.router)
+app.include_router(icons_crud.router)
 
 
 @app.on_event("startup")

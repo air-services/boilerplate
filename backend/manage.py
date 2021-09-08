@@ -1,6 +1,7 @@
 import click
 
 from app.constructor.applications.cli import applications
+from app.constructor.icons.cli import icons
 from app.constructor.modules.cli import modules
 from app.constructor.serializers.cli import serializers
 from app.constructor.tables.cli import tables
@@ -44,7 +45,15 @@ db.add_command(migrate)
 db.add_command(reset)
 
 cli = click.CommandCollection(
-    sources=[db, applications, modules, serializers, tables, tables_fields]
+    sources=[
+        db,
+        applications,
+        modules,
+        serializers,
+        tables,
+        tables_fields,
+        icons,
+    ]
 )
 
 

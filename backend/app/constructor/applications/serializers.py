@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -7,9 +7,9 @@ from app.core.crud import CrudSerializer
 
 class ApplicationBase(BaseModel):
     name: str
-    description: str
-    icon: str
-    url: str
+    description: Optional[str]
+    icon_id: Optional[int]
+    url: Optional[str]
 
 
 class ApplicationGetItem(ApplicationBase):

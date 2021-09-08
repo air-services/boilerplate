@@ -1,35 +1,16 @@
 import './index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import {
-  faCheckSquare,
-  faCoffee,
-  faUser,
-  faKey,
-  faDesktop,
-  faInfo,
-  faIdCard,
-  faGreaterThan,
-  faEdit,
-  faTrashAlt,
-  faDatabase,
-} from '@fortawesome/free-solid-svg-icons';
+import * as Icons from '@fortawesome/free-solid-svg-icons';
+import { faAd } from '@fortawesome/free-solid-svg-icons';
 
-library.add(
-  fab,
-  faCheckSquare,
-  faCoffee,
-  faUser,
-  faKey,
-  faDesktop,
-  faInfo,
-  faIdCard,
-  faGreaterThan,
-  faEdit,
-  faTrashAlt,
-  faDatabase
-);
+const IconsModule: any = Icons;
+
+const iconList = Object.keys(IconsModule)
+  .filter((key) => key !== 'fas' && key !== 'prefix')
+  .map((icon) => IconsModule[icon]);
+
+library.add(...iconList);
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -101,33 +82,9 @@ ReactDOM.render(
               <Route path="/cards/:id" component={CardEditPage} />
               <Route path="/cards" component={CardListPage} />
 
-              <Route
-                path="/dashboards/create"
-                component={DashboardCreatePage}
-              />
+              <Route path="//create" component={DashboardCreatePage} />
               <Route path="/dashboards/:id" component={DashboardEditPage} />
               <Route path="/dashboards" component={DashboardListPage} />
-
-              <Route
-                path="/constructor/applications/:id"
-                component={ApplicationItemPage}
-              />
-              <Route
-                path="/constructor/applications"
-                component={ApplicationListPage}
-              />
-
-              <Route
-                path="/:application/create"
-                component={ApplicationDataCreatePage}
-              />
-
-              <Route
-                path="/:application/:id"
-                component={ApplicationDataEditPage}
-              />
-
-              <Route path="/:application" component={ApplicationDataListPage} />
 
               <Route path="/" component={StartPage} />
             </Switch>

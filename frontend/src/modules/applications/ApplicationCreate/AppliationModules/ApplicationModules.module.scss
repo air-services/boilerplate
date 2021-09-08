@@ -1,0 +1,35 @@
+.wrapper {
+  @apply py-4;
+}
+
+.form {
+  @apply border-b-2 border-gray-200 mb-8 relative;
+}
+
+.formField {
+  @apply py-2 w-1/2;
+}
+
+
+.formFieldLabel {
+  @apply mr-1 inline-block w-12;
+}
+
+.formFieldInput {
+  @apply
+  outline-none
+  border-b-2
+  w-full
+  border-blue-100
+  font-light;
+}
+
+.remove {
+  @apply
+  mr-2
+  text-sm
+  cursor-pointer
+  absolute
+  top-1.5
+  right-1.5;
+}

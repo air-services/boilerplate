@@ -7,6 +7,6 @@ tables_fields_crud = Crud(
     model=TableField,
     serializer=TableFieldSerializer,
     view=CrudView,
-    prefix="/api/v1/tables_fields",
+    prefix="/api/v1/tables/fields",
     tags=["tables_fields"],
 )
